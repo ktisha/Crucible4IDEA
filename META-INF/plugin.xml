@@ -27,10 +27,10 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <projectConfigurable instance="com.jetbrains.crucible.CrucibleConfigurable"
-                           id="com.jetbrains.crucible.CrucibleConfigurable" displayName="Crucible Connector"/>
-      <projectService serviceInterface="com.jetbrains.crucible.CrucibleSettings"
-                    serviceImplementation="com.jetbrains.crucible.CrucibleSettings"/>
+      <projectConfigurable instance="com.jetbrains.crucible.configuration.CrucibleConfigurable"
+                           id="com.jetbrains.crucible.configuration.CrucibleConfigurable" displayName="Crucible Connector"/>
+      <projectService serviceInterface="com.jetbrains.crucible.configuration.CrucibleSettings"
+                    serviceImplementation="com.jetbrains.crucible.configuration.CrucibleSettings"/>
 
   </extensions>
 </idea-plugin>

@@ -1,17 +1,17 @@
-package com.jetbrains.crucible;
+package com.jetbrains.crucible.configuration;
 
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 /**
- * User: catherine
+ * User: ktisha
  */
 @State(name = "CrucibleSettings",
-      storages = {
-      @Storage( file = StoragePathMacros.PROJECT_FILE),
-      @Storage( file = StoragePathMacros.PROJECT_CONFIG_DIR + "/crucibleConnector.xml", scheme = StorageScheme.DIRECTORY_BASED)
-      }
+       storages = {
+         @Storage(file = StoragePathMacros.PROJECT_FILE),
+         @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/crucibleConnector.xml", scheme = StorageScheme.DIRECTORY_BASED)
+       }
 )
 public class CrucibleSettings implements PersistentStateComponent<CrucibleSettings> {
   public String SERVER_URL = "";
@@ -31,5 +31,4 @@ public class CrucibleSettings implements PersistentStateComponent<CrucibleSettin
   public static CrucibleSettings getInstance(Project project) {
     return ServiceManager.getService(project, CrucibleSettings.class);
   }
-
 }
