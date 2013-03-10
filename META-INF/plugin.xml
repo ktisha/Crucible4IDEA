@@ -1,0 +1,36 @@
+<idea-plugin version="2">
+  <id>crucible4idea</id>
+  <name>Crucible connector for IntelliJ IDEA</name>
+  <version>0.1</version>
+  <vendor email="kt@jetbrains.com">Ekaterina Tuzova</vendor>
+
+  <description>Plugin provides IDEA integration with Crucible from Attlassian</description>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="107.105"/>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+      <projectConfigurable instance="com.jetbrains.crucible.CrucibleConfigurable"
+                           id="com.jetbrains.crucible.CrucibleConfigurable" displayName="Crucible Connector"/>
+      <projectService serviceInterface="com.jetbrains.crucible.CrucibleSettings"
+                    serviceImplementation="com.jetbrains.crucible.CrucibleSettings"/>
+
+  </extensions>
+</idea-plugin>
