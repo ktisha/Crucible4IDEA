@@ -1,7 +1,7 @@
 package com.jetbrains.crucible.connection;
 
-import com.jetbrains.crucible.connection.exceptions.RemoteApiException;
-import com.jetbrains.crucible.connection.exceptions.RemoteApiLoginException;
+import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
+import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,8 +13,8 @@ public interface CrucibleSession {
   String AUTH_SERVICE = "/rest-service/auth-v1";
   String LOGIN = "/login";
 
-  void login() throws RemoteApiLoginException;
+  void login() throws CrucibleApiLoginException;
 
   @Nullable
-  CrucibleVersionInfo getServerVersion() throws RemoteApiException;
+  CrucibleVersionInfo getServerVersion() throws CrucibleApiException;
 }

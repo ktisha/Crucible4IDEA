@@ -4,8 +4,8 @@ package com.jetbrains.crucible.connection;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
-import com.jetbrains.crucible.connection.exceptions.RemoteApiException;
-import com.jetbrains.crucible.connection.exceptions.RemoteApiLoginException;
+import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
+import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -32,12 +32,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Override
-  public void login() throws RemoteApiLoginException {
+  public void login() throws CrucibleApiLoginException {
     try {
       final String username = getUsername();
       final String password = getPassword();
       if (username == null || password == null) {
-        throw new RemoteApiLoginException("Username or Password is empty");
+        throw new CrucibleApiLoginException("Username or Password is empty");
       }
       final String loginUrlPrefix = UrlUtil.removeUrlTrailingSlashes(getHostUrl()) + AUTH_SERVICE + LOGIN;
 
@@ -53,32 +53,32 @@ public class CrucibleSessionImpl implements CrucibleSession {
       Document doc = buildSaxResponse(loginUrl);
       String exception = getExceptionMessages(doc);
       if (exception != null) {
-        throw new RemoteApiLoginException(exception);
+        throw new CrucibleApiLoginException(exception);
       }
       XPath xpath = XPath.newInstance("/loginResult/token");
       List<?> elements = xpath.selectNodes(doc);
       if (elements == null) {
-        throw new RemoteApiLoginException("Server did not return any authentication token");
+        throw new CrucibleApiLoginException("Server did not return any authentication token");
       }
       if (elements.size() != 1) {
-        throw new RemoteApiLoginException("Server returned unexpected number of authentication tokens ("
+        throw new CrucibleApiLoginException("Server returned unexpected number of authentication tokens ("
                                           + elements.size() + ")");
       }
     }
     catch (IOException e) {
-      throw new RemoteApiLoginException(getHostUrl() + ":" + e.getMessage(), e);
+      throw new CrucibleApiLoginException(getHostUrl() + ":" + e.getMessage(), e);
     }
     catch (JDOMException e) {
-      throw new RemoteApiLoginException("Server:" + getHostUrl() + " returned malformed response", e);
+      throw new CrucibleApiLoginException("Server:" + getHostUrl() + " returned malformed response", e);
     }
-    catch (RemoteApiException e) {
-      throw new RemoteApiLoginException(e.getMessage(), e);
+    catch (CrucibleApiException e) {
+      throw new CrucibleApiLoginException(e.getMessage(), e);
     }
   }
 
   @Nullable
   @Override
-  public CrucibleVersionInfo getServerVersion() throws RemoteApiException {
+  public CrucibleVersionInfo getServerVersion() throws CrucibleApiException {
     String requestUrl = UrlUtil.removeUrlTrailingSlashes(getHostUrl()) + REVIEW_SERVICE + VERSION;
     try {
       Document doc = buildSaxResponse(requestUrl);

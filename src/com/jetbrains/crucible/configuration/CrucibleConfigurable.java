@@ -6,7 +6,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
-import com.jetbrains.crucible.connection.TestConnectionTask;
+import com.jetbrains.crucible.connection.CrucibleTestConnectionTask;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ public class CrucibleConfigurable implements SearchableConfigurable {
       @Override
       public void actionPerformed(ActionEvent e) {
         saveSettings();
-        Task.Modal testConnectionTask = new TestConnectionTask(myProject, "Testing Connection", true);
+        Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject, "Testing Connection", true);
         testConnectionTask.setCancelText("Stop");
         ProgressManager.getInstance().run(testConnectionTask);
       }

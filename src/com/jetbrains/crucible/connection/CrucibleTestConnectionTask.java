@@ -13,11 +13,11 @@ import java.awt.*;
 /**
  * User: ktisha
  */
-public class TestConnectionTask extends Task.Modal {
+public class CrucibleTestConnectionTask extends Task.Modal {
   private static final int CHECK_CANCEL_INTERVAL = 500;
-  private static final Logger LOG = Logger.getInstance(TestConnectionTask.class.getName());
+  private static final Logger LOG = Logger.getInstance(CrucibleTestConnectionTask.class.getName());
 
-  public TestConnectionTask(@Nullable Project project, @NotNull String title, boolean canBeCancelled) {
+  public CrucibleTestConnectionTask(@Nullable Project project, @NotNull String title, boolean canBeCancelled) {
     super(project, title, canBeCancelled);
   }
 

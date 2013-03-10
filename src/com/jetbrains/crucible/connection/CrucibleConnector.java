@@ -1,7 +1,7 @@
 package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.project.Project;
-import com.jetbrains.crucible.connection.exceptions.RemoteApiException;
+import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,7 +35,7 @@ public class CrucibleConnector {
         myConnectionState = ConnectionState.SUCCEEDED;
       }
     }
-    catch (RemoteApiException e) {
+    catch (CrucibleApiException e) {
       if (myConnectionState != ConnectionState.INTERRUPTED) {
         myConnectionState = ConnectionState.FAILED;
         myException = e;
@@ -52,7 +52,7 @@ public class CrucibleConnector {
     return myException == null ? null : myException.getMessage();
   }
 
-  public void connect() throws RemoteApiException {
+  public void connect() throws CrucibleApiException {
     final CrucibleSession session = new CrucibleSessionImpl(myProject);
     session.login();
     session.getServerVersion();
