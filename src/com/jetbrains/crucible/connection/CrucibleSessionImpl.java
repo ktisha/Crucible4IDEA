@@ -111,7 +111,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   private String getPassword() {
-    return CrucibleSettings.getInstance(myProject).PASSWORD;
+    return CrucibleSettings.getInstance(myProject).getPassword();
   }
 
   private String getHostUrl() {

@@ -85,7 +85,7 @@
               <text value="&amp;Test Connection"/>
             </properties>
           </component>
-          <component id="bb2e2" class="javax.swing.JCheckBox" binding="myCheckRememberPass">
+          <component id="bb2e2" class="javax.swing.JCheckBox" binding="myCheckSavePass">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

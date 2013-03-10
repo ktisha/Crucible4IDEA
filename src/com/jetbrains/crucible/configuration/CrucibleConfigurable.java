@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,8 +27,9 @@ public class CrucibleConfigurable implements SearchableConfigurable {
   private JTextField myUsernameField;
   private JPasswordField myPasswordField;
   private JButton myTestButton;
-  private JCheckBox myCheckRememberPass;
   private CrucibleSettings myCrucibleSettings;
+  private static final String DEFAULT_PASSWORD_TEXT = "************";
+  private boolean myPasswordModified;
 
   public CrucibleConfigurable(Project project) {
     myProject = project;
@@ -42,12 +45,31 @@ public class CrucibleConfigurable implements SearchableConfigurable {
       }
     }
     );
+
+    myPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        myPasswordModified = true;
+      }
+
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        myPasswordModified = true;
+      }
+
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        myPasswordModified = true;
+      }
+    });
   }
+
 
   private void saveSettings() {
     myCrucibleSettings.USERNAME = myUsernameField.getText();
     myCrucibleSettings.SERVER_URL = myServerField.getText();
-    myCrucibleSettings.PASSWORD = new String(myPasswordField.getPassword());
+    if (isPasswordModified())
+      myCrucibleSettings.savePassword(String.valueOf(myPasswordField.getPassword()));
   }
 
   @NotNull
@@ -82,8 +104,11 @@ public class CrucibleConfigurable implements SearchableConfigurable {
 
   @Override
   public boolean isModified() {
-    if (!StringUtil.equals(myCrucibleSettings.PASSWORD, new String(myPasswordField.getPassword()))) {
-      return true;
+    if (isPasswordModified()) {
+      final String password = myCrucibleSettings.getPassword();
+      if (!StringUtil.equals(password, new String(myPasswordField.getPassword()))) {
+        return true;
+      }
     }
     if (!StringUtil.equals(myCrucibleSettings.SERVER_URL, new String(myServerField.getText()))) {
       return true;
@@ -102,8 +127,18 @@ public class CrucibleConfigurable implements SearchableConfigurable {
   @Override
   public void reset() {
     myUsernameField.setText(myCrucibleSettings.USERNAME);
-    myPasswordField.setText(myCrucibleSettings.PASSWORD);
+    myPasswordField.setText(StringUtil.isEmptyOrSpaces(myUsernameField.getText()) ? "" : DEFAULT_PASSWORD_TEXT);
+    resetPasswordModification();
     myServerField.setText(myCrucibleSettings.SERVER_URL);
+  }
+
+
+  public boolean isPasswordModified() {
+    return myPasswordModified;
+  }
+
+  public void resetPasswordModification() {
+    myPasswordModified = false;
   }
 
   @Override
