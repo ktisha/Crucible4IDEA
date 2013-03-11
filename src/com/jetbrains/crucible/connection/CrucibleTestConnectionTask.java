@@ -27,10 +27,10 @@ public class CrucibleTestConnectionTask extends Task.Modal {
     indicator.setFraction(0);
     indicator.setIndeterminate(true);
 
-    final CrucibleConnector connector = new CrucibleConnector(myProject);
+    final CrucibleTestConnector connector = new CrucibleTestConnector(myProject);
     connector.run();
 
-    while (connector.getConnectionState() == CrucibleConnector.ConnectionState.NOT_FINISHED) {
+    while (connector.getConnectionState() == CrucibleTestConnector.ConnectionState.NOT_FINISHED) {
       try {
         if (indicator.isCanceled()) {
           connector.setInterrupted();
@@ -45,7 +45,7 @@ public class CrucibleTestConnectionTask extends Task.Modal {
       }
     }
 
-    CrucibleConnector.ConnectionState state = connector.getConnectionState();
+    CrucibleTestConnector.ConnectionState state = connector.getConnectionState();
     switch (state) {
       case FAILED:
         EventQueue.invokeLater(new Runnable() {

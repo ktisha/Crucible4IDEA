@@ -6,6 +6,13 @@ import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
+import com.jetbrains.crucible.model.BasicReview;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -16,15 +23,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * User : ktisha
+ *
+ * http://docs.atlassian.com/fisheye-crucible/latest/wadl/crucible.html
  */
 public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
+  private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
 
   CrucibleSessionImpl(Project project) {
@@ -39,7 +50,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
       if (username == null || password == null) {
         throw new CrucibleApiLoginException("Username or Password is empty");
       }
-      final String loginUrlPrefix = UrlUtil.removeUrlTrailingSlashes(getHostUrl()) + AUTH_SERVICE + LOGIN;
+      final String loginUrlPrefix = getHostUrl() + AUTH_SERVICE + LOGIN;
 
       final String loginUrl;
       try {
@@ -64,6 +75,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
         throw new CrucibleApiLoginException("Server returned unexpected number of authentication tokens ("
                                           + elements.size() + ")");
       }
+      myAuthentification = ((Element)elements.get(0)).getText();
     }
     catch (IOException e) {
       throw new CrucibleApiLoginException(getHostUrl() + ":" + e.getMessage(), e);
@@ -79,7 +91,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   @Nullable
   @Override
   public CrucibleVersionInfo getServerVersion() throws CrucibleApiException {
-    String requestUrl = UrlUtil.removeUrlTrailingSlashes(getHostUrl()) + REVIEW_SERVICE + VERSION;
+    String requestUrl = getHostUrl() + REVIEW_SERVICE + VERSION;
     try {
       Document doc = buildSaxResponse(requestUrl);
       XPath xpath = XPath.newInstance("versionInfo");
@@ -100,10 +112,32 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
+  private String getAuthHeaderValue() {
+    return "Basic " + encode(getUsername() + ":" + getPassword());
+  }
+
+  public static String encode(String str2encode) {
+    try {
+      Base64 base64 = new Base64();
+      byte[] bytes = base64.encode(str2encode.getBytes("UTF-8"));
+      return new String(bytes);
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException("UTF-8 is not supported", e);
+    }
+  }
+
   protected Document buildSaxResponse(@NotNull final String urlString) throws IOException, JDOMException {
     final SAXBuilder builder = new SAXBuilder();
-    final URL repositoryUrl = new URL(urlString);
-    return builder.build(repositoryUrl);
+    GetMethod method = new GetMethod(urlString);
+    adjustHttpHeader(method);
+    HttpClient client = new HttpClient();
+    client.executeMethod(method);
+
+    return builder.build(method.getResponseBodyAsStream());
+  }
+
+  protected void adjustHttpHeader(HttpMethod method) {
+    method.addRequestHeader(new Header("Authorization", getAuthHeaderValue()));
   }
 
   private String getUsername() {
@@ -115,7 +149,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   private String getHostUrl() {
-    return CrucibleSettings.getInstance(myProject).SERVER_URL;
+    return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance(myProject).SERVER_URL);
   }
 
   @Nullable
@@ -133,5 +167,34 @@ public class CrucibleSessionImpl implements CrucibleSession {
       return exceptionMsg.toString();
     }
     return null;
+  }
+
+  public List<BasicReview> getReviewsForFilter(CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {
+    String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;
+    String urlFilter = filter.getFilterUrl();
+    if (!StringUtils.isEmpty(urlFilter)) {
+      url += "/" + urlFilter;
+    }
+    final Document doc = buildSaxResponse(url);
+    XPath xpath = XPath.newInstance("/reviews/reviewData");
+
+    @SuppressWarnings("unchecked")
+    List<Element> elements = xpath.selectNodes(doc);
+    List<BasicReview> reviews = new ArrayList<BasicReview>();
+
+    if (elements != null && !elements.isEmpty()) {
+      for (Element element : elements) {
+        reviews.add(parseBasicReview(element));
+      }
+    }
+    return reviews;
+  }
+
+  private BasicReview parseBasicReview(Element element) throws CrucibleApiException {
+    try {
+      return CrucibleRestXmlHelper.parseBasicReview(getHostUrl(), element);
+    } catch (ParseException e) {
+      throw new CrucibleApiException(e.getMessage());
+    }
   }
 }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * User : ktisha
  */
-public class CrucibleConnector {
+public class CrucibleTestConnector {
 
   public enum ConnectionState {
     NOT_FINISHED,
@@ -20,7 +20,7 @@ public class CrucibleConnector {
   private Exception myException;
   private final Project myProject;
 
-  public CrucibleConnector(Project project) {
+  public CrucibleTestConnector(Project project) {
     myProject = project;
   }
 
@@ -30,7 +30,7 @@ public class CrucibleConnector {
 
   public void run() {
     try {
-      connect();
+      testConnect();
       if (myConnectionState != ConnectionState.INTERRUPTED) {
         myConnectionState = ConnectionState.SUCCEEDED;
       }
@@ -52,8 +52,8 @@ public class CrucibleConnector {
     return myException == null ? null : myException.getMessage();
   }
 
-  public void connect() throws CrucibleApiException {
-    final CrucibleSession session = new CrucibleSessionImpl(myProject);
+  public void testConnect() throws CrucibleApiException {
+    final CrucibleSession session = CrucibleManager.getInstance(myProject).getSession();
     session.login();
     session.getServerVersion();
   }
