@@ -35,7 +35,8 @@ public class CruciblePanel extends SimpleToolWindowPanel {
 
     myReviewModel = new CrucibleReviewModel(project);
     myReviewTable = new JBTable(myReviewModel);
-    myReviewPanel.add(myReviewTable);
+    final JScrollPane detailsScrollPane = ScrollPaneFactory.createScrollPane(myReviewTable);
+    myReviewPanel.add(detailsScrollPane);
 
     SimpleTreeStructure reviewTreeStructure = createTreeStructure();
     final DefaultTreeModel model = new CrucibleTreeModel(project);

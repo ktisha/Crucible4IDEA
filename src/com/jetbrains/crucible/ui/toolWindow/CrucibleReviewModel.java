@@ -27,6 +27,21 @@ public class CrucibleReviewModel extends DefaultTableModel {
     return 4;
   }
 
+  @Override
+  public String getColumnName(int column) {
+    switch (column) {
+      case 0:
+        return "ID";
+      case 1:
+        return "Description";
+      case 2:
+        return "State";
+      case 3:
+        return "Author";
+    }
+    return super.getColumnName(column);
+  }
+
   public void updateModel(CrucibleFilter filter) {
     setRowCount(0);
     final CrucibleManager manager = CrucibleManager.getInstance(myProject);
