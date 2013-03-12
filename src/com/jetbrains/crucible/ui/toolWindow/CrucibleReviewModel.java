@@ -8,13 +8,13 @@ import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
 import org.jdom.JDOMException;
 
-import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 /**
  * User: ktisha
  */
-public class CrucibleReviewModel extends DefaultListModel {
+public class CrucibleReviewModel extends DefaultTableModel {
   private static final Logger LOG = Logger.getInstance(CrucibleReviewModel.class.getName());
   private final Project myProject;
 
@@ -22,14 +22,19 @@ public class CrucibleReviewModel extends DefaultListModel {
     myProject = project;
   }
 
+  @Override
+  public int getColumnCount() {
+    return 4;
+  }
+
   public void updateModel(CrucibleFilter filter) {
-    removeAllElements();
+    setRowCount(0);
     final CrucibleManager manager = CrucibleManager.getInstance(myProject);
     final List<BasicReview> reviews;
     try {
       reviews = manager.getReviewsForFilter(filter);
       for (BasicReview review : reviews) {
-        addElement(review);
+        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName()});
       }
     }
     catch (CrucibleApiException e) {

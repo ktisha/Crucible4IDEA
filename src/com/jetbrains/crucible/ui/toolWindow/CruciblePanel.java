@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.table.JBTable;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
@@ -25,14 +26,16 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   private SimpleTree myReviewTree;
   private JPanel myMainPanel;
   private JSplitPane mySplitter;
-  private JList myReviewList;
+  private JPanel myReviewPanel;
+  private JBTable myReviewTable;
 
   public CruciblePanel(Project project) {
     super(false);
     myProject = project;
 
     myReviewModel = new CrucibleReviewModel(project);
-    myReviewList.setModel(myReviewModel);
+    myReviewTable = new JBTable(myReviewModel);
+    myReviewPanel.add(myReviewTable);
 
     SimpleTreeStructure reviewTreeStructure = createTreeStructure();
     final DefaultTreeModel model = new CrucibleTreeModel(project);

@@ -21,7 +21,7 @@ public class BasicReview {
   private String myName;
 
   @NotNull
-  private String myProjectKey;
+  private String myPermaId;
   private String myRepoName;
   private Date myCreateDate;
   private Date myCloseDate;
@@ -29,10 +29,10 @@ public class BasicReview {
   private final String myServerUrl;
   private String myState;
 
-  public BasicReview(@NotNull String serverUrl, @NotNull String projectKey, @NotNull User author,
+  public BasicReview(@NotNull String serverUrl, @NotNull String permaId, @NotNull User author,
                      @Nullable User moderator) {
     myServerUrl = serverUrl;
-    myProjectKey = projectKey;
+    myPermaId = permaId;
     myAuthor = author;
     myModerator = moderator;
   }
@@ -43,7 +43,7 @@ public class BasicReview {
 
   @Override
   public String toString() {
-    return myProjectKey + "  " + myDescription + "  " + myState + "   " + myAuthor.getUserName();
+    return myPermaId + "  " + myDescription + "  " + myState + "   " + myAuthor.getUserName();
   }
 
   public void setDescription(String description) {
@@ -52,5 +52,23 @@ public class BasicReview {
 
   public void setState(String state) {
     myState = state;
+  }
+
+  @NotNull
+  public String getPermaId() {
+    return myPermaId;
+  }
+
+  public String getDescription() {
+    return myDescription;
+  }
+
+  public String getState() {
+    return myState;
+  }
+
+  @NotNull
+  public User getAuthor() {
+    return myAuthor;
   }
 }

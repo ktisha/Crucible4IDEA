@@ -17,12 +17,14 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e1684" class="javax.swing.JList" binding="myReviewList">
+          <grid id="c742b" binding="myReviewPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <splitpane position="right"/>
             </constraints>
             <properties/>
-          </component>
+            <border type="none"/>
+            <children/>
+          </grid>
         </children>
       </splitpane>
     </children>
