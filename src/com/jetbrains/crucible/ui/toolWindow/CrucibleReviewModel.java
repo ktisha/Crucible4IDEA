@@ -42,6 +42,11 @@ public class CrucibleReviewModel extends DefaultTableModel {
     return super.getColumnName(column);
   }
 
+  @Override
+  public boolean isCellEditable(int row, int column) {
+    return false;
+  }
+
   public void updateModel(CrucibleFilter filter) {
     setRowCount(0);
     final CrucibleManager manager = CrucibleManager.getInstance(myProject);
