@@ -7,6 +7,8 @@ import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.model.User;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -188,6 +190,32 @@ public class CrucibleSessionImpl implements CrucibleSession {
       }
     }
     return reviews;
+  }
+
+  public Review getDetailsForReview(String permId) throws CrucibleApiException, JDOMException, IOException {
+    String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
+    final Document doc = buildSaxResponse(url);
+    XPath xpath = XPath.newInstance("/detailedReviewData/reviewItems");
+
+    @SuppressWarnings("unchecked")
+    List<Element> reviewItems = xpath.selectNodes(doc);
+    final Element node = (Element)XPath.newInstance("/detailedReviewData").selectSingleNode(doc);
+    final User author = CrucibleRestXmlHelper.parseUserNode(node);
+    final User moderator = (node.getChild("moderator") != null)
+                           ? CrucibleRestXmlHelper.parseUserNode(node.getChild("moderator")) : null;
+
+    Review review = new Review(getHostUrl(), permId, author, moderator);
+    if (reviewItems != null && !reviewItems.isEmpty()) {
+      for (Element element : reviewItems) {
+        @SuppressWarnings("unchecked")
+        final List<Element> items = element.getChildren("reviewItem");
+        for (Element item : items) {
+          final String path = CrucibleRestXmlHelper.getChildText(item, "toPath");
+          review.addFile(path);
+        }
+      }
+    }
+    return review;
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {

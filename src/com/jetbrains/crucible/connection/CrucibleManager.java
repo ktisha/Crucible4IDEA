@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.model.Review;
 import org.jdom.JDOMException;
 
 import java.io.IOException;
@@ -32,6 +33,17 @@ public class CrucibleManager {
     final CrucibleSession session = getSession();
     try {
       return session.getReviewsForFilter(filter);
+    }
+    catch (IOException e) {
+      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    }
+    return null;
+  }
+
+  public Review getDetailsForReview(String permId) throws CrucibleApiException, JDOMException {
+    final CrucibleSession session = getSession();
+    try {
+      return session.getDetailsForReview(permId);
     }
     catch (IOException e) {
       e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
