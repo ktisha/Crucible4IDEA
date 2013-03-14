@@ -3,7 +3,12 @@ package com.jetbrains.crucible.ui.toolWindow;
 import com.intellij.ide.util.treeView.AbstractTreeBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.content.Content;
+import com.intellij.ui.content.ContentFactory;
+import com.intellij.ui.content.ContentManager;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
@@ -49,7 +54,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
           try {
             final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
-            openDetailsToolWindow(myProject, "REVIEW_TOOL_WINDOW", review);
+            openDetailsToolWindow(review);
           }
           catch (CrucibleApiException e1) {
             e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -80,10 +85,18 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     setContent(mySplitter);
   }
 
-  public static void openDetailsToolWindow(Project project, String id, Review review) {
-    // TODO: open new tab in toolwindow
+  public void openDetailsToolWindow(Review review) {
+    final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
+    final ContentManager contentManager = toolWindow.getContentManager();
+    final ReviewDetailsPanel detailsPanel = new ReviewDetailsPanel(review);
+    final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
+    if (foundContent == null) {
+      final Content content = ContentFactory.SERVICE.getInstance().createContent(detailsPanel,
+                                                                                 "Details for " + review.getPermaId(), false);
+      contentManager.addContent(content);
+      contentManager.setSelectedContent(content);
+    }
   }
-
 
   private SimpleTreeStructure createTreeStructure() {
     final CrucibleRootNode rootNode = new CrucibleRootNode(myReviewModel);
