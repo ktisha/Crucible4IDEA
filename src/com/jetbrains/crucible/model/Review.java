@@ -12,8 +12,7 @@ import java.util.*;
 public class Review extends BasicReview {
   private List<String> myFiles = new ArrayList<String>();
   private List<Comment> myGeneralComments = Collections.emptyList();
-  private String myRevisionNumber;
-
+  private Set<String > myRevisions = new HashSet<String>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -32,16 +31,14 @@ public class Review extends BasicReview {
   public void addFile(String file) {
     myFiles.add(file);
   }
+  public void addRevision(String revision) {
+    myRevisions.add(revision);
+  }
 
   public List<String> getFiles() {
     return myFiles;
   }
-
-  public String getRevisionNumber() {
-    return myRevisionNumber;
-  }
-
-  public void setRevisionNumber(String revisionNumber) {
-    myRevisionNumber = revisionNumber;
+  public Set<String> getRevisions() {
+    return myRevisions;
   }
 }

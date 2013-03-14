@@ -8,7 +8,6 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.*;
 import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.committed.RepositoryChangesBrowser;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -38,7 +37,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * User: ktisha
@@ -70,7 +69,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         int viewRow = myReviewTable.getSelectedRow();
         if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
           try {
-            final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
+            final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277");
             openDetailsToolWindow(review);
           }
           catch (CrucibleApiException e1) {
@@ -115,21 +114,37 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   }
 
   private JComponent createRepositoryBrowserDetails(@NotNull final ToolWindow toolWindow, @NotNull final Review review) {
+    List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
 
-    final CommittedChangeList myChangeList = getChangeList(myProject, review.getRevisionNumber());
-    RepositoryChangesBrowser changesBrowser =
-      new RepositoryChangesBrowser(myProject, Collections.singletonList(myChangeList), new ArrayList<Change>(myChangeList.getChanges()),
-                                   myChangeList);
+    for (String revision : review.getRevisions()) {
+      final CommittedChangeList changeList = getChangeList(myProject, revision);
+      if (changeList != null)
+        list.add(changeList);
+    }
+
+    final ArrayList<Change> changes = new ArrayList<Change>();
+    for (CommittedChangeList changeList : list) {
+      changes.addAll(changeList.getChanges());
+    }
+
+    final CommittedChangeList initialListSelection;
+    if (!list.isEmpty()) {
+      initialListSelection = list.get(0);
+    }
+    else initialListSelection = null;
+    MultipleCommitedChangeListBrowser changesBrowser =
+      new MultipleCommitedChangeListBrowser(myProject, list, changes, initialListSelection, false, false, null);
 
     changesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), toolWindow.getComponent());
     changesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
+
     return changesBrowser;
   }
 
   @Nullable
   private CommittedChangeList getChangeList(@NotNull final Project project, @NotNull final String revision) {
     final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-    final VirtualFile virtualFile = project.getProjectFile();
+    final VirtualFile virtualFile = project.getBaseDir();
     if (virtualFile == null) return null;
     final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
 
@@ -137,16 +152,18 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     if (vcsFor != null) {
       try {
         revisionNumber = vcsFor.parseRevisionNumber(revision);
-        final VcsKey vcsKey = vcsFor.getKeyInstanceMethod();
-        final AbstractVcs vcs = ProjectLevelVcsManager.getInstance(project).findVcsByName(vcsKey.getName());
-        if (vcs == null) return null;
 
-        final CommittedChangesProvider provider = vcs.getCommittedChangesProvider();
+        final CommittedChangesProvider provider = vcsFor.getCommittedChangesProvider();
         if (provider != null) {
+          CommittedChangeList changeList = getInPath(provider, virtualFile, revisionNumber, "community");
+          if (changeList != null) return changeList;
+          changeList = getInPath(provider, virtualFile, revisionNumber, "contrib");
+          if (changeList != null) return changeList;
           @SuppressWarnings("unchecked")
-          final Pair<CommittedChangeList, FilePath> pair = provider.getOneList(virtualFile, revisionNumber);
-          if (pair != null) {
-            return pair.getFirst();
+          final Pair<CommittedChangeList, FilePath> pair1 = provider.getOneList(
+            virtualFile, revisionNumber);
+          if (pair1 != null) {
+            return pair1.getFirst();
           }
         }
       }
@@ -155,6 +172,22 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       }
     }
 
+    return null;
+  }
+
+  private CommittedChangeList getInPath(CommittedChangesProvider provider, VirtualFile virtualFile,
+                                        VcsRevisionNumber revisionNumber, String name) {
+    try {
+      @SuppressWarnings("unchecked")
+      final Pair<CommittedChangeList, FilePath> pair = provider.getOneList(
+        virtualFile.findFileByRelativePath(name), revisionNumber);
+      if (pair != null) {
+        return pair.getFirst();
+      }
+    }
+    catch (VcsException e) {
+      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    }
     return null;
   }
 
