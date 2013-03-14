@@ -32,6 +32,6 @@
     <projectService serviceInterface="com.jetbrains.crucible.configuration.CrucibleSettings"
                     serviceImplementation="com.jetbrains.crucible.configuration.CrucibleSettings"/>
 
-    <toolWindow id="Crucible connector" secondary="true" anchor="bottom" factoryClass="com.jetbrains.crucible.ui.toolWindow.CrucibleToolWindowFactory"/>
+    <toolWindow id="Crucible connector" anchor="bottom" canCloseContents="true" factoryClass="com.jetbrains.crucible.ui.toolWindow.CrucibleToolWindowFactory"/>
   </extensions>
 </idea-plugin>
