@@ -195,26 +195,31 @@ public class CrucibleSessionImpl implements CrucibleSession {
   public Review getDetailsForReview(String permId) throws CrucibleApiException, JDOMException, IOException {
     String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
     final Document doc = buildSaxResponse(url);
-    XPath xpath = XPath.newInstance("/detailedReviewData/reviewItems");
+    //XPath xpath = XPath.newInstance("/detailedReviewData/reviewItems");
 
     @SuppressWarnings("unchecked")
-    List<Element> reviewItems = xpath.selectNodes(doc);
+    //List<Element> reviewItems = xpath.selectNodes(doc);
     final Element node = (Element)XPath.newInstance("/detailedReviewData").selectSingleNode(doc);
     final User author = CrucibleRestXmlHelper.parseUserNode(node);
+
     final User moderator = (node.getChild("moderator") != null)
                            ? CrucibleRestXmlHelper.parseUserNode(node.getChild("moderator")) : null;
 
     Review review = new Review(getHostUrl(), permId, author, moderator);
-    if (reviewItems != null && !reviewItems.isEmpty()) {
-      for (Element element : reviewItems) {
-        @SuppressWarnings("unchecked")
-        final List<Element> items = element.getChildren("reviewItem");
-        for (Element item : items) {
-          final String path = CrucibleRestXmlHelper.getChildText(item, "toPath");
-          review.addFile(path);
-        }
-      }
-    }
+    final String description = CrucibleRestXmlHelper.getChildText(node, "description");
+    final int i = description.indexOf("id=") + 3;
+    String revision = description.substring(i, description.indexOf("|"));
+    review.setRevisionNumber(revision);
+    //if (reviewItems != null && !reviewItems.isEmpty()) {
+    //  for (Element element : reviewItems) {
+    //    @SuppressWarnings("unchecked")
+    //    final List<Element> items = element.getChildren("reviewItem");
+    //    for (Element item : items) {
+    //      final String path = CrucibleRestXmlHelper.getChildText(item, "toPath");
+    //      review.addFile(path);
+    //    }
+    //  }
+    //}
     return review;
   }
 

@@ -12,6 +12,8 @@ import java.util.*;
 public class Review extends BasicReview {
   private List<String> myFiles = new ArrayList<String>();
   private List<Comment> myGeneralComments = Collections.emptyList();
+  private String myRevisionNumber;
+
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -33,5 +35,13 @@ public class Review extends BasicReview {
 
   public List<String> getFiles() {
     return myFiles;
+  }
+
+  public String getRevisionNumber() {
+    return myRevisionNumber;
+  }
+
+  public void setRevisionNumber(String revisionNumber) {
+    myRevisionNumber = revisionNumber;
   }
 }
