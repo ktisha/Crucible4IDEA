@@ -46,7 +46,6 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   private final Project myProject;
   private final CrucibleReviewModel myReviewModel;
   private SimpleTree myReviewTree;
-  private JPanel myMainPanel;
   private JSplitPane mySplitter;
   private JPanel myReviewPanel;
   private JBTable myReviewTable;
@@ -102,14 +101,14 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
     if (foundContent == null) {
-      final Content content = ContentFactory.SERVICE.getInstance().createContent(createRepositoryBrowserDetails(toolWindow, review),
+      final Content content = ContentFactory.SERVICE.getInstance().createContent(createRepositoryBrowserDetails(review),
                                                                                  "Details for " + review.getPermaId(), false);
       contentManager.addContent(content);
       contentManager.setSelectedContent(content);
     }
   }
 
-  private JComponent createRepositoryBrowserDetails(@NotNull final ToolWindow toolWindow, @NotNull final Review review) {
+  private JComponent createRepositoryBrowserDetails(@NotNull final Review review) {
     List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
 
     for (String revision : review.getRevisions()) {
