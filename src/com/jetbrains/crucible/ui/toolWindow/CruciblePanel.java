@@ -136,15 +136,10 @@ public class CruciblePanel extends SimpleToolWindowPanel {
 
         final CommittedChangesProvider provider = vcsFor.getCommittedChangesProvider();
         if (provider != null) {
-          CommittedChangeList changeList = getInPath(provider, virtualFile, revisionNumber, "community");
-          if (changeList != null) return changeList;
-          changeList = getInPath(provider, virtualFile, revisionNumber, "contrib");
-          if (changeList != null) return changeList;
-          @SuppressWarnings("unchecked")
-          final Pair<CommittedChangeList, FilePath> pair1 = provider.getOneList(
-            virtualFile, revisionNumber);
-          if (pair1 != null) {
-            return pair1.getFirst();
+          final VirtualFile[] rootsUnderVcs = vcsManager.getRootsUnderVcs(vcsFor);
+          for (VirtualFile root : rootsUnderVcs) {
+            CommittedChangeList changeList = findInRoot(provider, root, revisionNumber);
+            if (changeList != null) return changeList;
           }
         }
       }
@@ -156,12 +151,12 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     return null;
   }
 
-  private CommittedChangeList getInPath(CommittedChangesProvider provider, VirtualFile virtualFile,
-                                        VcsRevisionNumber revisionNumber, String name) {
+  @Nullable
+  private static CommittedChangeList findInRoot(CommittedChangesProvider provider, VirtualFile virtualFile,
+                                                VcsRevisionNumber revisionNumber) {
     try {
       @SuppressWarnings("unchecked")
-      final Pair<CommittedChangeList, FilePath> pair = provider.getOneList(
-        virtualFile.findFileByRelativePath(name), revisionNumber);
+      final Pair<CommittedChangeList, FilePath> pair = provider.getOneList(virtualFile, revisionNumber);
       if (pair != null) {
         return pair.getFirst();
       }
