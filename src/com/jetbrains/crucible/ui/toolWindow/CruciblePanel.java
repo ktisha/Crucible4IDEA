@@ -1,21 +1,17 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
 import com.intellij.ide.util.treeView.AbstractTreeBuilder;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vcs.*;
-import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.SideBorder;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
@@ -69,7 +65,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         int viewRow = myReviewTable.getSelectedRow();
         if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
           try {
-            final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277");
+            final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
             openDetailsToolWindow(review);
           }
           catch (CrucibleApiException e1) {
@@ -121,24 +117,9 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       if (changeList != null)
         list.add(changeList);
     }
+    DetailsPanel panel = new DetailsPanel(myProject, list);
 
-    final ArrayList<Change> changes = new ArrayList<Change>();
-    for (CommittedChangeList changeList : list) {
-      changes.addAll(changeList.getChanges());
-    }
-
-    final CommittedChangeList initialListSelection;
-    if (!list.isEmpty()) {
-      initialListSelection = list.get(0);
-    }
-    else initialListSelection = null;
-    MultipleCommitedChangeListBrowser changesBrowser =
-      new MultipleCommitedChangeListBrowser(myProject, list, changes, initialListSelection, false, false, null);
-
-    changesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), toolWindow.getComponent());
-    changesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
-
-    return changesBrowser;
+    return panel;
   }
 
   @Nullable
@@ -186,7 +167,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       }
     }
     catch (VcsException e) {
-      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      LOG.warn(e.getMessage());
     }
     return null;
   }
