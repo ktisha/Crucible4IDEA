@@ -28,7 +28,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User : ktisha
@@ -205,6 +207,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final User moderator = (node.getChild("moderator") != null)
                            ? CrucibleRestXmlHelper.parseUserNode(node.getChild("moderator")) : null;
 
+    Set<String> fromRevisions = new HashSet<String>();
+
     Review review = new Review(getHostUrl(), permId, author, moderator);
 
     if (reviewItems != null && !reviewItems.isEmpty()) {
@@ -212,11 +216,25 @@ public class CrucibleSessionImpl implements CrucibleSession {
         @SuppressWarnings("unchecked")
         final List<Element> items = element.getChildren("reviewItem");
         for (Element item : items) {
-          final String revision = CrucibleRestXmlHelper.getChildText(item, "toRevision");
-          review.addRevision(revision);
+          final String revision = CrucibleRestXmlHelper.getChildText(item, "fromRevision");
+          fromRevisions.add(revision);
+        }
+      }
+      for (Element element : reviewItems) {
+        @SuppressWarnings("unchecked")
+        final List<Element> items = element.getChildren("reviewItem");
+        for (Element item : items) {
+          final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
+
+          for (Element expandedRevision : expandedRevisions) {
+            final String revision = CrucibleRestXmlHelper.getChildText(expandedRevision, "revision");
+            if (!fromRevisions.contains(revision))
+              review.addRevision(revision);
+          }
         }
       }
     }
+
     return review;
   }
 

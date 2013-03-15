@@ -31,6 +31,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(listView);
     myPanel.add(scrollPane);
 
-    setContent(myPanel);
+    setContent(scrollPane);
   }
 }
