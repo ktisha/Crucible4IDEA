@@ -14,6 +14,7 @@ import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.JBSplitter;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -27,12 +28,12 @@ import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import org.jdom.JDOMException;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,14 +48,13 @@ public class CruciblePanel extends SimpleToolWindowPanel {
 
   private final Project myProject;
   private final CrucibleReviewModel myReviewModel;
-  private SimpleTree myReviewTree;
-  private JSplitPane mySplitter;
-  private JPanel myReviewPanel;
-  private JBTable myReviewTable;
+  private final JBTable myReviewTable;
 
   public CruciblePanel(Project project) {
     super(false);
     myProject = project;
+
+    JBSplitter splitter = new JBSplitter(false);
 
     myReviewModel = new CrucibleReviewModel(project);
     myReviewTable = new JBTable(myReviewModel);
@@ -65,57 +65,45 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       public void valueChanged(ListSelectionEvent e) {
         final int viewRow = myReviewTable.getSelectedRow();
         if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
-          //try {
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  final Review review =
-                    CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277"/*(String)myReviewTable.getValueAt(viewRow, 0)*/);
+          ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              try {
+                final Review review =
+                  CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277"/*(String)myReviewTable.getValueAt(viewRow, 0)*/);
+                if (review != null)
                   openDetailsToolWindow(review);
-
-                }
-                catch (CrucibleApiException e1) {
-                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                catch (JDOMException e1) {
-                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
               }
-            }, ModalityState.stateForComponent(myReviewTable));
-
-            //openDetailsToolWindow(review);
-          //}
-          //catch (CrucibleApiException e1) {
-          //  LOG.warn(e1.getMessage());
-          //}
-          //catch (JDOMException e1) {
-          //  LOG.warn(e1.getMessage());
-          //}
+              catch (CrucibleApiException e1) {
+                LOG.warn(e1.getMessage());
+              }
+              catch (JDOMException e1) {
+                LOG.warn(e1.getMessage());
+              }
+            }
+          }, ModalityState.stateForComponent(myReviewTable));
 
         }
       }
     });
 
     final JScrollPane detailsScrollPane = ScrollPaneFactory.createScrollPane(myReviewTable);
-    myReviewPanel.add(detailsScrollPane);
 
-    SimpleTreeStructure reviewTreeStructure = createTreeStructure();
+    final SimpleTreeStructure reviewTreeStructure = createTreeStructure();
     final DefaultTreeModel model = new CrucibleTreeModel(project);
-    myReviewTree = new SimpleTree(model);
-    myReviewTree.setPreferredSize(new Dimension(200, 200));
+    SimpleTree reviewTree = new SimpleTree(model);
 
     AbstractTreeBuilder reviewTreeBuilder =
-      new AbstractTreeBuilder(myReviewTree, model, reviewTreeStructure, null);
-    myReviewTree.invalidate();
+      new AbstractTreeBuilder(reviewTree, model, reviewTreeStructure, null);
+    reviewTree.invalidate();
 
-    JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(myReviewTree);
-    scrollPane.setPreferredSize(new Dimension(250, 250));
-    mySplitter.setLeftComponent(scrollPane);
-    setContent(mySplitter);
+    final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(reviewTree);
+    splitter.setFirstComponent(scrollPane);
+    splitter.setSecondComponent(detailsScrollPane);
+    setContent(splitter);
   }
 
-  public void openDetailsToolWindow(final Review review) {
+  public void openDetailsToolWindow(@NotNull final Review review) {
     final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());

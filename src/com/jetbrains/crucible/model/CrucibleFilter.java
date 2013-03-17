@@ -1,7 +1,10 @@
-package com.jetbrains.crucible.connection;
+package com.jetbrains.crucible.model;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * User : ktisha
+ */
 public enum CrucibleFilter {
   ToReview("toReview", "To Review"),
   RequireApprovalReview("requireMyApproval", "Review Required My Approval"),

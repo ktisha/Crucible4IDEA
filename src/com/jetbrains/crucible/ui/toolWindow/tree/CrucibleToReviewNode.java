@@ -2,7 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow.tree;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTree;
-import com.jetbrains.crucible.connection.CrucibleFilter;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
 
 import java.util.ArrayList;
@@ -14,7 +14,6 @@ import java.util.List;
 public class CrucibleToReviewNode extends SimpleNode {
   private static final String NAME = "To Review";
   private final CrucibleReviewModel myReviewModel;
-  private List<SimpleNode> myChildren = new ArrayList<SimpleNode>();
 
   public CrucibleToReviewNode(CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;

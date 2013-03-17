@@ -9,9 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
-import com.jetbrains.crucible.model.BasicReview;
-import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.model.User;
+import com.jetbrains.crucible.model.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -29,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +35,7 @@ import java.util.Set;
 /**
  * User : ktisha
  *
+ * Crucible API
  * http://docs.atlassian.com/fisheye-crucible/latest/wadl/crucible.html
  */
 public class CrucibleSessionImpl implements CrucibleSession {
@@ -73,12 +71,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
         throw new RuntimeException("URLEncoding problem: " + e.getMessage());
       }
 
-      Document doc = buildSaxResponse(loginUrl);
-      String exception = getExceptionMessages(doc);
+      final Document doc = buildSaxResponse(loginUrl);
+      final String exception = getExceptionMessages(doc);
       if (exception != null) {
         throw new CrucibleApiLoginException(exception);
       }
-      XPath xpath = XPath.newInstance("/loginResult/token");
+      final XPath xpath = XPath.newInstance("/loginResult/token");
       List<?> elements = xpath.selectNodes(doc);
       if (elements == null) {
         throw new CrucibleApiLoginException("Server did not return any authentication token");
@@ -102,17 +100,17 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   @Nullable
   @Override
-  public CrucibleVersionInfo getServerVersion() throws CrucibleApiException {
-    String requestUrl = getHostUrl() + REVIEW_SERVICE + VERSION;
+  public CrucibleVersionInfo getServerVersion() {
+    final String requestUrl = getHostUrl() + REVIEW_SERVICE + VERSION;
     try {
-      Document doc = buildSaxResponse(requestUrl);
-      XPath xpath = XPath.newInstance("versionInfo");
+      final Document doc = buildSaxResponse(requestUrl);
+      final XPath xpath = XPath.newInstance("versionInfo");
 
       @SuppressWarnings("unchecked")
       List<Element> elements = xpath.selectNodes(doc);
 
       if (elements != null && !elements.isEmpty()) {
-        return CrucibleRestXmlHelper.parseVersionNode(elements.get(0));
+        return CrucibleXmlParser.parseVersionNode(elements.get(0));
       }
     }
     catch (JDOMException e) {
@@ -140,15 +138,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   protected Document buildSaxResponse(@NotNull final String urlString) throws IOException, JDOMException {
     final SAXBuilder builder = new SAXBuilder();
-    GetMethod method = new GetMethod(urlString);
+    final GetMethod method = new GetMethod(urlString);
     adjustHttpHeader(method);
-    HttpClient client = new HttpClient();
+    final HttpClient client = new HttpClient();
     client.executeMethod(method);
 
     return builder.build(method.getResponseBodyAsStream());
   }
 
-  protected void adjustHttpHeader(HttpMethod method) {
+  protected void adjustHttpHeader(@NotNull final HttpMethod method) {
     method.addRequestHeader(new Header("Authorization", getAuthHeaderValue()));
   }
 
@@ -181,14 +179,14 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
-  public List<BasicReview> getReviewsForFilter(CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {
+  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {
     String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;
-    String urlFilter = filter.getFilterUrl();
+    final String urlFilter = filter.getFilterUrl();
     if (!StringUtils.isEmpty(urlFilter)) {
       url += "/" + urlFilter;
     }
     final Document doc = buildSaxResponse(url);
-    XPath xpath = XPath.newInstance("/reviews/reviewData");
+    final XPath xpath = XPath.newInstance("/reviews/reviewData");
 
     @SuppressWarnings("unchecked")
     List<Element> elements = xpath.selectNodes(doc);
@@ -202,7 +200,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return reviews;
   }
 
-  public Review getDetailsForReview(String permId) throws CrucibleApiException, JDOMException, IOException {
+  public Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException {
     String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
     final Document doc = buildSaxResponse(url);
     XPath xpath = XPath.newInstance("/detailedReviewData/reviewItems");
@@ -210,21 +208,21 @@ public class CrucibleSessionImpl implements CrucibleSession {
     @SuppressWarnings("unchecked")
     List<Element> reviewItems = xpath.selectNodes(doc);
     final Element node = (Element)XPath.newInstance("/detailedReviewData").selectSingleNode(doc);
-    final User author = CrucibleRestXmlHelper.parseUserNode(node);
+    final User author = CrucibleXmlParser.parseUserNode(node);
 
     final User moderator = (node.getChild("moderator") != null)
-                           ? CrucibleRestXmlHelper.parseUserNode(node.getChild("moderator")) : null;
+                           ? CrucibleXmlParser.parseUserNode(node.getChild("moderator")) : null;
 
     Set<String> fromRevisions = new HashSet<String>();
 
-    Review review = new Review(getHostUrl(), permId, author, moderator);
+    final Review review = new Review(getHostUrl(), permId, author, moderator);
 
     if (reviewItems != null && !reviewItems.isEmpty()) {
       for (Element element : reviewItems) {
         @SuppressWarnings("unchecked")
         final List<Element> items = element.getChildren("reviewItem");
         for (Element item : items) {
-          final String revision = CrucibleRestXmlHelper.getChildText(item, "fromRevision");
+          final String revision = CrucibleXmlParser.getChildText(item, "fromRevision");
           fromRevisions.add(revision);
         }
       }
@@ -232,11 +230,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
         @SuppressWarnings("unchecked")
         final List<Element> items = element.getChildren("reviewItem");
         for (Element item : items) {
+          @SuppressWarnings("unchecked")
           final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
 
           for (Element expandedRevision : expandedRevisions) {
-            final String revision = CrucibleRestXmlHelper.getChildText(expandedRevision, "revision");
-            final String file = CrucibleRestXmlHelper.getChildText(expandedRevision, "path");
+            final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
+            final String file = CrucibleXmlParser.getChildText(expandedRevision, "path");
 
             for (VirtualFile root : myRoots) {
               final VirtualFile virtualFile = root.findFileByRelativePath(file);
@@ -245,8 +244,6 @@ public class CrucibleSessionImpl implements CrucibleSession {
                 break;
               }
             }
-            //if (!fromRevisions.contains(revision))
-            //  review.addRevision(revision);
           }
         }
       }
@@ -256,10 +253,6 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {
-    try {
-      return CrucibleRestXmlHelper.parseBasicReview(getHostUrl(), element);
-    } catch (ParseException e) {
-      throw new CrucibleApiException(e.getMessage());
-    }
+    return CrucibleXmlParser.parseBasicReview(getHostUrl(), element);
   }
 }

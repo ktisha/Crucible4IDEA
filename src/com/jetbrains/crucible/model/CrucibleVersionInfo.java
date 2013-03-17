@@ -1,9 +1,8 @@
-package com.jetbrains.crucible.connection;
+package com.jetbrains.crucible.model;
 
 /**
  * User : ktisha
  */
-@SuppressWarnings("serial")
 public class CrucibleVersionInfo {
   private final String myBuildDate;
   private final String myReleaseNumber;

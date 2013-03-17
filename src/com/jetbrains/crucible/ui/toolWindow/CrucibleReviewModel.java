@@ -2,7 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.jetbrains.crucible.connection.CrucibleFilter;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
