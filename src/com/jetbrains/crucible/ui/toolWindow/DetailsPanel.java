@@ -1,11 +1,13 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
-import com.intellij.openapi.actionSystem.CommonShortcuts;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.Splitter;
 import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.committed.RepositoryChangesBrowser;
+import com.intellij.openapi.vcs.changes.actions.OpenRepositoryVersionAction;
+import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
+import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ScrollPaneFactory;
@@ -33,7 +35,7 @@ import java.util.Vector;
 public class DetailsPanel extends SimpleToolWindowPanel {
 
   private final Project myProject;
-  private RepositoryChangesBrowser myRepositoryChangesBrowser;
+  private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
 
@@ -88,9 +90,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   }
 
   private JComponent createRepositoryBrowserDetails() {
-    myRepositoryChangesBrowser = new RepositoryChangesBrowser(myProject, Collections.<CommittedChangeList>emptyList(), Collections.<Change>emptyList(), null);
-    myRepositoryChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
-    myRepositoryChangesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
+    myChangesBrowser = new MyChangesBrowser(myProject);
+    myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
+    myChangesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
+
     myCommitsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
@@ -99,10 +102,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
         for (int i : indices) {
           changes.addAll(((CommittedChangeList)myCommitsModel.getValueAt(i, 0)).getChanges());
         }
-        myRepositoryChangesBrowser.setChangesToDisplay(changes);
+        myChangesBrowser.setChangesToDisplay(changes);
       }
     });
-    return myRepositoryChangesBrowser;
+    return myChangesBrowser;
   }
 
 
@@ -117,6 +120,27 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       setBackground(bg);
       setBorder(BorderFactory.createLineBorder(bg));
       return this;
+    }
+  }
+
+  static class MyChangesBrowser extends ChangesBrowser {
+    public MyChangesBrowser(Project project) {
+      super(project, Collections.<CommittedChangeList>emptyList(),
+            Collections.<Change>emptyList(), null, false, false, null,
+            ChangesBrowser.MyUseCase.COMMITTED_CHANGES, null);
+    }
+
+    protected void buildToolBar(final DefaultActionGroup toolBarGroup) {
+      super.buildToolBar(toolBarGroup);
+      toolBarGroup.add(new ShowDiffWithLocalAction());
+      OpenRepositoryVersionAction action = new OpenRepositoryVersionAction();
+      toolBarGroup.add(action);
+
+      ActionGroup group = (ActionGroup) ActionManager.getInstance().getAction("RepositoryChangesBrowserToolbar");
+      final AnAction[] actions = group.getChildren(null);
+      for (AnAction anAction : actions) {
+        toolBarGroup.add(anAction);
+      }
     }
   }
 }
