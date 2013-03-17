@@ -70,7 +70,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
             public void run() {
               try {
                 final Review review =
-                  CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277"/*(String)myReviewTable.getValueAt(viewRow, 0)*/);
+                  CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
                 if (review != null)
                   openDetailsToolWindow(review);
               }
