@@ -27,10 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User : ktisha
@@ -225,7 +222,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
       for (Element generalCommentNode : generalCommentNodes) {
         final String message = CrucibleXmlParser.getChildText(generalCommentNode, "message");
         final User commentAuthor = CrucibleXmlParser.parseUserNode(generalCommentNode.getChild("user"));
-        review.addGeneralComment(new Comment(commentAuthor, message));
+        final Date createDate = CrucibleXmlParser.parseDate(generalCommentNode);
+        final Comment comment = new Comment(commentAuthor, message);
+        if (createDate != null) comment.setCreateDate(createDate);
+        review.addGeneralComment(comment);
       }
     }
 
