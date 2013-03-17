@@ -25,10 +25,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * User: ktisha
@@ -50,22 +48,37 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     final Vector<String> commitColumnNames = new Vector<String>();
     commitColumnNames.add("Commit");
     commitColumnNames.add("Author");
+    commitColumnNames.add("Date");
 
     @SuppressWarnings("UseOfObsoleteCollectionType")
     final Vector<String> commentColumnNames = new Vector<String>();
     commentColumnNames.add("Message");
     commentColumnNames.add("Author");
+    commentColumnNames.add("Date");
 
     myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
       @Override
       public boolean isCellEditable(int row, int column) {
         return false;
       }
+
+      @Override
+      public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 0) return CommittedChangeList.class;
+        if (columnIndex == 2) return Date.class;
+        return String.class;
+      }
     };
     myCommentsModel = new DefaultTableModel(new Vector(), commentColumnNames) {
       @Override
       public boolean isCellEditable(int row, int column) {
         return false;
+      }
+
+      @Override
+      public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 2) return Date.class;
+        return String.class;
       }
     };
 
@@ -81,13 +94,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   public void updateList(List<CommittedChangeList> list) {
     for (CommittedChangeList committedChangeList : list) {
-      myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName()});
+      myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName(), committedChangeList.getCommitDate()});
     }
   }
 
   public void updateComments(List<Comment> list) {
     for (Comment comment : list) {
-      myCommentsModel.addRow(new Object[]{comment.getMessage(), comment.getAuthor().getUserName()});
+      myCommentsModel.addRow(new Object[]{comment.getMessage(), comment.getAuthor().getUserName(), comment.getCreateDate()});
     }
   }
 
@@ -106,9 +119,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
         return super.getCellRenderer(row, column);
       }
     };
-
+    myCommitsTable.setAutoCreateRowSorter(true);
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
     JBTable generalComments = new JBTable(myCommentsModel);
+    generalComments.setAutoCreateRowSorter(true);
     JScrollPane commentsScrollPane = ScrollPaneFactory.createScrollPane(generalComments);
     final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
     commentsScrollPane.setBorder(border);
