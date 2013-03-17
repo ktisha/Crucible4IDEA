@@ -3,6 +3,9 @@ package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
@@ -41,9 +44,14 @@ public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
   private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
+  private final VirtualFile[] myRoots;
 
   CrucibleSessionImpl(Project project) {
     myProject = project;
+    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
+    final VirtualFile virtualFile = myProject.getBaseDir();
+    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+    myRoots = vcsManager.getRootsUnderVcs(vcsFor);
   }
 
   @Override
@@ -228,8 +236,17 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
           for (Element expandedRevision : expandedRevisions) {
             final String revision = CrucibleRestXmlHelper.getChildText(expandedRevision, "revision");
-            if (!fromRevisions.contains(revision))
-              review.addRevision(revision);
+            final String file = CrucibleRestXmlHelper.getChildText(expandedRevision, "path");
+
+            for (VirtualFile root : myRoots) {
+              final VirtualFile virtualFile = root.findFileByRelativePath(file);
+              if (virtualFile != null && !fromRevisions.contains(revision)) {
+                review.addRevision(revision, virtualFile);
+                break;
+              }
+            }
+            //if (!fromRevisions.contains(revision))
+            //  review.addRevision(revision);
           }
         }
       }

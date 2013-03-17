@@ -1,11 +1,14 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
 import com.intellij.ide.util.treeView.AbstractTreeBuilder;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vcs.*;
+import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -24,8 +27,6 @@ import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import org.jdom.JDOMException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -34,6 +35,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: ktisha
@@ -61,18 +63,35 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     myReviewTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
-        int viewRow = myReviewTable.getSelectedRow();
+        final int viewRow = myReviewTable.getSelectedRow();
         if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
-          try {
-            final Review review = CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
-            openDetailsToolWindow(review);
-          }
-          catch (CrucibleApiException e1) {
-            LOG.warn(e1.getMessage());
-          }
-          catch (JDOMException e1) {
-            LOG.warn(e1.getMessage());
-          }
+          //try {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  final Review review =
+                    CrucibleManager.getInstance(myProject).getDetailsForReview("CR-IC-277"/*(String)myReviewTable.getValueAt(viewRow, 0)*/);
+                  openDetailsToolWindow(review);
+
+                }
+                catch (CrucibleApiException e1) {
+                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                catch (JDOMException e1) {
+                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+              }
+            }, ModalityState.stateForComponent(myReviewTable));
+
+            //openDetailsToolWindow(review);
+          //}
+          //catch (CrucibleApiException e1) {
+          //  LOG.warn(e1.getMessage());
+          //}
+          //catch (JDOMException e1) {
+          //  LOG.warn(e1.getMessage());
+          //}
 
         }
       }
@@ -96,77 +115,45 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     setContent(mySplitter);
   }
 
-  public void openDetailsToolWindow(Review review) {
+  public void openDetailsToolWindow(final Review review) {
     final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
     if (foundContent == null) {
-      final Content content = ContentFactory.SERVICE.getInstance().createContent(createRepositoryBrowserDetails(review),
+      final DetailsPanel details = new DetailsPanel(myProject);
+      final Content content = ContentFactory.SERVICE.getInstance().createContent(details,
                                                                                  "Details for " + review.getPermaId(), false);
       contentManager.addContent(content);
       contentManager.setSelectedContent(content);
-    }
-  }
+      details.setBusy(true);
+      ApplicationManager.getApplication().invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
+          final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
+          final VirtualFile virtualFile = myProject.getBaseDir();
+          final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+          if (vcsFor == null) return;
+          final Map<String,VirtualFile> reviewRevisions = review.getRevisions();
+          for (Map.Entry<String, VirtualFile> revision : reviewRevisions.entrySet()) {
+            try {
+              final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision.getKey());
+              final CommittedChangeList changeList = vcsFor.loadRevisions(revision.getValue(), revisionNumber);
+              if (changeList != null)
+                list.add(changeList);
+            }
+            catch (VcsException e) {
+              LOG.warn(e.getMessage());
+            }
 
-  private JComponent createRepositoryBrowserDetails(@NotNull final Review review) {
-    List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
-
-    for (String revision : review.getRevisions()) {
-      final CommittedChangeList changeList = getChangeList(myProject, revision);
-      if (changeList != null)
-        list.add(changeList);
-    }
-    DetailsPanel panel = new DetailsPanel(myProject, list);
-
-    return panel;
-  }
-
-  @Nullable
-  private CommittedChangeList getChangeList(@NotNull final Project project, @NotNull final String revision) {
-    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-    final VirtualFile virtualFile = project.getBaseDir();
-    if (virtualFile == null) return null;
-    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
-
-    VcsRevisionNumber revisionNumber;
-    if (vcsFor != null) {
-      try {
-        revisionNumber = vcsFor.parseRevisionNumber(revision);
-
-        final CommittedChangesProvider provider = vcsFor.getCommittedChangesProvider();
-        if (provider != null) {
-          final VirtualFile[] rootsUnderVcs = vcsManager.getRootsUnderVcs(vcsFor);
-          for (VirtualFile root : rootsUnderVcs) {
-            CommittedChangeList changeList = findInRoot(provider, root, revisionNumber);
-            if (changeList != null) return changeList;
           }
+          details.updateList(list);
+          details.setBusy(false);
+
         }
-      }
-      catch (VcsException e) {
-        LOG.warn(e.getMessage());
-      }
+      }, ModalityState.stateForComponent(toolWindow.getComponent()));
     }
-
-    return null;
   }
-
-  @Nullable
-  private static CommittedChangeList findInRoot(CommittedChangesProvider provider, VirtualFile virtualFile,
-                                                VcsRevisionNumber revisionNumber) {
-    try {
-      @SuppressWarnings("unchecked")
-      final Pair<CommittedChangeList, FilePath> pair = provider.getOneList(virtualFile, revisionNumber);
-      if (pair != null) {
-        return pair.getFirst();
-      }
-    }
-    catch (VcsException e) {
-      LOG.warn(e.getMessage());
-    }
-    return null;
-  }
-
-
 
   private SimpleTreeStructure createTreeStructure() {
     final CrucibleRootNode rootNode = new CrucibleRootNode(myReviewModel);

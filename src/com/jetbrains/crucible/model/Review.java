@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.model;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,9 +11,8 @@ import java.util.*;
  * User : ktisha
  */
 public class Review extends BasicReview {
-  private List<String> myFiles = new ArrayList<String>();
   private List<Comment> myGeneralComments = Collections.emptyList();
-  private Set<String > myRevisions = new HashSet<String>();
+  private Map<String, VirtualFile > myRevisions = new HashMap<String, VirtualFile>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -28,17 +28,11 @@ public class Review extends BasicReview {
     return myGeneralComments;
   }
 
-  public void addFile(String file) {
-    myFiles.add(file);
-  }
-  public void addRevision(String revision) {
-    myRevisions.add(revision);
+  public void addRevision(String revision, VirtualFile virtualFile) {
+    myRevisions.put(revision, virtualFile);
   }
 
-  public List<String> getFiles() {
-    return myFiles;
-  }
-  public Set<String> getRevisions() {
+  public Map<String, VirtualFile> getRevisions() {
     return myRevisions;
   }
 }
