@@ -31,9 +31,11 @@ import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,33 +62,34 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     myReviewTable = new JBTable(myReviewModel);
     myReviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    myReviewTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-      @Override
-      public void valueChanged(ListSelectionEvent e) {
-        final int viewRow = myReviewTable.getSelectedRow();
-        if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
-          ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-              try {
-                final Review review =
-                  CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
-                if (review != null)
-                  openDetailsToolWindow(review);
+    myReviewTable.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2) {
+          final int viewRow = myReviewTable.getSelectedRow();
+          if (viewRow >= 0 &&  viewRow < myReviewTable.getRowCount()) {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  final Review review =
+                    CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
+                  if (review != null)
+                    openDetailsToolWindow(review);
+                }
+                catch (CrucibleApiException e1) {
+                  LOG.warn(e1.getMessage());
+                }
+                catch (JDOMException e1) {
+                  LOG.warn(e1.getMessage());
+                }
               }
-              catch (CrucibleApiException e1) {
-                LOG.warn(e1.getMessage());
-              }
-              catch (JDOMException e1) {
-                LOG.warn(e1.getMessage());
-              }
-            }
-          }, ModalityState.stateForComponent(myReviewTable));
+            }, ModalityState.stateForComponent(myReviewTable));
 
+          }
         }
-      }
-    });
+    }});
 
+    myReviewTable.setRowSorter(new TableRowSorter<TableModel>(myReviewModel));
     final JScrollPane detailsScrollPane = ScrollPaneFactory.createScrollPane(myReviewTable);
 
     final SimpleTreeStructure reviewTreeStructure = createTreeStructure();

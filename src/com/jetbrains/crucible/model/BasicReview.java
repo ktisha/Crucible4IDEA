@@ -24,7 +24,6 @@ public class BasicReview {
   private String myPermaId;
   private String myRepoName;
   private Date myCreateDate;
-  private Date myCloseDate;
   private String mySummary;
   private final String myServerUrl;
   private String myState;
@@ -70,5 +69,13 @@ public class BasicReview {
   @NotNull
   public User getAuthor() {
     return myAuthor;
+  }
+
+  public Date getCreateDate() {
+    return myCreateDate;
+  }
+
+  public void setCreateDate(Date createDate) {
+    myCreateDate = createDate;
   }
 }

@@ -9,6 +9,7 @@ import com.jetbrains.crucible.model.BasicReview;
 import org.jdom.JDOMException;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,8 +24,14 @@ public class CrucibleReviewModel extends DefaultTableModel {
   }
 
   @Override
+  public Class<?> getColumnClass(int columnIndex) {
+    if (columnIndex == 4) return Date.class;
+    return String.class;
+  }
+
+  @Override
   public int getColumnCount() {
-    return 4;
+    return 5;
   }
 
   @Override
@@ -38,6 +45,8 @@ public class CrucibleReviewModel extends DefaultTableModel {
         return "State";
       case 3:
         return "Author";
+      case 4:
+        return "Date";
     }
     return super.getColumnName(column);
   }
@@ -54,7 +63,8 @@ public class CrucibleReviewModel extends DefaultTableModel {
     try {
       reviews = manager.getReviewsForFilter(filter);
       for (BasicReview review : reviews) {
-        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName()});
+        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
+        review.getCreateDate()});
       }
     }
     catch (CrucibleApiException e) {
