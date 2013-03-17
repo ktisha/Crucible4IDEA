@@ -20,6 +20,7 @@ public class CrucibleRootNode extends SimpleNode {
     myChildren.add(new CrucibleToReviewNode(myReviewModel));
     myChildren.add(new CrucibleRequireApprovalNode(myReviewModel));
     myChildren.add(new CrucibleOutForReviewNode(myReviewModel));
+    myChildren.add(new CrucibleClosedNode(myReviewModel));
   }
 
   public String toString() {
@@ -32,6 +33,7 @@ public class CrucibleRootNode extends SimpleNode {
       myChildren.add(new CrucibleToReviewNode(myReviewModel));
       myChildren.add(new CrucibleRequireApprovalNode(myReviewModel));
       myChildren.add(new CrucibleOutForReviewNode(myReviewModel));
+      myChildren.add(new CrucibleClosedNode(myReviewModel));
     }
     return myChildren.toArray(new SimpleNode[myChildren.size()]);
   }

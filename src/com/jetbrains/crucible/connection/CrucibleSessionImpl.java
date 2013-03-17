@@ -213,43 +213,56 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final User moderator = (node.getChild("moderator") != null)
                            ? CrucibleXmlParser.parseUserNode(node.getChild("moderator")) : null;
 
-    Set<String> fromRevisions = new HashSet<String>();
-
     final Review review = new Review(getHostUrl(), permId, author, moderator);
 
     if (reviewItems != null && !reviewItems.isEmpty()) {
-      for (Element element : reviewItems) {
-        @SuppressWarnings("unchecked")
-        final List<Element> items = element.getChildren("reviewItem");
-        for (Element item : items) {
-          final String revision = CrucibleXmlParser.getChildText(item, "fromRevision");
-          fromRevisions.add(revision);
-        }
+      getRevisions(reviewItems, review);
+    }
+
+    @SuppressWarnings("unchecked")
+    final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
+    if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
+      for (Element generalCommentNode : generalCommentNodes) {
+        final String message = CrucibleXmlParser.getChildText(generalCommentNode, "message");
+        final User commentAuthor = CrucibleXmlParser.parseUserNode(generalCommentNode.getChild("user"));
+        review.addGeneralComment(new Comment(commentAuthor, message));
       }
-      for (Element element : reviewItems) {
+    }
+
+    return review;
+  }
+
+  private void getRevisions(@NotNull final List<Element> reviewItems, @NotNull final Review review) {
+    Set<String> fromRevisions = new HashSet<String>();
+    for (Element element : reviewItems) {
+      @SuppressWarnings("unchecked")
+      final List<Element> items = element.getChildren("reviewItem");
+      for (Element item : items) {
+        final String revision = CrucibleXmlParser.getChildText(item, "fromRevision");
+        fromRevisions.add(revision);
+      }
+    }
+    for (Element element : reviewItems) {
+      @SuppressWarnings("unchecked")
+      final List<Element> items = element.getChildren("reviewItem");
+      for (Element item : items) {
         @SuppressWarnings("unchecked")
-        final List<Element> items = element.getChildren("reviewItem");
-        for (Element item : items) {
-          @SuppressWarnings("unchecked")
-          final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
+        final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
 
-          for (Element expandedRevision : expandedRevisions) {
-            final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
-            final String file = CrucibleXmlParser.getChildText(expandedRevision, "path");
+        for (Element expandedRevision : expandedRevisions) {
+          final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
+          final String file = CrucibleXmlParser.getChildText(expandedRevision, "path");
 
-            for (VirtualFile root : myRoots) {
-              final VirtualFile virtualFile = root.findFileByRelativePath(file);
-              if (virtualFile != null && !fromRevisions.contains(revision)) {
-                review.addRevision(revision, virtualFile);
-                break;
-              }
+          for (VirtualFile root : myRoots) {
+            final VirtualFile virtualFile = root.findFileByRelativePath(file);
+            if (virtualFile != null && !fromRevisions.contains(revision)) {
+              review.addRevision(revision, virtualFile);
+              break;
             }
           }
         }
       }
     }
-
-    return review;
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {

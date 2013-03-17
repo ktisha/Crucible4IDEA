@@ -10,12 +10,15 @@ import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.JBSplitter;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SideBorder;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.UIUtil;
+import com.jetbrains.crucible.model.Comment;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -30,7 +33,7 @@ import java.util.Vector;
 /**
  * User: ktisha
  * <p/>
- * Main code review panel
+ * Show changes and comments for review
  */
 public class DetailsPanel extends SimpleToolWindowPanel {
 
@@ -38,15 +41,33 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
+  private DefaultTableModel myCommentsModel;
 
   public DetailsPanel(Project project) {
     super(false);
     myProject = project;
     @SuppressWarnings("UseOfObsoleteCollectionType")
-    final Vector<String> columnNames = new Vector<String>();
-    columnNames.add("Commit");
-    columnNames.add("Author");
-    myCommitsModel = new DefaultTableModel(new Vector(), columnNames);
+    final Vector<String> commitColumnNames = new Vector<String>();
+    commitColumnNames.add("Commit");
+    commitColumnNames.add("Author");
+
+    @SuppressWarnings("UseOfObsoleteCollectionType")
+    final Vector<String> commentColumnNames = new Vector<String>();
+    commentColumnNames.add("Message");
+    commentColumnNames.add("Author");
+
+    myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    myCommentsModel = new DefaultTableModel(new Vector(), commentColumnNames) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
 
     Splitter splitter = new Splitter(false, 0.7f);
     final JPanel wrapper = createMainTable();
@@ -64,11 +85,19 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     }
   }
 
+  public void updateComments(List<Comment> list) {
+    for (Comment comment : list) {
+      myCommentsModel.addRow(new Object[]{comment.getMessage(), comment.getAuthor().getUserName()});
+    }
+  }
+
   public void setBusy(boolean busy) {
     myCommitsTable.setPaintBusy(busy);
   }
 
   private JPanel createMainTable() {
+    JBSplitter splitter = new JBSplitter(true);
+
     myCommitsTable = new JBTable(myCommitsModel) {
       @Override
       public TableCellRenderer getCellRenderer(int row, int column) {
@@ -77,16 +106,16 @@ public class DetailsPanel extends SimpleToolWindowPanel {
         return super.getCellRenderer(row, column);
       }
     };
-    myCommitsTable.setModel(myCommitsModel);
-    myCommitsTable.setBorder(null);
 
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
-    tableScrollPane.setBorder(IdeBorderFactory.createBorder(SideBorder.TOP | SideBorder.RIGHT | SideBorder.BOTTOM));
+    JBTable generalComments = new JBTable(myCommentsModel);
+    JScrollPane commentsScrollPane = ScrollPaneFactory.createScrollPane(generalComments);
+    final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
+    commentsScrollPane.setBorder(border);
 
-    final JPanel wrapper = new JPanel(new BorderLayout());
-    wrapper.add(tableScrollPane, BorderLayout.CENTER);
-
-    return wrapper;
+    splitter.setFirstComponent(tableScrollPane);
+    splitter.setSecondComponent(commentsScrollPane);
+    return splitter;
   }
 
   private JComponent createRepositoryBrowserDetails() {
