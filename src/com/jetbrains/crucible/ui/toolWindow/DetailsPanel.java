@@ -37,14 +37,14 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private DefaultListModel myListModel;
   private JScrollPane myTableScrollPane;
 
-  public DetailsPanel(Project project, List<CommittedChangeList> list) {
+  public DetailsPanel(Project project) {
     super(false);
     myProject = project;
     myListModel = new DefaultListModel();
 
-    for (CommittedChangeList committedChangeList : list) {
-      myListModel.addElement(committedChangeList);
-    }
+    //for (CommittedChangeList committedChangeList : list) {
+    //  myListModel.addElement(committedChangeList);
+    //}
     mySplitter = new Splitter(false, 0.7f);
 
     final JPanel wrapper = createMainTable();
@@ -54,6 +54,20 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     mySplitter.setSecondComponent(component);
 
     setContent(mySplitter);
+  }
+
+  public void add(CommittedChangeList changeList) {
+    myListModel.addElement(changeList);
+  }
+
+  public void updateList(List<CommittedChangeList> list) {
+    for (CommittedChangeList committedChangeList : list) {
+      myListModel.addElement(committedChangeList);
+    }
+  }
+
+  public void setBusy(boolean busy) {
+    myCommitList.setPaintBusy(busy);
   }
 
   private JPanel createMainTable() {
