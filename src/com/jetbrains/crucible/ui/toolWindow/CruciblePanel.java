@@ -114,6 +114,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       contentManager.addContent(content);
       contentManager.setSelectedContent(content);
       details.setBusy(true);
+      details.updateComments(review.getGeneralComments());
       ApplicationManager.getApplication().invokeLater(new Runnable() {
         @Override
         public void run() {

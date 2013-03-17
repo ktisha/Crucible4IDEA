@@ -1,5 +1,7 @@
 package com.jetbrains.crucible.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 
 /**
@@ -7,27 +9,13 @@ import java.util.Date;
  */
 public class Comment {
 
-  private String myPermId;
   private String myMessage;
   private User myAuthor;
   private Date myCreateDate = new Date();
 
-  private final Review myReview;
-
-  public Comment(Review review) {
-    myReview = review;
-  }
-
-  public Review getReview() {
-    return myReview;
-  }
-
-  public String getPermId() {
-    return myPermId;
-  }
-
-  public void setPermId(String permId) {
-    myPermId = permId;
+  public Comment(@NotNull final User commentAuthor, @NotNull final String message) {
+    myAuthor = commentAuthor;
+    myMessage = message;
   }
 
   public String getMessage() {
@@ -43,7 +31,7 @@ public class Comment {
   }
 
   public void setAuthor(User author) {
-    this.myAuthor = author;
+    myAuthor = author;
   }
 
   public Date getCreateDate() {
@@ -52,7 +40,7 @@ public class Comment {
 
   public void setCreateDate(Date createDate) {
     if (createDate != null) {
-      this.myCreateDate = new Date(createDate.getTime());
+      myCreateDate = new Date(createDate.getTime());
     }
   }
 

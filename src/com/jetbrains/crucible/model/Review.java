@@ -11,7 +11,7 @@ import java.util.*;
  * User : ktisha
  */
 public class Review extends BasicReview {
-  private List<Comment> myGeneralComments = Collections.emptyList();
+  private List<Comment> myGeneralComments = new ArrayList<Comment>();
   private Map<String, VirtualFile > myRevisions = new HashMap<String, VirtualFile>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
@@ -19,8 +19,8 @@ public class Review extends BasicReview {
     super(serverUrl, id, author, moderator);
   }
 
-  public void setGeneralComments(@NotNull List<Comment> generalComments) {
-    this.myGeneralComments = generalComments;
+  public void addGeneralComment(@NotNull Comment generalComment) {
+    myGeneralComments.add(generalComment);
   }
 
   @NotNull

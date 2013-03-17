@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 public enum CrucibleFilter {
   ToReview("toReview", "To Review"),
   RequireApprovalReview("requireMyApproval", "Review Required My Approval"),
-  OutForReview("outForReview", "Out For Review");
+  OutForReview("outForReview", "Out For Review"),
+  Closed("closed", "Closed");
 
   private String myFilterUrl;
   private String myFilterName;
