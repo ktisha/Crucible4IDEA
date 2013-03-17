@@ -2,6 +2,9 @@ package com.jetbrains.crucible.model;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * User : ktisha
+ */
 public class Reviewer extends User {
 
   public Reviewer(@NotNull final String userName) {

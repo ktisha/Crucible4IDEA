@@ -1,11 +1,15 @@
 package com.jetbrains.crucible.connection;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.model.Review;
 import org.jdom.JDOMException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,49 +22,53 @@ import java.util.Map;
 public class CrucibleManager {
   private final Project myProject;
   private static CrucibleManager ourInstance;
-  private CrucibleManager(Project project) {
+  private final Map<String, CrucibleSession> mySessions = new HashMap<String, CrucibleSession>();
+
+  private static final Logger LOG = Logger.getInstance(CrucibleManager.class.getName());
+
+  private CrucibleManager(@NotNull final Project project) {
     myProject = project;
   }
 
-  public static CrucibleManager getInstance(Project project) {
+  public static CrucibleManager getInstance(@NotNull final Project project) {
     if (ourInstance == null) {
       ourInstance = new CrucibleManager(project);
     }
     return ourInstance;
   }
 
-  public List<BasicReview> getReviewsForFilter(CrucibleFilter filter) throws CrucibleApiException, JDOMException {
+  @Nullable
+  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException {
     final CrucibleSession session = getSession();
     try {
       return session.getReviewsForFilter(filter);
     }
     catch (IOException e) {
-      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      LOG.warn(e.getMessage());
     }
     return null;
   }
 
-  public Review getDetailsForReview(String permId) throws CrucibleApiException, JDOMException {
+  @Nullable
+  public Review getDetailsForReview(@NotNull final String permId) throws CrucibleApiException, JDOMException {
     final CrucibleSession session = getSession();
     try {
       return session.getDetailsForReview(permId);
     }
     catch (IOException e) {
-      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      LOG.warn(e.getMessage());
     }
     return null;
   }
 
-  private final Map<String, CrucibleSession> sessions = new HashMap<String, CrucibleSession>();
-
-  public synchronized CrucibleSession getSession() throws CrucibleApiException {
+  public CrucibleSession getSession() throws CrucibleApiException {
     final CrucibleSettings crucibleSettings = CrucibleSettings.getInstance(myProject);
     String key = crucibleSettings.SERVER_URL + crucibleSettings.USERNAME + crucibleSettings.getPassword();
-    CrucibleSession session = sessions.get(key);
+    CrucibleSession session = mySessions.get(key);
     if (session == null) {
       session = new CrucibleSessionImpl(myProject);
       session.login();
-      sessions.put(key, session);
+      mySessions.put(key, session);
     }
     return session;
   }

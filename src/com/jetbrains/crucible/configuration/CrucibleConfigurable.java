@@ -39,8 +39,7 @@ public class CrucibleConfigurable implements SearchableConfigurable {
       @Override
       public void actionPerformed(ActionEvent e) {
         saveSettings();
-        Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject, "Testing Connection", true);
-        testConnectionTask.setCancelText("Stop");
+        final Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject, true);
         ProgressManager.getInstance().run(testConnectionTask);
       }
     }

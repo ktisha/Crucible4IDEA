@@ -2,7 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow.tree;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTree;
-import com.jetbrains.crucible.connection.CrucibleFilter;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
 
 /**

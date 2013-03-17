@@ -3,6 +3,7 @@ package com.jetbrains.crucible.model;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * User : ktisha
  * User abstraction.
  */
 public class User {

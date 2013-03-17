@@ -2,11 +2,8 @@ package com.jetbrains.crucible.ui.toolWindow.tree;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTree;
-import com.jetbrains.crucible.connection.CrucibleFilter;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User : ktisha
@@ -14,7 +11,6 @@ import java.util.List;
 public class CrucibleRequireApprovalNode extends SimpleNode {
   private static final String NAME = "Require My Approval";
   private final CrucibleReviewModel myReviewModel;
-  private List<SimpleNode> myChildren = new ArrayList<SimpleNode>();
 
   public CrucibleRequireApprovalNode(CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;
@@ -26,7 +22,7 @@ public class CrucibleRequireApprovalNode extends SimpleNode {
 
   @Override
   public SimpleNode[] getChildren() {
-    return new SimpleNode[0];  //To change body of implemented methods use File | Settings | File Templates.
+    return new SimpleNode[0];
   }
 
   @Override
