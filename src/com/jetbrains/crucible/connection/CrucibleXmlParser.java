@@ -1,18 +1,25 @@
 package com.jetbrains.crucible.connection;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.crucible.model.BasicReview;
 import com.jetbrains.crucible.model.CrucibleVersionInfo;
 import com.jetbrains.crucible.model.User;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * User : ktisha
  */
 public final class CrucibleXmlParser {
+  private static final Logger LOG = Logger.getInstance(CrucibleXmlParser.class.getName());
   private CrucibleXmlParser() {}
 
   @NotNull
@@ -50,7 +57,10 @@ public final class CrucibleXmlParser {
     final User moderator = (reviewNode.getChild("moderator") != null)
                            ? parseUserNode(reviewNode.getChild("moderator")) : null;
 
+    final Date date = parseDate(reviewNode);
     final BasicReview review = new BasicReview(serverUrl, permaId, author, moderator);
+    if (date != null)
+      review.setCreateDate(date);
     review.setCreator(creator);
     review.setDescription(description);
     review.setState(state);
@@ -59,5 +69,19 @@ public final class CrucibleXmlParser {
 
   public static User parseUserNode(@NotNull final Element repoNode) {
     return new User(getChildText(repoNode, "userName"));
+  }
+
+  @Nullable
+  public static Date parseDate(@NotNull final Element repoNode) {
+    final String dateText = getChildText(repoNode, "createDate");
+    //2013-02-22T13:08:48.609+0300
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZZZZ");
+    try {
+      return df.parse(dateText);
+    }
+    catch (ParseException e) {
+      LOG.warn("Couldn't parse date format");
+    }
+    return null;
   }
 }
