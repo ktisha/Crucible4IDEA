@@ -256,7 +256,29 @@ public class CrucibleSessionImpl implements CrucibleSession {
         final String id = CrucibleXmlParser.getChildText(reviewItemId, "id");
         comment.setRevision(revision);
         comment.setReviewItemId(id);
+
+        getReplies(commentNode, comment);
         review.addComment(comment);
+      }
+    }
+  }
+
+  private void getReplies(Element node, Comment comment) {
+    @SuppressWarnings("unchecked")
+    final List<Element> replies = node.getChildren("replies");
+    for (Element replyNode : replies) {
+      @SuppressWarnings("unchecked")
+      final List<Element> commentData = replyNode.getChildren("generalCommentData");
+      if (!commentData.isEmpty()) {
+        for (Element commentNode : commentData) {
+          final String message = CrucibleXmlParser.getChildText(commentNode, "message");
+          final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
+          final Date createDate = CrucibleXmlParser.parseDate(commentNode);
+          final Comment replyComment = new Comment(commentAuthor, message);
+          if (createDate != null) replyComment.setCreateDate(createDate);
+          getReplies(commentNode, replyComment);
+          comment.addReply(replyComment);
+        }
       }
     }
   }

@@ -1,52 +1,58 @@
 package com.jetbrains.crucible.ui;
 
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.fileTypes.PlainTextLanguage;
+import com.intellij.ide.util.treeView.AbstractTreeBuilder;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.IdeFocusManager;
-import com.intellij.ui.EditorCustomization;
-import com.intellij.ui.EditorTextField;
-import com.intellij.ui.EditorTextFieldProvider;
-import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.treeStructure.SimpleNode;
+import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.model.Comment;
+import com.jetbrains.crucible.ui.toolWindow.CrucibleTreeStructure;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: ktisha
  */
-public class ReviewForm extends JPanel {
-
-  private EditorTextField myReviewTextField;
+public class ReviewForm extends JTree {
 
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
 
   public ReviewForm(final Comment comment, final Project project, boolean editable) {
-    final Set<EditorCustomization.Feature> enabledFeatures = EnumSet.of(EditorCustomization.Feature.SOFT_WRAP);
-    final Set<EditorCustomization.Feature> disabledFeatures = Collections.emptySet();
+    final CommentNode root = new CommentNode(comment);
+    SimpleTreeStructure structure = new CrucibleTreeStructure(project, root);
+    final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
+    AbstractTreeBuilder reviewTreeBuilder =
+      new AbstractTreeBuilder(this, model, structure, null);
+    invalidate();
 
-    final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
-    myReviewTextField = service.getEditorField(PlainTextLanguage.INSTANCE, project, enabledFeatures, disabledFeatures);
-    myReviewTextField.setText(comment.getMessage());
-
-    final JScrollPane pane = ScrollPaneFactory.createScrollPane(myReviewTextField);
-    pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    add(pane);
-    myReviewTextField.setEnabled(editable);
-    myReviewTextField.setPreferredSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
-
+    setPreferredSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
   }
 
-  public void requestFocus() {
-    IdeFocusManager.findInstanceByComponent(myReviewTextField).requestFocus(myReviewTextField, true);
-  }
+  class CommentNode extends SimpleNode {
+    private final Comment myComment;
 
-  public String getText() {
-    return myReviewTextField.getText();
+    CommentNode(Comment comment) {
+      myComment = comment;
+    }
+
+    @Override
+    public String getName() {
+      return myComment.getMessage();
+    }
+
+    @Override
+    public SimpleNode[] getChildren() {
+      final List<Comment> replies = myComment.getReplies();
+      final List<SimpleNode> children = new ArrayList<SimpleNode>();
+      for (Comment reply : replies) {
+        children.add(new CommentNode(reply));
+      }
+      return children.toArray(new SimpleNode[children.size()]);
+    }
   }
 }
