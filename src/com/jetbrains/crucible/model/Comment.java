@@ -2,7 +2,9 @@ package com.jetbrains.crucible.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User : ktisha
@@ -15,6 +17,7 @@ public class Comment {
   private String myRevision;
   private User myAuthor;
   private Date myCreateDate = new Date();
+  private List<Comment> myReplies = new ArrayList<Comment>();
 
   public Comment(@NotNull final User commentAuthor, @NotNull final String message) {
     myAuthor = commentAuthor;
@@ -74,5 +77,13 @@ public class Comment {
 
   public void setRevision(String revision) {
     myRevision = revision;
+  }
+
+  public void addReply(Comment reply) {
+    myReplies.add(reply);
+  }
+
+  public List<Comment> getReplies() {
+    return myReplies;
   }
 }
