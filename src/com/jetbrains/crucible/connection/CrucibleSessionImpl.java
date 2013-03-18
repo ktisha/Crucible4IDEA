@@ -251,10 +251,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
         final String toLineRange = CrucibleXmlParser.getChildText(commentNode, "toLineRange");
         comment.setLine(toLineRange);
         final Element ranges = commentNode.getChild("lineRanges");
-        final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
+        if (ranges != null) {
+          final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
+          comment.setRevision(revision);
+        }
         final Element reviewItemId = commentNode.getChild("reviewItemId");
         final String id = CrucibleXmlParser.getChildText(reviewItemId, "id");
-        comment.setRevision(revision);
         comment.setReviewItemId(id);
 
         getReplies(commentNode, comment);
