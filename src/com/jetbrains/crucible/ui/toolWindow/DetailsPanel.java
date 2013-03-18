@@ -27,6 +27,7 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SideBorder;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.UIUtil;
+import com.jetbrains.crucible.actions.ShowCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
@@ -247,7 +248,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
           final RangeHighlighter highlighter = markup.addPersistentLineHighlighter(Integer.parseInt(comment.getLine()),
                                                                                    HighlighterLayer.ERROR + 1, null);
           if(highlighter == null) return;
-          final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(comment.getMessage());
+          final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(comment);
           highlighter.setGutterIconRenderer(gutterIconRenderer);
         }
       }
@@ -256,10 +257,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   private class ReviewGutterIconRenderer extends GutterIconRenderer {
     private final Icon icon = IconLoader.getIcon("/images/note.png");
-    private final String myTooltip;
+    private final Comment myComment;
 
-    ReviewGutterIconRenderer(String tooltip) {
-      myTooltip = tooltip;
+    ReviewGutterIconRenderer(Comment comment) {
+      myComment = comment;
     }
     @NotNull
     @Override
@@ -282,12 +283,12 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public AnAction getClickAction() {
-      return null;
+      return new ShowCommentAction(myComment);
     }
 
     @Override
     public String getTooltipText() {
-      return myTooltip;
+      return myComment.getAuthor().getUserName();
     }
 
     @Override
