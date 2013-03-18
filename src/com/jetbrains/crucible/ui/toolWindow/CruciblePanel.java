@@ -111,7 +111,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
     if (foundContent == null) {
-      final DetailsPanel details = new DetailsPanel(myProject);
+      final DetailsPanel details = new DetailsPanel(myProject, review);
       final Content content = ContentFactory.SERVICE.getInstance().createContent(details,
                                                                                  "Details for " + review.getPermaId(), false);
       contentManager.addContent(content);

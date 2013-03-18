@@ -216,6 +216,13 @@ public class CrucibleSessionImpl implements CrucibleSession {
       getRevisions(reviewItems, review);
     }
 
+    getGeneralComments(doc, review);
+    getVersionedComments(doc, review);
+
+    return review;
+  }
+
+  private void getGeneralComments(Document doc, Review review) throws JDOMException {
     @SuppressWarnings("unchecked")
     final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
     if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
@@ -228,8 +235,30 @@ public class CrucibleSessionImpl implements CrucibleSession {
         review.addGeneralComment(comment);
       }
     }
+  }
 
-    return review;
+  private void getVersionedComments(Document doc, Review review) throws JDOMException {
+    @SuppressWarnings("unchecked")
+    final List<Element> commentNodes = XPath.newInstance("/detailedReviewData/versionedComments/versionedLineCommentData").
+      selectNodes(doc);
+    if (commentNodes != null && !commentNodes.isEmpty()) {
+      for (Element commentNode : commentNodes) {
+        final String message = CrucibleXmlParser.getChildText(commentNode, "message");
+        final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
+        final Date createDate = CrucibleXmlParser.parseDate(commentNode);
+        final Comment comment = new Comment(commentAuthor, message);
+        if (createDate != null) comment.setCreateDate(createDate);
+        final String toLineRange = CrucibleXmlParser.getChildText(commentNode, "toLineRange");
+        comment.setLine(toLineRange);
+        final Element ranges = commentNode.getChild("lineRanges");
+        final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
+        final Element reviewItemId = commentNode.getChild("reviewItemId");
+        final String id = CrucibleXmlParser.getChildText(reviewItemId, "id");
+        comment.setRevision(revision);
+        comment.setReviewItemId(id);
+        review.addComment(comment);
+      }
+    }
   }
 
   private void getRevisions(@NotNull final List<Element> reviewItems, @NotNull final Review review) {
@@ -249,20 +278,39 @@ public class CrucibleSessionImpl implements CrucibleSession {
         @SuppressWarnings("unchecked")
         final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
 
+        final Element permId = item.getChild("permId");
+        final String id = CrucibleXmlParser.getChildText(permId, "id");
+        final String toPath = CrucibleXmlParser.getChildText(item, "toPath");
+        final VirtualFile vFile = findFileInRoots(toPath);
+        if (vFile != null) {
+          review.addIdToFile(id, vFile);
+        }
+
         for (Element expandedRevision : expandedRevisions) {
           final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
           final String file = CrucibleXmlParser.getChildText(expandedRevision, "path");
-
-          for (VirtualFile root : myRoots) {
-            final VirtualFile virtualFile = root.findFileByRelativePath(file);
-            if (virtualFile != null && !fromRevisions.contains(revision)) {
+          if (!fromRevisions.contains(revision)) {
+            final VirtualFile virtualFile = findFileInRoots(file);
+            if (virtualFile != null)
               review.addRevision(revision, virtualFile);
-              break;
-            }
           }
         }
       }
     }
+
+  }
+
+  @Nullable
+  private VirtualFile findFileInRoots(String file) {
+    for (VirtualFile root : myRoots) {
+      final VirtualFile virtualFile = root.findFileByRelativePath(file);
+      if (virtualFile != null) {
+        return virtualFile;
+        //review.addRevision(revision, virtualFile);
+        //break;
+      }
+    }
+    return null;
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {

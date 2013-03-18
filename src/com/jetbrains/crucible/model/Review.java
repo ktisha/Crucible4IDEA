@@ -12,7 +12,9 @@ import java.util.*;
  */
 public class Review extends BasicReview {
   private List<Comment> myGeneralComments = new ArrayList<Comment>();
+  private List<Comment> myComments = new ArrayList<Comment>();
   private Map<String, VirtualFile > myRevisions = new HashMap<String, VirtualFile>();
+  private Map<String, VirtualFile > myIdToFile = new HashMap<String, VirtualFile>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -23,9 +25,18 @@ public class Review extends BasicReview {
     myGeneralComments.add(generalComment);
   }
 
+  public void addComment(@NotNull Comment comment) {
+    myComments.add(comment);
+  }
+
   @NotNull
   public List<Comment> getGeneralComments() {
     return myGeneralComments;
+  }
+
+  @NotNull
+  public List<Comment> getComments() {
+    return myComments;
   }
 
   public void addRevision(String revision, VirtualFile virtualFile) {
@@ -34,5 +45,13 @@ public class Review extends BasicReview {
 
   public Map<String, VirtualFile> getRevisions() {
     return myRevisions;
+  }
+
+  public void addIdToFile(@NotNull final String id, @NotNull final VirtualFile virtualFile) {
+    myIdToFile.put(id, virtualFile);
+  }
+
+  public VirtualFile getFileById(@NotNull final String id) {
+    return myIdToFile.get(id);
   }
 }
