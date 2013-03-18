@@ -42,7 +42,7 @@ public class ReviewForm extends JTree {
 
     @Override
     public String getName() {
-      return myComment.getMessage();
+      return myComment.getAuthor() + " : " + myComment.getMessage();
     }
 
     @Override
