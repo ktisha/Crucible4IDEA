@@ -10,6 +10,9 @@ import java.util.Date;
 public class Comment {
 
   private String myMessage;
+  private String myLine;
+  private String myReviewItemId;
+  private String myRevision;
   private User myAuthor;
   private Date myCreateDate = new Date();
 
@@ -47,5 +50,29 @@ public class Comment {
   @Override
   public String toString() {
     return getMessage();
+  }
+
+  public String getLine() {
+    return myLine;
+  }
+
+  public void setLine(String line) {
+    myLine = line;
+  }
+
+  public String getReviewItemId() {
+    return myReviewItemId;
+  }
+
+  public void setReviewItemId(String reviewItemId) {
+    myReviewItemId = reviewItemId;
+  }
+
+  public String getRevision() {
+    return myRevision;
+  }
+
+  public void setRevision(String revision) {
+    myRevision = revision;
   }
 }

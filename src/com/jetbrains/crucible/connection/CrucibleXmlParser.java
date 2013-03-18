@@ -5,6 +5,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.crucible.model.BasicReview;
 import com.jetbrains.crucible.model.CrucibleVersionInfo;
 import com.jetbrains.crucible.model.User;
+import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,18 @@ public final class CrucibleXmlParser {
     final Element child = node.getChild(childName);
     if (child != null) {
       return child.getText();
+    }
+    return "";
+  }
+
+  @NotNull
+  public static String getChildAttribute(@NotNull final Element node, @NotNull final String childName,
+                                         @NotNull final String attributeName) {
+    final Element child = node.getChild(childName);
+    if (child != null) {
+      final Attribute attribute = child.getAttribute(attributeName);
+      if (attribute != null)
+        return attribute.getValue();
     }
     return "";
   }
