@@ -15,6 +15,7 @@ import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SideBorder;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.UIUtil;
+import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 
@@ -169,7 +170,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       return this;
     }
   }
-  public static DataKey<Review> REVIEW = DataKey.create("crucible.Review");
 
   class MyChangesBrowser extends ChangesBrowser {
     public MyChangesBrowser(Project project) {
@@ -194,8 +194,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public void calcData(DataKey key, DataSink sink) {
-      if (key == REVIEW)
-        sink.put(REVIEW, myReview);
+      if (key == CrucibleDataKeys.REVIEW)
+        sink.put(CrucibleDataKeys.REVIEW, myReview);
       super.calcData(key, sink);
     }
   }
