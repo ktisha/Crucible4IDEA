@@ -18,6 +18,7 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
+import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.ShowCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
@@ -40,7 +41,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     final AsyncResult<DataContext> dataContextFromFocus = DataManager.getInstance().getDataContextFromFocus();
     final DataContext context = dataContextFromFocus.getResult();
-    final Review review = DetailsPanel.REVIEW.getData(context);
+    final Review review = CrucibleDataKeys.REVIEW.getData(context);
     final Change[] changes = VcsDataKeys.CHANGE_LEAD_SELECTION.getData(context);
     if (changes != null && changes.length == 1) {
       final ContentRevision revision = changes[0].getAfterRevision();
