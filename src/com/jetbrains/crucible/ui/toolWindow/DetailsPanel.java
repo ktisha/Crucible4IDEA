@@ -1,37 +1,22 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.diff.*;
-import com.intellij.openapi.editor.ex.MarkupModelEx;
-import com.intellij.openapi.editor.impl.DocumentMarkupModel;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.HighlighterLayer;
-import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.Splitter;
-import com.intellij.openapi.util.IconLoader;
-import com.intellij.openapi.vcs.FilePath;
-import com.intellij.openapi.vcs.ObjectsConvertor;
-import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vcs.changes.actions.*;
+import com.intellij.openapi.vcs.changes.actions.OpenRepositoryVersionAction;
+import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.JBSplitter;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SideBorder;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.UIUtil;
-import com.jetbrains.crucible.actions.ShowCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -184,6 +169,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       return this;
     }
   }
+  public static DataKey<Review> REVIEW = DataKey.create("crucible.Review");
 
   class MyChangesBrowser extends ChangesBrowser {
     public MyChangesBrowser(Project project) {
@@ -204,96 +190,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
         toolBarGroup.add(anAction);
       }
     }
-    @Override
-    protected void showDiffForChanges(Change[] changes, int indexInSelection) {
-      final ShowDiffUIContext context = new ShowDiffUIContext(false);
-      final List<DiffRequestPresentable> changeList =
-        ObjectsConvertor.convert(Arrays.asList(changes), new ChangeForDiffConvertor(myProject, true), ObjectsConvertor.NOT_NULL);
-      final ChangeDiffRequest request = new ChangeDiffRequest(myProject, changeList, context.getActionsFactory(), context.isShowFrame());
-      final DiffTool tool = DiffManager.getInstance().getDiffTool();
-      final DiffRequest simpleRequest;
-      try {
-        request.quickCheckHaveStuff();
-        simpleRequest = request.init(indexInSelection);
-      }
-      catch (VcsException e) {
-        Messages.showWarningDialog(e.getMessage(), "Show Diff");
-        return;
-      }
 
-      if (simpleRequest != null) {
-        final DiffContent content = simpleRequest.getContents()[1];
-        final ContentRevision revision = changes[indexInSelection].getAfterRevision();
-
-        addGutter(content, myReview, revision);
-
-        final DiffNavigationContext navigationContext = context.getDiffNavigationContext();
-        if (navigationContext != null) {
-          simpleRequest.passForDataContext(DiffTool.SCROLL_TO_LINE, navigationContext);
-        }
-        tool.show(simpleRequest);
-      }
-    }
-
-    private void addGutter(DiffContent content, Review review, @Nullable ContentRevision revision) {
-      final List<Comment> comments = review.getComments();
-      final FilePath filePath = revision == null? null : revision.getFile();
-      for (Comment comment : comments) {
-        final String id = comment.getReviewItemId();
-        final VirtualFile vFile = review.getFileById(id);
-        if (filePath != null && vFile.getPath().equals(filePath.getPath()) &&
-          revision.getRevisionNumber().asString().equals(comment.getRevision())) {
-          final MarkupModelEx markup = (MarkupModelEx)DocumentMarkupModel.forDocument(content.getDocument(), myProject, true);
-
-          final RangeHighlighter highlighter = markup.addPersistentLineHighlighter(Integer.parseInt(comment.getLine()),
-                                                                                   HighlighterLayer.ERROR + 1, null);
-          if(highlighter == null) return;
-          final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(comment);
-          highlighter.setGutterIconRenderer(gutterIconRenderer);
-        }
-      }
-    }
-  }
-
-  private class ReviewGutterIconRenderer extends GutterIconRenderer {
-    private final Icon icon = IconLoader.getIcon("/images/note.png");
-    private final Comment myComment;
-
-    ReviewGutterIconRenderer(Comment comment) {
-      myComment = comment;
-    }
-    @NotNull
-    @Override
-    public Icon getIcon() {
-      return icon;
-    }
 
     @Override
-    public boolean isNavigateAction() {
-      return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      ReviewGutterIconRenderer that = (ReviewGutterIconRenderer) o;
-      return icon.equals(that.getIcon());
-    }
-
-    @Override
-    public AnAction getClickAction() {
-      return new ShowCommentAction(myComment);
-    }
-
-    @Override
-    public String getTooltipText() {
-      return myComment.getAuthor().getUserName();
-    }
-
-    @Override
-    public int hashCode() {
-      return getIcon().hashCode();
+    public void calcData(DataKey key, DataSink sink) {
+      if (key == REVIEW)
+        sink.put(REVIEW, myReview);
+      super.calcData(key, sink);
     }
   }
 

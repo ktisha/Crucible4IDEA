@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
+import com.intellij.openapi.diff.DiffManager;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
@@ -17,6 +18,7 @@ public class CrucibleToolWindowFactory implements ToolWindowFactory, DumbAware {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+    DiffManager.getInstance().registerDiffTool(new CommentsDiffTool());
     final ContentManager contentManager = toolWindow.getContentManager();
     if (StringUtil.isEmptyOrSpaces(CrucibleSettings.getInstance(project).SERVER_URL)) return;
     CruciblePanel cruciblePanel = new CruciblePanel(project);
