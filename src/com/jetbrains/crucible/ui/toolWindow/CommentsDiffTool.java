@@ -18,7 +18,6 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.actions.ShowCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
@@ -56,8 +55,8 @@ public class CommentsDiffTool extends FrameDiffTool {
     final FilePath filePath = revision == null? null : revision.getFile();
     for (Comment comment : comments) {
       final String id = comment.getReviewItemId();
-      final VirtualFile vFile = review.getFileById(id);
-      if (filePath != null && vFile != null && vFile.getPath().equals(filePath.getPath()) &&
+      final String path = review.getPathById(id);
+      if (filePath != null && filePath.getPath().endsWith(path) &&
           revision.getRevisionNumber().asString().equals(comment.getRevision())) {
 
         final MarkupModelEx markup = (MarkupModelEx)DocumentMarkupModel.forDocument(content.getDocument(), project, true);

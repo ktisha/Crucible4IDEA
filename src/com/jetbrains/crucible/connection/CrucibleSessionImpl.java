@@ -305,10 +305,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
         final Element permId = item.getChild("permId");
         final String id = CrucibleXmlParser.getChildText(permId, "id");
         final String toPath = CrucibleXmlParser.getChildText(item, "toPath");
-        final VirtualFile vFile = findFileInRoots(toPath);
-        if (vFile != null) {
-          review.addIdToFile(id, vFile);
-        }
+        review.addIdToFile(id, toPath);
 
         for (Element expandedRevision : expandedRevisions) {
           final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
