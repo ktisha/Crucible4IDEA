@@ -14,7 +14,7 @@ public class Review extends BasicReview {
   private List<Comment> myGeneralComments = new ArrayList<Comment>();
   private List<Comment> myComments = new ArrayList<Comment>();
   private Map<String, VirtualFile > myRevisions = new HashMap<String, VirtualFile>();
-  private Map<String, VirtualFile > myIdToFile = new HashMap<String, VirtualFile>();
+  private Map<String, String> myIdToPath = new HashMap<String, String>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -47,11 +47,11 @@ public class Review extends BasicReview {
     return myRevisions;
   }
 
-  public void addIdToFile(@NotNull final String id, @NotNull final VirtualFile virtualFile) {
-    myIdToFile.put(id, virtualFile);
+  public void addIdToFile(@NotNull final String id, @NotNull final String path) {
+    myIdToPath.put(id, path);
   }
 
-  public VirtualFile getFileById(@NotNull final String id) {
-    return myIdToFile.get(id);
+  public String getPathById(@NotNull final String id) {
+    return myIdToPath.get(id);
   }
 }
