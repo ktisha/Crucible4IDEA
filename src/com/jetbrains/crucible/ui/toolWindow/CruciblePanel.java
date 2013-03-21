@@ -29,6 +29,7 @@ import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -38,7 +39,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * User: ktisha
@@ -126,13 +127,15 @@ public class CruciblePanel extends SimpleToolWindowPanel {
           final VirtualFile virtualFile = myProject.getBaseDir();
           final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
           if (vcsFor == null) return;
-          final Map<String,VirtualFile> reviewRevisions = review.getRevisions();
-          for (Map.Entry<String, VirtualFile> revision : reviewRevisions.entrySet()) {
+          final Set<String> reviewRevisions = review.getRevisions();
+          for (String revision : reviewRevisions) {
             try {
-              final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision.getKey());
-              final CommittedChangeList changeList = vcsFor.loadRevisions(revision.getValue(), revisionNumber);
-              if (changeList != null)
-                list.add(changeList);
+              final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
+              if (revisionNumber != null) {
+                final CommittedChangeList changeList = findInRoots(revisionNumber);
+                if (changeList != null)
+                  list.add(changeList);
+              }
             }
             catch (VcsException e) {
               LOG.warn(e.getMessage());
@@ -145,6 +148,20 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         }
       }, ModalityState.stateForComponent(toolWindow.getComponent()));
     }
+  }
+
+  @Nullable
+  private CommittedChangeList findInRoots(@NotNull final VcsRevisionNumber revisionNumber) {
+    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
+    final VirtualFile virtualFile = myProject.getBaseDir();
+    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+    if (vcsFor == null) return null;
+    final VirtualFile[] myRoots = vcsManager.getRootsUnderVcs(vcsFor);
+    for (VirtualFile root : myRoots) {
+      final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
+      if (changeList != null) return changeList;
+    }
+    return null;
   }
 
   private SimpleTreeStructure createTreeStructure() {
