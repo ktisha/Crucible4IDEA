@@ -309,29 +309,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
         for (Element expandedRevision : expandedRevisions) {
           final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
-          final String file = CrucibleXmlParser.getChildText(expandedRevision, "path");
           if (!fromRevisions.contains(revision)) {
-            final VirtualFile virtualFile = findFileInRoots(file);
-            if (virtualFile != null)
-              review.addRevision(revision, virtualFile);
+            review.addRevision(revision);
           }
         }
       }
     }
-
-  }
-
-  @Nullable
-  private VirtualFile findFileInRoots(String file) {
-    for (VirtualFile root : myRoots) {
-      final VirtualFile virtualFile = root.findFileByRelativePath(file);
-      if (virtualFile != null) {
-        return virtualFile;
-        //review.addRevision(revision, virtualFile);
-        //break;
-      }
-    }
-    return null;
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {
