@@ -39,14 +39,9 @@ public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
   private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
-  private final VirtualFile[] myRoots;
 
   CrucibleSessionImpl(Project project) {
     myProject = project;
-    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-    final VirtualFile virtualFile = myProject.getBaseDir();
-    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
-    myRoots = vcsManager.getRootsUnderVcs(vcsFor);
   }
 
   @Override
@@ -148,15 +143,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   private String getUsername() {
-    return CrucibleSettings.getInstance(myProject).USERNAME;
+    return CrucibleSettings.getInstance().USERNAME;
   }
 
   private String getPassword() {
-    return CrucibleSettings.getInstance(myProject).getPassword();
+    return CrucibleSettings.getInstance().getPassword();
   }
 
   private String getHostUrl() {
-    return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance(myProject).SERVER_URL);
+    return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance().SERVER_URL);
   }
 
   @Nullable
@@ -323,7 +318,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   @Nullable
   private VirtualFile findFileInRoots(String file) {
-    for (VirtualFile root : myRoots) {
+    for (VirtualFile root : getRoots()) {
       final VirtualFile virtualFile = root.findFileByRelativePath(file);
       if (virtualFile != null) {
         return virtualFile;
@@ -332,6 +327,13 @@ public class CrucibleSessionImpl implements CrucibleSession {
       }
     }
     return null;
+  }
+
+  private VirtualFile[] getRoots() {
+    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
+    final VirtualFile virtualFile = myProject.getBaseDir();
+    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+    return vcsManager.getRootsUnderVcs(vcsFor);
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {

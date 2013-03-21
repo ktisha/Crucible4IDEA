@@ -4,7 +4,6 @@ import com.intellij.ide.passwordSafe.PasswordSafe;
 import com.intellij.ide.passwordSafe.PasswordSafeException;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @State(name = "CrucibleSettings",
        storages = {
-         @Storage(file = StoragePathMacros.PROJECT_FILE),
-         @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/crucibleConnector.xml", scheme = StorageScheme.DIRECTORY_BASED)
+         @Storage(file = StoragePathMacros.APP_CONFIG + "/crucibleConnector.xml")
        }
 )
 public class CrucibleSettings implements PersistentStateComponent<CrucibleSettings> {
@@ -31,8 +29,8 @@ public class CrucibleSettings implements PersistentStateComponent<CrucibleSettin
     XmlSerializerUtil.copyBean(state, this);
   }
 
-  public static CrucibleSettings getInstance(Project project) {
-    return ServiceManager.getService(project, CrucibleSettings.class);
+  public static CrucibleSettings getInstance() {
+    return ServiceManager.getService(CrucibleSettings.class);
   }
 
   public static final String CRUCIBLE_SETTINGS_PASSWORD_KEY = "CRUCIBLE_SETTINGS_PASSWORD_KEY";
