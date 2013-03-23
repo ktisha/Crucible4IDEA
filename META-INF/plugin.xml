@@ -29,7 +29,6 @@
     <group id="CrucibleViewPopupMenu">
     <reference ref="CrucibleView.Diff"/>
     </group>
-    <!-- Add your actions here -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
