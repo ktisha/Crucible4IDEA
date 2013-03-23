@@ -1,22 +1,28 @@
-
 package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
+import com.jetbrains.crucible.ui.UiUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.jdom.xpath.XPath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -135,6 +141,48 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return builder.build(method.getResponseBodyAsStream());
   }
 
+  protected Document buildSaxResponseForPost(@NotNull final String urlString,
+                                             @NotNull final RequestEntity requestEntity) throws IOException, JDOMException {
+    final SAXBuilder builder = new SAXBuilder();
+    final PostMethod method = new PostMethod(urlString);
+    method.setRequestEntity(requestEntity);
+    adjustHttpHeader(method);
+    final HttpClient client = new HttpClient();
+    client.executeMethod(method);
+
+    return builder.build(method.getResponseBodyAsStream());
+  }
+
+  @SuppressWarnings("unchecked")
+  private static RequestEntity createCommentRequest(Comment comment) throws UnsupportedEncodingException {
+    Document doc = new Document();
+    Element root = new Element("generalCommentData");
+    final Element defectApproved = new Element("defectApproved");
+    final Element defectRaised = new Element("defectRaised");
+    final Element deleted = new Element("deleted");
+    final Element draft = new Element("draft");
+    final Element message = new Element("message");
+    message.addContent(comment.getMessage());
+
+    final Element parentCommentId = new Element("parentCommentId");
+    final Element permId = new Element("permId");
+    final Element permaId = new Element("permaId");
+
+    root.addContent(defectApproved);
+    root.addContent(defectRaised);
+    root.addContent(deleted);
+    root.addContent(draft);
+    root.addContent(message);
+    root.addContent(parentCommentId);
+    root.addContent(permId);
+    root.addContent(permaId);
+    doc.setRootElement(root);
+
+    XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
+    String requestString = serializer.outputString(doc);
+    return new StringRequestEntity(requestString, "application/xml", "UTF-8");
+  }
+
   protected void adjustHttpHeader(@NotNull final HttpMethod method) {
     method.addRequestHeader(new Header("Authorization", getAuthHeaderValue()));
   }
@@ -166,6 +214,31 @@ public class CrucibleSessionImpl implements CrucibleSession {
       return exceptionMsg.toString();
     }
     return null;
+  }
+
+  public boolean postComment(@NotNull final Comment comment, String reviewId) {
+    String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId + COMMENTS;
+    try {
+      final RequestEntity request = createCommentRequest(comment);
+      final Document document = buildSaxResponseForPost(url, request);
+      XPath xpath = XPath.newInstance("/error");
+      @SuppressWarnings("unchecked")
+      Element element = (Element)xpath.selectSingleNode(document);
+      if (element != null) {
+        final String returnCode = CrucibleXmlParser.getChildText(element, "code");
+        final String message = CrucibleXmlParser.getChildText(element, "message");
+        UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + message, MessageType.ERROR);
+        return returnCode.isEmpty();
+      }
+      return true;
+    }
+    catch (IOException e) {
+      LOG.warn(e.getMessage());
+    }
+    catch (JDOMException e) {
+      LOG.warn(e.getMessage());
+    }
+    return false;
   }
 
   public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {

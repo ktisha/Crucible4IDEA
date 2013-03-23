@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.model.Review;
 import org.jdom.JDOMException;
@@ -59,6 +60,17 @@ public class CrucibleManager {
       LOG.warn(e.getMessage());
     }
     return null;
+  }
+
+  public boolean postComment(@NotNull final Comment comment, String reviewId) {
+    try {
+      final CrucibleSession session = getSession();
+      return session.postComment(comment, reviewId);
+    }
+    catch (CrucibleApiException e) {
+      LOG.warn(e.getMessage());
+    }
+    return false;
   }
 
   public CrucibleSession getSession() throws CrucibleApiException {

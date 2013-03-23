@@ -2,10 +2,7 @@ package com.jetbrains.crucible.connection;
 
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
-import com.jetbrains.crucible.model.BasicReview;
-import com.jetbrains.crucible.model.CrucibleFilter;
-import com.jetbrains.crucible.model.CrucibleVersionInfo;
-import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.model.*;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,6 +20,7 @@ public interface CrucibleSession {
   String AUTH_SERVICE = "/rest-service/auth-v1";
   String LOGIN = "/login";
   String FILTERED_REVIEWS = "/filter";
+  String COMMENTS = "/comments";
   void login() throws CrucibleApiLoginException;
 
   @Nullable
@@ -30,4 +28,6 @@ public interface CrucibleSession {
 
   List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException;
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
+
+  boolean postComment(@NotNull final Comment comment, String reviewId);
 }

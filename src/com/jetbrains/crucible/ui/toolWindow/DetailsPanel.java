@@ -16,6 +16,7 @@ import com.intellij.ui.SideBorder;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.UIUtil;
 import com.jetbrains.crucible.CrucibleDataKeys;
+import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 
@@ -126,6 +127,15 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable.setAutoCreateRowSorter(true);
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
     JBTable generalComments = new JBTable(myCommentsModel);
+    DefaultActionGroup actionGroup = new DefaultActionGroup();
+    actionGroup.add(new AddCommentAction("Add comment", myReview.getPermaId()));
+
+    ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
+      .createActionPopupMenu("Crucible", actionGroup);
+    JPopupMenu popupMenu = actionPopupMenu.getComponent();
+    generalComments.setComponentPopupMenu(popupMenu);
+
+
     generalComments.setAutoCreateRowSorter(true);
     JScrollPane commentsScrollPane = ScrollPaneFactory.createScrollPane(generalComments);
     final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
