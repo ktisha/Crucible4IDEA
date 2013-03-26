@@ -9,12 +9,8 @@ import com.intellij.openapi.vcs.changes.actions.OpenRepositoryVersionAction;
 import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.ui.IdeBorderFactory;
-import com.intellij.ui.JBSplitter;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.SideBorder;
+import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.ui.UIUtil;
 import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
@@ -114,7 +110,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   }
 
   private JPanel createMainTable() {
-    JBSplitter splitter = new JBSplitter(true);
+    JBSplitter splitter = new JBSplitter(true, 0.8f);
 
     myCommitsTable = new JBTable(myCommitsModel) {
       @Override
@@ -124,9 +120,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
         return super.getCellRenderer(row, column);
       }
     };
+    myCommitsTable.setStriped(true);
     myCommitsTable.setAutoCreateRowSorter(true);
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
+
     JBTable generalComments = new JBTable(myCommentsModel);
+    generalComments.setStriped(true);
+
     DefaultActionGroup actionGroup = new DefaultActionGroup();
     actionGroup.add(new AddCommentAction("Add comment", myReview.getPermaId()));
 
@@ -171,10 +171,11 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      Component orig = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+      final Color bg = orig.getBackground();
       if (value instanceof CommittedChangeList) {
         setText(((CommittedChangeList)value).getName());
       }
-      final Color bg = isSelected ? UIUtil.getListSelectionBackground() : UIUtil.getListBackground();
       setBackground(bg);
       setBorder(BorderFactory.createLineBorder(bg));
       return this;
