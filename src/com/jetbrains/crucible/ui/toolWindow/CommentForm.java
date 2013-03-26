@@ -3,6 +3,7 @@ package com.jetbrains.crucible.ui.toolWindow;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.*;
@@ -24,12 +25,15 @@ import java.util.Set;
  */
 public class CommentForm extends JPanel {
 
+  private final String myReviewId;
   private EditorTextField myReviewTextField;
 
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
+  private Balloon myBalloon;
 
   public CommentForm(final Project project, final String reviewId) {
+    myReviewId = reviewId;
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
     editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
@@ -49,6 +53,8 @@ public class CommentForm extends JPanel {
       public void actionPerformed(ActionEvent e) {
         final Comment comment = new Comment(new User(CrucibleSettings.getInstance(project).USERNAME), getText());
         final boolean success = CrucibleManager.getInstance(project).postComment(comment, reviewId);
+        if (success && myBalloon != null)
+          myBalloon.dispose();
       }
     });
   }
@@ -59,5 +65,13 @@ public class CommentForm extends JPanel {
 
   public String getText() {
     return myReviewTextField.getText();
+  }
+
+  public void setBalloon(Balloon balloon) {
+    myBalloon = balloon;
+  }
+
+  public String getReviewId() {
+    return myReviewId;
   }
 }

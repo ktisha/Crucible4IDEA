@@ -32,7 +32,8 @@ public class AddCommentAction extends AnAction implements DumbAware {
     if (toolWindow == null) return;
     ReviewBalloonBuilder builder = new ReviewBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, myReviewId);
-    final Balloon balloon = builder.getCommentBalloon(commentForm/*, myReviewId, project*/);
+    final Balloon balloon = builder.getCommentBalloon(commentForm);
+    commentForm.setBalloon(balloon);
     balloon.showInCenterOf(toolWindow.getComponent());
     commentForm.requestFocus();
   }
