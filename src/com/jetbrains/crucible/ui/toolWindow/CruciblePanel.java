@@ -57,11 +57,12 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     super(false);
     myProject = project;
 
-    JBSplitter splitter = new JBSplitter(false);
+    JBSplitter splitter = new JBSplitter(false, 0.2f);
 
     myReviewModel = new CrucibleReviewModel(project);
     myReviewTable = new JBTable(myReviewModel);
     myReviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    myReviewTable.setStriped(true);
 
     myReviewTable.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
