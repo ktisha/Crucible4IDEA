@@ -15,8 +15,6 @@ import java.awt.*;
  */
 public class ReviewBalloonBuilder {
 
-  private Balloon myBalloon;
-
   public ReviewBalloonBuilder() {
   }
 
@@ -37,15 +35,12 @@ public class ReviewBalloonBuilder {
 
 
   public Balloon getCommentBalloon(final CommentForm balloonContent) {
-    if (myBalloon == null) {
-      final BalloonBuilder balloonBuilder =
-        JBPopupFactory.getInstance().createDialogBalloonBuilder(balloonContent, "New comment");
-      balloonBuilder.setHideOnClickOutside(true);
-      balloonBuilder.setHideOnKeyOutside(true);
+    final BalloonBuilder balloonBuilder =
+      JBPopupFactory.getInstance().createDialogBalloonBuilder(balloonContent, "New comment for " + balloonContent.getReviewId());
+    balloonBuilder.setHideOnClickOutside(true);
+    balloonBuilder.setHideOnKeyOutside(true);
 
-      myBalloon = balloonBuilder.createBalloon();
-    }
-    return myBalloon;
+    return balloonBuilder.createBalloon();
   }
 
 }
