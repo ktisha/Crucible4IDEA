@@ -25,15 +25,15 @@ import java.util.Set;
  */
 public class CommentForm extends JPanel {
 
-  private final String myReviewId;
+  private final String myContentName;
   private EditorTextField myReviewTextField;
 
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
   private Balloon myBalloon;
 
-  public CommentForm(final Project project, final String reviewId) {
-    myReviewId = reviewId;
+  public CommentForm(final Project project, final String contentName) {
+    myContentName = contentName;
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
     editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
@@ -52,7 +52,7 @@ public class CommentForm extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         final Comment comment = new Comment(new User(CrucibleSettings.getInstance(project).USERNAME), getText());
-        final boolean success = CrucibleManager.getInstance(project).postComment(comment, reviewId);
+        final boolean success = CrucibleManager.getInstance(project).postComment(comment, contentName);
         if (success && myBalloon != null)
           myBalloon.dispose();
       }
@@ -71,7 +71,7 @@ public class CommentForm extends JPanel {
     myBalloon = balloon;
   }
 
-  public String getReviewId() {
-    return myReviewId;
+  public String getContentName() {
+    return myContentName;
   }
 }
