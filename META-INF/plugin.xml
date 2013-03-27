@@ -7,14 +7,14 @@
   <description>Plugin provides IDEA integration with Crucible from Attlassian</description>
 
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="107.105"/>
+  <idea-version since-build="129.60"/>
 
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
-
+  <depends>Git4Idea</depends>
   <application-components>
     <!-- Add your application components here -->
   </application-components>
