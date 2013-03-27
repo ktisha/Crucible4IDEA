@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,4 +94,16 @@ public class CrucibleManager {
     }
     return session;
   }
+
+  public Map<String, String> getRepoHash() {
+    try {
+      final CrucibleSession session = getSession();
+      return session.getRepoHash();
+    }
+    catch (CrucibleApiException e) {
+      LOG.warn(e.getMessage());
+    }
+    return Collections.emptyMap();
+  }
+
 }

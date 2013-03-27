@@ -14,17 +14,13 @@ public class BasicReview {
   private Set<Reviewer> myReviewers;
   @NotNull
   private User myAuthor;
-  private User myCreator;
   private String myDescription;
   @Nullable
   private User myModerator;
-  private String myName;
 
   @NotNull
   private String myPermaId;
-  private String myRepoName;
   private Date myCreateDate;
-  private String mySummary;
   private final String myServerUrl;
   private String myState;
 
@@ -34,10 +30,6 @@ public class BasicReview {
     myPermaId = permaId;
     myAuthor = author;
     myModerator = moderator;
-  }
-
-  public void setCreator(User creator) {
-    myCreator = creator;
   }
 
   @Override

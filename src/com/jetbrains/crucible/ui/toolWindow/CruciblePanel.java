@@ -11,6 +11,7 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -25,11 +26,11 @@ import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.model.ReviewItem;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -37,9 +38,7 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * User: ktisha
@@ -128,20 +127,32 @@ public class CruciblePanel extends SimpleToolWindowPanel {
           final VirtualFile virtualFile = myProject.getBaseDir();
           final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
           if (vcsFor == null) return;
-          final Set<String> reviewRevisions = review.getRevisions();
-          for (String revision : reviewRevisions) {
-            try {
-              final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
-              if (revisionNumber != null) {
-                final CommittedChangeList changeList = findInRoots(revisionNumber);
-                if (changeList != null)
-                  list.add(changeList);
+          final Set<ReviewItem> reviewItems = review.getReviewItems();
+          Set<String> loadedRevisions = new HashSet<String>();
+
+          for (ReviewItem reviewItem : reviewItems) {
+            Set<String> revisions = reviewItem.getRevisions();
+            String repoName = reviewItem.getRepo();
+            final Map<String,String> hash = CrucibleManager.getInstance(myProject).getRepoHash();
+            final VirtualFile root = hash.containsKey(repoName) ?
+                                     LocalFileSystem.getInstance().findFileByPath(hash.get(repoName)) : virtualFile;
+
+            for (String revision : revisions) {
+              if (!loadedRevisions.contains(revision)) {
+                try {
+                  final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
+                  if (revisionNumber != null && root != null) {
+                    final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
+                    if (changeList != null) list.add(changeList);
+                  }
+
+                }
+                catch (VcsException e) {
+                  LOG.warn(e.getMessage());
+                }
+                loadedRevisions.add(revision);
               }
             }
-            catch (VcsException e) {
-              LOG.warn(e.getMessage());
-            }
-
           }
           details.updateList(list);
           details.setBusy(false);
@@ -149,20 +160,6 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         }
       }, ModalityState.stateForComponent(toolWindow.getComponent()));
     }
-  }
-
-  @Nullable
-  private CommittedChangeList findInRoots(@NotNull final VcsRevisionNumber revisionNumber) {
-    final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-    final VirtualFile virtualFile = myProject.getBaseDir();
-    final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
-    if (vcsFor == null) return null;
-    final VirtualFile[] myRoots = vcsManager.getRootsUnderVcs(vcsFor);
-    for (VirtualFile root : myRoots) {
-      final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
-      if (changeList != null) return changeList;
-    }
-    return null;
   }
 
   private SimpleTreeStructure createTreeStructure() {

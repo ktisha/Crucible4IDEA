@@ -361,16 +361,16 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final Review review = new Review(getHostUrl(), permId, author, moderator);
 
     if (reviewItems != null && !reviewItems.isEmpty()) {
-      getRevisions(reviewItems, review);
+      addReviewItems(reviewItems, review);
     }
 
-    getGeneralComments(doc, review);
-    getVersionedComments(doc, review);
+    addGeneralComments(doc, review);
+    addVersionedComments(doc, review);
 
     return review;
   }
 
-  private void getGeneralComments(Document doc, Review review) throws JDOMException {
+  private static void addGeneralComments(Document doc, Review review) throws JDOMException {
     @SuppressWarnings("unchecked")
     final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
     if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
@@ -385,7 +385,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private void getVersionedComments(Document doc, Review review) throws JDOMException {
+  private static void addVersionedComments(Document doc, Review review) throws JDOMException {
     @SuppressWarnings("unchecked")
     final List<Element> commentNodes = XPath.newInstance("/detailedReviewData/versionedComments/versionedLineCommentData").
       selectNodes(doc);
@@ -413,7 +413,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private void getReplies(Element node, Comment comment) {
+  private static void getReplies(Element node, Comment comment) {
     @SuppressWarnings("unchecked")
     final List<Element> replies = node.getChildren("replies");
     for (Element replyNode : replies) {
@@ -433,16 +433,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private void getRevisions(@NotNull final List<Element> reviewItems, @NotNull final Review review) {
-    Set<String> fromRevisions = new HashSet<String>();
-    for (Element element : reviewItems) {
-      @SuppressWarnings("unchecked")
-      final List<Element> items = element.getChildren("reviewItem");
-      for (Element item : items) {
-        final String revision = CrucibleXmlParser.getChildText(item, "fromRevision");
-        fromRevisions.add(revision);
-      }
-    }
+  private static void addReviewItems(@NotNull final List<Element> reviewItems, @NotNull final Review review) {
     for (Element element : reviewItems) {
       @SuppressWarnings("unchecked")
       final List<Element> items = element.getChildren("reviewItem");
@@ -453,19 +444,28 @@ public class CrucibleSessionImpl implements CrucibleSession {
         final Element permId = item.getChild("permId");
         final String id = CrucibleXmlParser.getChildText(permId, "id");
         final String toPath = CrucibleXmlParser.getChildText(item, "toPath");
-        review.addIdToFile(id, toPath);
+        final String repoName = CrucibleXmlParser.getChildText(item, "repositoryName");
+        final String fromRevision = CrucibleXmlParser.getChildText(item, "fromRevision");
+
+        final ReviewItem reviewItem = new ReviewItem(id, toPath, repoName);
 
         for (Element expandedRevision : expandedRevisions) {
           final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
-          if (!fromRevisions.contains(revision)) {
-            review.addRevision(revision);
+          final String type = CrucibleXmlParser.getChildText(item, "commitType");
+          if (!fromRevision.equals(revision) || "Added".equals(type)) {
+            reviewItem.addRevision(revision);
           }
         }
+        review.addReviewItem(reviewItem);
       }
     }
   }
 
   private BasicReview parseBasicReview(Element element) throws CrucibleApiException {
     return CrucibleXmlParser.parseBasicReview(getHostUrl(), element);
+  }
+
+  public Map<String, String> getRepoHash() {
+    return myRepoHash;
   }
 }
