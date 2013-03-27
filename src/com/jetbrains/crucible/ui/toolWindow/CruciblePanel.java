@@ -111,55 +111,55 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
-    if (foundContent == null) {
-      final DetailsPanel details = new DetailsPanel(myProject, review);
-      final Content content = ContentFactory.SERVICE.getInstance().createContent(details,
-                                                                                 "Details for " + review.getPermaId(), false);
-      contentManager.addContent(content);
-      contentManager.setSelectedContent(content);
-      details.setBusy(true);
-      details.updateComments(review.getGeneralComments());
-      ApplicationManager.getApplication().invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
-          final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-          final VirtualFile virtualFile = myProject.getBaseDir();
-          final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
-          if (vcsFor == null) return;
-          final Set<ReviewItem> reviewItems = review.getReviewItems();
-          Set<String> loadedRevisions = new HashSet<String>();
+    if (foundContent != null) return;
 
-          for (ReviewItem reviewItem : reviewItems) {
-            Set<String> revisions = reviewItem.getRevisions();
-            String repoName = reviewItem.getRepo();
-            final Map<String,String> hash = CrucibleManager.getInstance(myProject).getRepoHash();
-            final VirtualFile root = hash.containsKey(repoName) ?
-                                     LocalFileSystem.getInstance().findFileByPath(hash.get(repoName)) : virtualFile;
+    final DetailsPanel details = new DetailsPanel(myProject, review);
+    final Content content = ContentFactory.SERVICE.getInstance().createContent(details,
+                                                                               "Details for " + review.getPermaId(), false);
+    contentManager.addContent(content);
+    contentManager.setSelectedContent(content);
+    details.setBusy(true);
+    details.updateComments(review.getGeneralComments());
+    ApplicationManager.getApplication().invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
+        final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
+        final VirtualFile virtualFile = myProject.getBaseDir();
+        final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+        if (vcsFor == null) return;
+        final Set<ReviewItem> reviewItems = review.getReviewItems();
+        Set<String> loadedRevisions = new HashSet<String>();
 
-            for (String revision : revisions) {
-              if (!loadedRevisions.contains(revision)) {
-                try {
-                  final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
-                  if (revisionNumber != null && root != null) {
-                    final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
-                    if (changeList != null) list.add(changeList);
-                  }
+        for (ReviewItem reviewItem : reviewItems) {
+          Set<String> revisions = reviewItem.getRevisions();
+          String repoName = reviewItem.getRepo();
+          final Map<String,String> hash = CrucibleManager.getInstance(myProject).getRepoHash();
+          final VirtualFile root = hash.containsKey(repoName) ?
+                                   LocalFileSystem.getInstance().findFileByPath(hash.get(repoName)) : virtualFile;
 
+          for (String revision : revisions) {
+            if (!loadedRevisions.contains(revision)) {
+              try {
+                final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
+                if (revisionNumber != null && root != null) {
+                  final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
+                  if (changeList != null) list.add(changeList);
                 }
-                catch (VcsException e) {
-                  LOG.warn(e.getMessage());
-                }
-                loadedRevisions.add(revision);
+
               }
+              catch (VcsException e) {
+                LOG.warn(e.getMessage());
+              }
+              loadedRevisions.add(revision);
             }
           }
-          details.updateList(list);
-          details.setBusy(false);
-
         }
-      }, ModalityState.stateForComponent(toolWindow.getComponent()));
-    }
+        details.updateList(list);
+        details.setBusy(false);
+
+      }
+    }, ModalityState.stateForComponent(toolWindow.getComponent()));
   }
 
   private SimpleTreeStructure createTreeStructure() {
