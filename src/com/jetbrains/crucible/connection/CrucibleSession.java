@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User : ktisha
@@ -33,4 +34,5 @@ public interface CrucibleSession {
   boolean postComment(@NotNull final Comment comment, String reviewId);
 
   void fillRepoHash() throws IOException, JDOMException;
+  Map<String, String> getRepoHash();
 }

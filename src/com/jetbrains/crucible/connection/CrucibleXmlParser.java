@@ -63,7 +63,6 @@ public final class CrucibleXmlParser {
   public static BasicReview parseBasicReview(@NotNull final String serverUrl, @NotNull final Element reviewNode) {
     final String permaId = getSubChildText(reviewNode, "permaId/id");
     final User author = parseUserNode(reviewNode.getChild("author"));
-    final User creator = parseUserNode(reviewNode.getChild("creator"));
     final String description = getChildText(reviewNode, "name");
     final String state = getChildText(reviewNode, "state");
 
@@ -74,7 +73,6 @@ public final class CrucibleXmlParser {
     final BasicReview review = new BasicReview(serverUrl, permaId, author, moderator);
     if (date != null)
       review.setCreateDate(date);
-    review.setCreator(creator);
     review.setDescription(description);
     review.setState(state);
     return review;

@@ -12,8 +12,8 @@ import java.util.*;
 public class Review extends BasicReview {
   private List<Comment> myGeneralComments = new ArrayList<Comment>();
   private List<Comment> myComments = new ArrayList<Comment>();
-  private Set<String> myRevisions = new HashSet<String>();
-  private Map<String, String> myIdToPath = new HashMap<String, String>();
+
+  private Set<ReviewItem> myItems = new HashSet<ReviewItem>();
 
   public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
                 @Nullable User moderator) {
@@ -38,20 +38,21 @@ public class Review extends BasicReview {
     return myComments;
   }
 
-  public void addRevision(@NotNull final String revision) {
-    myRevisions.add(revision);
-  }
-
   @NotNull
-  public Set<String> getRevisions() {
-    return myRevisions;
+  public Set<ReviewItem> getReviewItems() {
+    return myItems;
   }
 
-  public void addIdToFile(@NotNull final String id, @NotNull final String path) {
-    myIdToPath.put(id, path);
+  public void addReviewItem(@NotNull final ReviewItem item) {
+    myItems.add(item);
   }
 
+  @Nullable
   public String getPathById(@NotNull final String id) {
-    return myIdToPath.get(id);
+    for (ReviewItem item : myItems) {
+      if (item.getId().equals(id))
+        return item.getPath();
+    }
+    return null;
   }
 }
