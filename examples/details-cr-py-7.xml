@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<detailedReviewData>
+  <allowReviewersToJoin>true</allowReviewersToJoin>
+  <author>
+    <avatarUrl>http://crucible.labs.intellij.net/avatar/catherine?s=48</avatarUrl>
+    <displayName>Catherine Tuzova</displayName>
+    <userName>catherine</userName>
+  </author>
+  <closeDate>2011-07-12T21:04:42.671+0400</closeDate>
+  <createDate>2011-07-01T08:32:44.133+0400</createDate>
+  <creator>
+    <avatarUrl>http://crucible.labs.intellij.net/avatar/catherine?s=48</avatarUrl>
+    <displayName>Catherine Tuzova</displayName>
+    <userName>catherine</userName>
+  </creator>
+  <description>fixed PY-3836 With default python interpreter on Mac OS PyCharm in not able to find valid py.test and PY-4045 pytest does not
+    work with virtualenv (when pytest is installed globally)
+  </description>
+  <metricsVersion>5</metricsVersion>
+  <moderator>
+    <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+    <displayName>Dmitry Jemerov</displayName>
+    <userName>yole</userName>
+  </moderator>
+  <name>fixed PY-3836 With default python interpreter on Mac OS PyCharm in not able to find valid py.test and PY-4045 pytest does not work
+    with virtualenv (when pytest is installed globally)
+  </name>
+  <permaId>
+    <id>CR-PY-7</id>
+  </permaId>
+  <permaIdHistory>CR-PY-7</permaIdHistory>
+  <projectKey>CR-PY</projectKey>
+  <state>Closed</state>
+  <type>REVIEW</type>
+  <stats>
+    <comments>
+      <user>yole</user>
+      <published>7</published>
+      <drafts>0</drafts>
+      <defects>0</defects>
+      <unread>1</unread>
+      <leaveUnread>0</leaveUnread>
+      <read>6</read>
+    </comments>
+    <comments>
+      <user>catherine</user>
+      <published>1</published>
+      <drafts>0</drafts>
+      <defects>0</defects>
+      <unread>0</unread>
+      <leaveUnread>0</leaveUnread>
+      <read>1</read>
+    </comments>
+  </stats>
+  <actions>
+    <actionData>
+      <displayName>Edit Review Details</displayName>
+      <name>action:modifyReviewFiles</name>
+    </actionData>
+    <actionData>
+      <displayName>Create</displayName>
+      <name>action:createReview</name>
+    </actionData>
+    <actionData>
+      <displayName>Abandon</displayName>
+      <name>action:abandonReview</name>
+    </actionData>
+    <actionData>
+      <displayName>Delete</displayName>
+      <name>action:deleteReview</name>
+    </actionData>
+    <actionData>
+      <displayName>Submit</displayName>
+      <name>action:submitReview</name>
+    </actionData>
+    <actionData>
+      <displayName>Comment</displayName>
+      <name>action:commentOnReview</name>
+    </actionData>
+    <actionData>
+      <displayName>View</displayName>
+      <name>action:viewReview</name>
+    </actionData>
+    <actionData>
+      <displayName>Recover</displayName>
+      <name>action:recoverReview</name>
+    </actionData>
+  </actions>
+  <generalComments>
+    <generalCommentData>
+      <createDate>2011-07-01T08:32:44.276+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>This review was created by the Automatic Review Creator Plugin.</message>
+      <messageAsHtml>&lt;p&gt;This review was created by the Automatic Review Creator Plugin.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies/>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permId>
+        <id>CMT:18</id>
+      </permId>
+      <permaId>
+        <id>CMT:18</id>
+      </permaId>
+    </generalCommentData>
+    <generalCommentData>
+      <createDate>2011-07-03T19:24:09.360+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>The Automatic Review Creator Plugin added changeset
+        [r6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be|http://app8.labs.intellij.net:8060/changelog/IDEA-ultimate/?cs=6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be]
+        to this review.
+      </message>
+      <messageAsHtml>&lt;p&gt;The Automatic Review Creator Plugin added changeset &lt;a
+        href="http://app8.labs.intellij.net:8060/changelog/IDEA-ultimate/?cs=6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be"&gt;r6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be&lt;/a&gt;
+        to this review.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies/>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permId>
+        <id>CMT:46</id>
+      </permId>
+      <permaId>
+        <id>CMT:46</id>
+      </permaId>
+    </generalCommentData>
+    <generalCommentData>
+      <createDate>2011-07-05T04:32:03.794+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>The Automatic Review Creator Plugin added changeset
+        [rb3cbd7b4260bab889bf68c3feeacfa22794d6a3b|http://app8.labs.intellij.net:8060/changelog/IDEA-ultimate/?cs=b3cbd7b4260bab889bf68c3feeacfa22794d6a3b]
+        to this review.
+      </message>
+      <messageAsHtml>&lt;p&gt;The Automatic Review Creator Plugin added changeset &lt;a
+        href="http://app8.labs.intellij.net:8060/changelog/IDEA-ultimate/?cs=b3cbd7b4260bab889bf68c3feeacfa22794d6a3b"&gt;rb3cbd7b4260bab889bf68c3feeacfa22794d6a3b&lt;/a&gt;
+        to this review.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies/>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permId>
+        <id>CMT:83</id>
+      </permId>
+      <permaId>
+        <id>CMT:83</id>
+      </permaId>
+    </generalCommentData>
+  </generalComments>
+  <reviewItems>
+    <reviewItem>
+      <participants>
+        <participant>
+          <user>
+            <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+            <displayName>Dmitry Jemerov</displayName>
+            <userName>yole</userName>
+          </user>
+          <completed>true</completed>
+        </participant>
+        <participant>
+          <user>
+            <avatarUrl>http://crucible.labs.intellij.net/avatar/catherine?s=48</avatarUrl>
+            <displayName>Catherine Tuzova</displayName>
+            <userName>catherine</userName>
+          </user>
+          <completed>true</completed>
+        </participant>
+      </participants>
+      <permId>
+        <id>CFR-14</id>
+      </permId>
+      <authorName>Ekaterina Tuzova &lt;Ekaterina.Tuzova@jetbrains.com&gt;</authorName>
+      <commitDate>2011-07-01T19:27:53+04:00</commitDate>
+      <commitType>Modified</commitType>
+      <expandedRevisions>
+        <addDate>2011-07-01T08:32:44.170+04:00</addDate>
+        <revision>6fd471e13753755bd372fed25e32fb9816af643f</revision>
+        <path>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</path>
+        <contentUrl>/cru/CR-PY-7/rawcontent/27/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</contentUrl>
+        <source>IDEA-ultimate</source>
+        <changedLines>2</changedLines>
+        <fileType>File</fileType>
+        <commitType>Modified</commitType>
+      </expandedRevisions>
+      <expandedRevisions>
+        <addDate>2011-07-01T08:32:44.168+04:00</addDate>
+        <revision>94624b5a205e55e879a0849886d84b98b3891815</revision>
+        <path>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</path>
+        <contentUrl>/cru/CR-PY-7/rawcontent/26/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</contentUrl>
+        <source>IDEA-ultimate</source>
+        <changedLines>32</changedLines>
+        <fileType>File</fileType>
+        <commitType>Modified</commitType>
+      </expandedRevisions>
+      <expandedRevisions>
+        <addDate>2011-07-03T19:24:09.292+04:00</addDate>
+        <revision>6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be</revision>
+        <path>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</path>
+        <contentUrl>/cru/CR-PY-7/rawcontent/91/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</contentUrl>
+        <source>IDEA-ultimate</source>
+        <changedLines>40</changedLines>
+        <fileType>File</fileType>
+        <commitType>Modified</commitType>
+      </expandedRevisions>
+      <fileType>File</fileType>
+      <fromContentUrl>/cru/CR-PY-7/rawcontent/27/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</fromContentUrl>
+      <fromPath>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</fromPath>
+      <fromRevision>6fd471e13753755bd372fed25e32fb9816af643f</fromRevision>
+      <repositoryName>IDEA-ultimate</repositoryName>
+      <showAsDiff>true</showAsDiff>
+      <toContentUrl>/cru/CR-PY-7/rawcontent/91/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</toContentUrl>
+      <toPath>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</toPath>
+      <toRevision>6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be</toRevision>
+    </reviewItem>
+    <reviewItem>
+      <participants>
+        <participant>
+          <user>
+            <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+            <displayName>Dmitry Jemerov</displayName>
+            <userName>yole</userName>
+          </user>
+          <completed>true</completed>
+        </participant>
+        <participant>
+          <user>
+            <avatarUrl>http://crucible.labs.intellij.net/avatar/catherine?s=48</avatarUrl>
+            <displayName>Catherine Tuzova</displayName>
+            <userName>catherine</userName>
+          </user>
+          <completed>true</completed>
+        </participant>
+      </participants>
+      <permId>
+        <id>CFR-108</id>
+      </permId>
+      <authorName>Ekaterina Tuzova &lt;Ekaterina.Tuzova@jetbrains.com&gt;</authorName>
+      <commitDate>2011-07-01T19:27:53+04:00</commitDate>
+      <commitType>Modified</commitType>
+      <expandedRevisions>
+        <addDate>2011-07-05T04:32:03.741+04:00</addDate>
+        <revision>e0dced5f767fd81f72dd972cf9ddf7ed00d1d301</revision>
+        <path>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</path>
+        <contentUrl>/cru/CR-PY-7/rawcontent/179/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</contentUrl>
+        <source>IDEA-ultimate</source>
+        <changedLines>32</changedLines>
+        <fileType>File</fileType>
+        <commitType>Modified</commitType>
+      </expandedRevisions>
+      <expandedRevisions>
+        <addDate>2011-07-05T04:32:03.738+04:00</addDate>
+        <revision>b3cbd7b4260bab889bf68c3feeacfa22794d6a3b</revision>
+        <path>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</path>
+        <contentUrl>/cru/CR-PY-7/rawcontent/191/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</contentUrl>
+        <source>IDEA-ultimate</source>
+        <changedLines>40</changedLines>
+        <fileType>File</fileType>
+        <commitType>Modified</commitType>
+      </expandedRevisions>
+      <fileType>File</fileType>
+      <fromContentUrl>/cru/CR-PY-7/rawcontent/179/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java
+      </fromContentUrl>
+      <fromPath>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</fromPath>
+      <fromRevision>e0dced5f767fd81f72dd972cf9ddf7ed00d1d301</fromRevision>
+      <repositoryName>IDEA-ultimate</repositoryName>
+      <showAsDiff>true</showAsDiff>
+      <toContentUrl>/cru/CR-PY-7/rawcontent/191/python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</toContentUrl>
+      <toPath>python/src/com/jetbrains/python/testing/pytest/PyTestRunConfiguration.java</toPath>
+      <toRevision>b3cbd7b4260bab889bf68c3feeacfa22794d6a3b</toRevision>
+    </reviewItem>
+  </reviewItems>
+  <reviewers/>
+  <transitions/>
+  <versionedComments>
+    <versionedLineCommentData>
+      <createDate>2011-07-01T15:26:03.953+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>This code will be called from PyTestConfigurationProducer, which in turn will be called from action update. Calling external
+        scripts from this context is a really bad idea. At the very least, the results should be cached.
+      </message>
+      <messageAsHtml>&lt;p&gt;This code will be called from PyTestConfigurationProducer, which in turn will be called from action update.
+        Calling external scripts from this context is a really bad idea. At the very least, the results should be
+        cached.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies/>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permaId>
+        <id>CMT:23</id>
+      </permaId>
+      <reviewItemId>
+        <id>CFR-14</id>
+      </reviewItemId>
+      <toLineRange>120</toLineRange>
+      <lineRanges>
+        <lineRange range="120" revision="94624b5a205e55e879a0849886d84b98b3891815"/>
+      </lineRanges>
+    </versionedLineCommentData>
+    <versionedLineCommentData>
+      <createDate>2011-07-01T15:26:53.934+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>Please don't forget to close streams.</message>
+      <messageAsHtml>&lt;p&gt;Please don&amp;#39;t forget to close streams.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies/>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permaId>
+        <id>CMT:24</id>
+      </permaId>
+      <reviewItemId>
+        <id>CFR-14</id>
+      </reviewItemId>
+      <toLineRange>122</toLineRange>
+      <lineRanges>
+        <lineRange range="122" revision="94624b5a205e55e879a0849886d84b98b3891815"/>
+      </lineRanges>
+    </versionedLineCommentData>
+    <versionedLineCommentData>
+      <createDate>2011-07-04T14:49:56.322+0400</createDate>
+      <defectApproved>false</defectApproved>
+      <defectRaised>false</defectRaised>
+      <deleted>false</deleted>
+      <draft>false</draft>
+      <message>This won't work correctly if you have multiple projects open at the same time that use different Python versions.</message>
+      <messageAsHtml>&lt;p&gt;This won&amp;#39;t work correctly if you have multiple projects open at the same time that use different
+        Python versions.&lt;/p&gt;</messageAsHtml>
+      <metrics/>
+      <parentCommentId/>
+      <readStatus>READ</readStatus>
+      <replies>
+        <generalCommentData>
+          <createDate>2011-07-10T19:13:04.429+0400</createDate>
+          <defectApproved>false</defectApproved>
+          <defectRaised>false</defectRaised>
+          <deleted>false</deleted>
+          <draft>false</draft>
+          <message>Why? ourRunnerVersion contains the version of interpreter which was used to install py.test script located in usr/bin or
+            usr/local/bin
+          </message>
+          <messageAsHtml>&lt;p&gt;Why? ourRunnerVersion contains the version of interpreter which was used to install py.test script located
+            in usr/bin or usr/local/bin&lt;/p&gt;</messageAsHtml>
+          <metrics/>
+          <parentCommentId>
+            <id>CMT:49</id>
+          </parentCommentId>
+          <readStatus>READ</readStatus>
+          <replies>
+            <generalCommentData>
+              <createDate>2011-07-12T21:04:34.852+0400</createDate>
+              <defectApproved>false</defectApproved>
+              <defectRaised>false</defectRaised>
+              <deleted>false</deleted>
+              <draft>false</draft>
+              <message>You're right, sorry.</message>
+              <messageAsHtml>&lt;p&gt;You&amp;#39;re right, sorry.&lt;/p&gt;</messageAsHtml>
+              <metrics/>
+              <parentCommentId>
+                <id>CMT:134</id>
+              </parentCommentId>
+              <readStatus>READ</readStatus>
+              <replies/>
+              <user>
+                <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+                <displayName>Dmitry Jemerov</displayName>
+                <userName>yole</userName>
+              </user>
+              <permId>
+                <id>CMT:160</id>
+              </permId>
+              <permaId>
+                <id>CMT:160</id>
+              </permaId>
+            </generalCommentData>
+          </replies>
+          <user>
+            <avatarUrl>http://crucible.labs.intellij.net/avatar/catherine?s=48</avatarUrl>
+            <displayName>Catherine Tuzova</displayName>
+            <userName>catherine</userName>
+          </user>
+          <permId>
+            <id>CMT:134</id>
+          </permId>
+          <permaId>
+            <id>CMT:134</id>
+          </permaId>
+        </generalCommentData>
+      </replies>
+      <user>
+        <avatarUrl>http://crucible.labs.intellij.net/avatar/yole?s=48</avatarUrl>
+        <displayName>Dmitry Jemerov</displayName>
+        <userName>yole</userName>
+      </user>
+      <permaId>
+        <id>CMT:49</id>
+      </permaId>
+      <reviewItemId>
+        <id>CFR-14</id>
+      </reviewItemId>
+        <toLineRange>30</toLineRange>
+      <lineRanges>
+        <lineRange range="30" revision="6d54f6d2de4a68ed21eca3cf1db7461ccd6d92be"/>
+      </lineRanges>
+    </versionedLineCommentData>
+  </versionedComments>
+</detailedReviewData>
