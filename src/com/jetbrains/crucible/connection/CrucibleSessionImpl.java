@@ -3,11 +3,17 @@ package com.jetbrains.crucible.connection;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
 import com.jetbrains.crucible.ui.UiUtils;
+import git4idea.GitUtil;
+import git4idea.commands.GitRemoteProtocol;
+import git4idea.repo.GitRemote;
+import git4idea.repo.GitRepository;
+import git4idea.repo.GitRepositoryManager;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -31,6 +37,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * User : ktisha
@@ -42,6 +50,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
   private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
+
+  private final Map<String, String> myRepoHash = new HashMap<String, String>();
 
   CrucibleSessionImpl(Project project) {
     myProject = project;
@@ -240,6 +250,79 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
     return false;
   }
+
+  @Override
+  public void fillRepoHash() throws IOException, JDOMException {
+    String url = getHostUrl() + REPOSITORIES;
+    final Document doc = buildSaxResponse(url);
+    XPath xpath = XPath.newInstance("/repositories/repoData");
+    @SuppressWarnings("unchecked")
+    List<Element> elements = xpath.selectNodes(doc);
+
+    if (elements != null && !elements.isEmpty()) {
+      for (Element element : elements) {
+        final String enabled = CrucibleXmlParser.getChildText(element, "enabled");
+        if (Boolean.parseBoolean(enabled)) {
+          final String name = CrucibleXmlParser.getChildText(element, "name");
+          final String type = CrucibleXmlParser.getChildText(element, "type");
+          if ("git".equals(type)) {
+            final String localPath = getLocalPath(name);
+            if (localPath != null)
+              myRepoHash.put(name, localPath);
+          }
+        }
+      }
+    }
+  }
+
+  @Nullable
+  private String getLocalPath(String name) throws IOException, JDOMException {
+    String url = getHostUrl() + REPOSITORIES + "/" + name;
+    final Document doc = buildSaxResponse(url);
+    XPath xpath = XPath.newInstance("/gitRepositoryData");
+    @SuppressWarnings("unchecked")
+    Element element = (Element)xpath.selectSingleNode(doc);
+    if (element == null) return null;
+    String location = CrucibleXmlParser.getChildText(element, "location");
+    final GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
+    final List<GitRepository> repositories = manager.getRepositories();
+    location = unifyLocation(location);
+    for (GitRepository repo : repositories) {
+      final GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN_NAME);
+      if (origin != null && location != null) {
+        final String originFirstUrl = origin.getFirstUrl();
+        if (originFirstUrl == null) continue;
+        final String originLocation  = unifyLocation(originFirstUrl);
+        if (location.equals(originLocation)) {
+          return repo.getRoot().getPath();
+        }
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  private static String unifyLocation(@NotNull final String location) {
+    final GitRemoteProtocol protocol = GitRemoteProtocol.fromUrl(location);
+    if (protocol == null) return null;
+    switch (protocol) {
+      case GIT:
+        return StringUtil.trimEnd(StringUtil.trimStart(location, "git://"), ".git");
+      case HTTP:
+        Pattern pattern = Pattern.compile("https?://(.*)\\.git");
+        Matcher matcher = pattern.matcher(location);
+        boolean found = matcher.find();
+        return found ? matcher.group(1) : null;
+      case SSH:
+        pattern = Pattern.compile("git@(.*)?:(.*)(\\.git)?");
+        matcher = pattern.matcher(location);
+        found = matcher.find();
+        return found ? matcher.group(1) + "/" + matcher.group(2) : null;
+      default:
+    }
+    return null;
+  }
+
 
   public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {
     String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;

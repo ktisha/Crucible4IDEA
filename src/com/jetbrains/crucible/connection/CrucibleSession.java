@@ -21,6 +21,7 @@ public interface CrucibleSession {
   String LOGIN = "/login";
   String FILTERED_REVIEWS = "/filter";
   String COMMENTS = "/comments";
+  String REPOSITORIES = "/rest-service/repositories-v1";
   void login() throws CrucibleApiLoginException;
 
   @Nullable
@@ -30,4 +31,6 @@ public interface CrucibleSession {
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
 
   boolean postComment(@NotNull final Comment comment, String reviewId);
+
+  void fillRepoHash() throws IOException, JDOMException;
 }

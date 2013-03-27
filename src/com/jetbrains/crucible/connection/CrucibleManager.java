@@ -81,6 +81,15 @@ public class CrucibleManager {
       session = new CrucibleSessionImpl(myProject);
       session.login();
       mySessions.put(key, session);
+      try {
+        session.fillRepoHash();
+      }
+      catch (IOException e) {
+        LOG.warn(e.getMessage());
+      }
+      catch (JDOMException e) {
+        LOG.warn(e.getMessage());
+      }
     }
     return session;
   }
