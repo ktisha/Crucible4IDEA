@@ -36,7 +36,7 @@ public class ReviewBalloonBuilder {
 
   public Balloon getCommentBalloon(final CommentForm balloonContent) {
     final BalloonBuilder balloonBuilder =
-      JBPopupFactory.getInstance().createDialogBalloonBuilder(balloonContent, "New comment for " + balloonContent.getReviewId());
+      JBPopupFactory.getInstance().createDialogBalloonBuilder(balloonContent, "New comment for " + balloonContent.getContentName());
     balloonBuilder.setHideOnClickOutside(true);
     balloonBuilder.setHideOnKeyOutside(true);
 
