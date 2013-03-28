@@ -39,6 +39,14 @@ import java.util.List;
  * User: ktisha
  */
 public class CommentsDiffTool extends FrameDiffTool {
+  @Override
+  public boolean canShow(DiffRequest request) {
+    final boolean superCanShow = super.canShow(request);
+    final AsyncResult<DataContext> dataContextFromFocus = DataManager.getInstance().getDataContextFromFocus();
+    final DataContext context = dataContextFromFocus.getResult();
+    final Review review = CrucibleDataKeys.REVIEW.getData(context);
+    return superCanShow && review != null;
+  }
 
   @Override
   public void show(DiffRequest request) {
@@ -75,7 +83,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     }.registerCustomShortcutSet(new CustomShortcutSet(KeymapManager.getInstance().getActiveKeymap().getShortcuts("CloseContent")),
                                 diffPanel.getComponent());
 
-    if (changes != null && changes.length == 1) {
+    if (changes != null && changes.length == 1 && review != null) {
       final ContentRevision revision = changes[0].getAfterRevision();
       addGutter(contents[1], review, revision, request.getProject());
     }
@@ -90,9 +98,8 @@ public class CommentsDiffTool extends FrameDiffTool {
     }
   }
 
-  private void addGutter(DiffContent content, Review review,
-                         @Nullable ContentRevision revision,
-                         Project project) {
+  private void addGutter(@NotNull final DiffContent content, @NotNull final Review review,
+                         @Nullable ContentRevision revision, @Nullable final Project project) {
     final List<Comment> comments = review.getComments();
     final FilePath filePath = revision == null? null : revision.getFile();
 
