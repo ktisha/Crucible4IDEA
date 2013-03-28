@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.ui.Splitter;
+import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.actions.OpenRepositoryVersionAction;
 import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
@@ -207,6 +208,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     public void calcData(DataKey key, DataSink sink) {
       if (key == CrucibleDataKeys.REVIEW)
         sink.put(CrucibleDataKeys.REVIEW, myReview);
+      if (key == VcsDataKeys.SELECTED_CHANGES) {
+        final List<Change> list = myViewer.getSelectedChanges();
+        sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));
+      }
       super.calcData(key, sink);
     }
   }
