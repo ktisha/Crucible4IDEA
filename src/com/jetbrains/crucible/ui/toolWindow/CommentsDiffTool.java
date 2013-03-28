@@ -122,7 +122,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
 
   private class ReviewGutterIconRenderer extends GutterIconRenderer {
-    private final Icon icon = IconLoader.getIcon("/images/note.png");
+    private final Icon icon = IconLoader.getIcon("/images/comment.png");
     private final Comment myComment;
 
     ReviewGutterIconRenderer(Comment comment) {

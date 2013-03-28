@@ -41,7 +41,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
   private DefaultTableModel myCommentsModel;
+  private JBTable myGeneralComments;
 
+  @SuppressWarnings("UseOfObsoleteCollectionType")
   public DetailsPanel(Project project, Review review) {
     super(false);
     myProject = project;
@@ -80,14 +82,15 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       @Override
       public Class<?> getColumnClass(int columnIndex) {
         if (columnIndex == 2) return Date.class;
+        if (columnIndex == 0) return Comment.class;
         return String.class;
       }
     };
 
     Splitter splitter = new Splitter(false, 0.7f);
     final JPanel wrapper = createMainTable();
-    splitter.setFirstComponent(wrapper);
 
+    splitter.setFirstComponent(wrapper);
     final JComponent component = createRepositoryBrowserDetails();
     splitter.setSecondComponent(component);
 
@@ -102,7 +105,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   public void updateComments(List<Comment> list) {
     for (Comment comment : list) {
-      myCommentsModel.addRow(new Object[]{comment.getMessage(), comment.getAuthor().getUserName(), comment.getCreateDate()});
+      myCommentsModel.addRow(new Object[]{comment, comment.getAuthor().getUserName(), comment.getCreateDate()});
     }
   }
 
@@ -125,8 +128,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable.setAutoCreateRowSorter(true);
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
 
-    JBTable generalComments = new JBTable(myCommentsModel);
-    generalComments.setStriped(true);
+    myGeneralComments = new JBTable(myCommentsModel);
+    myGeneralComments.setStriped(true);
 
     DefaultActionGroup actionGroup = new DefaultActionGroup();
     actionGroup.add(new AddCommentAction("Add comment", myReview.getPermaId()));
@@ -134,16 +137,18 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
       .createActionPopupMenu("Crucible", actionGroup);
     JPopupMenu popupMenu = actionPopupMenu.getComponent();
-    generalComments.setComponentPopupMenu(popupMenu);
+    myGeneralComments.setComponentPopupMenu(popupMenu);
 
-
-    generalComments.setAutoCreateRowSorter(true);
-    JScrollPane commentsScrollPane = ScrollPaneFactory.createScrollPane(generalComments);
+    myGeneralComments.setAutoCreateRowSorter(true);
     final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
-    commentsScrollPane.setBorder(border);
+    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments);
+    decorator.addExtraAction(new AddCommentAction("Add comment", myReview.getPermaId()));
 
+    final JPanel decoratedPanel = decorator.createPanel();
+    decoratedPanel.setBorder(border);
     splitter.setFirstComponent(tableScrollPane);
-    splitter.setSecondComponent(commentsScrollPane);
+
+    splitter.setSecondComponent(decoratedPanel);
     return splitter;
   }
 
@@ -208,6 +213,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     public void calcData(DataKey key, DataSink sink) {
       if (key == CrucibleDataKeys.REVIEW)
         sink.put(CrucibleDataKeys.REVIEW, myReview);
+      if (key == CrucibleDataKeys.SELECTED_COMMENT)
+        sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myCommentsModel.getValueAt(myGeneralComments.getSelectedRow(), 0));
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
         sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));

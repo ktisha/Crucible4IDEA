@@ -74,8 +74,10 @@ public class CruciblePanel extends SimpleToolWindowPanel {
                 try {
                   final Review review =
                     CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
-                  if (review != null)
+                  if (review != null) {
                     openDetailsToolWindow(review);
+                    myReviewTable.clearSelection();
+                  }
                 }
                 catch (CrucibleApiException e1) {
                   LOG.warn(e1.getMessage());

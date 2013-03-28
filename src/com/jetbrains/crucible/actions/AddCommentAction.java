@@ -1,6 +1,5 @@
 package com.jetbrains.crucible.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
@@ -9,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
 import com.jetbrains.crucible.ui.toolWindow.CommentForm;
@@ -21,14 +21,15 @@ import java.awt.*;
  * Add comment
  */
 @SuppressWarnings("ComponentNotRegistered")
-public class AddCommentAction extends AnAction implements DumbAware {
+public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private final String myName;
 
   public AddCommentAction(String s, String name) {
-    super(s, s, IconLoader.getIcon("/images/note.png"));
+    super(s, s, IconLoader.getIcon("/images/comment.png"));
     myName = name;
   }
+
   public void actionPerformed(AnActionEvent e) {
     Project project = e.getData(PlatformDataKeys.PROJECT);
     if (project == null) return;
