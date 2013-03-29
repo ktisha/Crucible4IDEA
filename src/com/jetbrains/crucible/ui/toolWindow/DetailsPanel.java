@@ -16,6 +16,7 @@ import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -114,7 +115,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   }
 
   private JPanel createMainTable() {
-    JBSplitter splitter = new JBSplitter(true, 0.8f);
+    JBSplitter splitter = new JBSplitter(true, 0.65f);
 
     myCommitsTable = new JBTable(myCommitsModel) {
       @Override
@@ -126,10 +127,14 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     };
     myCommitsTable.setStriped(true);
     myCommitsTable.setAutoCreateRowSorter(true);
+
+    setUpColumnWidths(myCommitsTable);
+
     JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
 
     myGeneralComments = new JBTable(myCommentsModel);
     myGeneralComments.setStriped(true);
+    setUpColumnWidths(myGeneralComments);
 
     DefaultActionGroup actionGroup = new DefaultActionGroup();
     actionGroup.add(new AddCommentAction("Add comment", myReview.getPermaId()));
@@ -141,7 +146,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     myGeneralComments.setAutoCreateRowSorter(true);
     final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
-    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments);
+    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
+      setToolbarPosition(ActionToolbarPosition.LEFT);
     decorator.addExtraAction(new AddCommentAction("Add comment", myReview.getPermaId()));
 
     final JPanel decoratedPanel = decorator.createPanel();
@@ -150,6 +156,15 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     splitter.setSecondComponent(decoratedPanel);
     return splitter;
+  }
+
+  private static void setUpColumnWidths(@NotNull final JBTable table) {
+    table.getColumnModel().getColumn(0).setMinWidth(400);          //message
+    table.getColumnModel().getColumn(0).setPreferredWidth(400);    //message
+    table.getColumnModel().getColumn(1).setMinWidth(200);     //Author
+    table.getColumnModel().getColumn(1).setMaxWidth(200);     //Author
+    table.getColumnModel().getColumn(2).setMinWidth(130);     //Date
+    table.getColumnModel().getColumn(2).setMaxWidth(130);     //Date
   }
 
   private JComponent createRepositoryBrowserDetails() {
