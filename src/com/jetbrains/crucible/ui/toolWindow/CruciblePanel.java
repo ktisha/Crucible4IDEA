@@ -63,6 +63,9 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     myReviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     myReviewTable.setStriped(true);
 
+    myReviewTable.getColumnModel().getColumn(0).setMinWidth(400);          //message
+    myReviewTable.getColumnModel().getColumn(0).setMinWidth(400);          //message
+    setUpColumnWidths(myReviewTable);
     myReviewTable.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
@@ -109,11 +112,27 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     setContent(splitter);
   }
 
+  private static void setUpColumnWidths(@NotNull final JBTable table) {
+    table.getColumnModel().getColumn(0).setMinWidth(130);     //ID
+    table.getColumnModel().getColumn(0).setMaxWidth(130);     //ID
+    table.getColumnModel().getColumn(1).setMinWidth(400);          //message
+    table.getColumnModel().getColumn(1).setPreferredWidth(400);    //message
+    table.getColumnModel().getColumn(2).setMinWidth(130);     //State
+    table.getColumnModel().getColumn(2).setMaxWidth(130);     //State
+    table.getColumnModel().getColumn(3).setMinWidth(200);     //Author
+    table.getColumnModel().getColumn(3).setMaxWidth(200);     //Author
+    table.getColumnModel().getColumn(4).setMinWidth(130);     //Date
+    table.getColumnModel().getColumn(4).setMaxWidth(130);     //Date
+  }
+
   public void openDetailsToolWindow(@NotNull final Review review) {
     final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
-    if (foundContent != null) return;
+    if (foundContent != null) {
+      contentManager.setSelectedContent(foundContent);
+      return;
+    }
 
     final DetailsPanel details = new DetailsPanel(myProject, review);
     final Content content = ContentFactory.SERVICE.getInstance().createContent(details,
