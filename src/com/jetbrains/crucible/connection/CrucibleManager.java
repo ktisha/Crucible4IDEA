@@ -2,6 +2,7 @@ package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
@@ -63,10 +64,10 @@ public class CrucibleManager {
     return null;
   }
 
-  public boolean postComment(@NotNull final Comment comment, String reviewId) {
+  public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
     try {
       final CrucibleSession session = getSession();
-      return session.postComment(comment, reviewId);
+      return session.postComment(comment, isGeneral, reviewId);
     }
     catch (CrucibleApiException e) {
       LOG.warn(e.getMessage());
@@ -95,7 +96,7 @@ public class CrucibleManager {
     return session;
   }
 
-  public Map<String, String> getRepoHash() {
+  public Map<String,VirtualFile> getRepoHash() {
     try {
       final CrucibleSession session = getSession();
       return session.getRepoHash();

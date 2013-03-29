@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.connection;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
@@ -16,6 +17,7 @@ import java.util.Map;
  */
 public interface CrucibleSession {
   String REVIEW_SERVICE = "/rest-service/reviews-v1";
+  String REVIEW_ITEMS = "/reviewitems";
   String DETAIL_REVIEW_INFO = "/details";
   String VERSION = "/versionInfo";
   String AUTH_SERVICE = "/rest-service/auth-v1";
@@ -31,8 +33,8 @@ public interface CrucibleSession {
   List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException;
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
 
-  boolean postComment(@NotNull final Comment comment, String reviewId);
+  boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
 
   void fillRepoHash() throws IOException, JDOMException;
-  Map<String, String> getRepoHash();
+  Map<String,VirtualFile> getRepoHash();
 }

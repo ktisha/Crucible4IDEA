@@ -5,7 +5,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.*;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Comment;
-import com.jetbrains.crucible.ui.toolWindow.CommentForm;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

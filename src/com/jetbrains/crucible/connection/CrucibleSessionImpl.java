@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
@@ -51,7 +52,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
 
-  private final Map<String, String> myRepoHash = new HashMap<String, String>();
+  private final Map<String, VirtualFile> myRepoHash = new HashMap<String, VirtualFile>();
 
   CrucibleSessionImpl(Project project) {
     myProject = project;
@@ -164,9 +165,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @SuppressWarnings("unchecked")
-  private static RequestEntity createCommentRequest(Comment comment) throws UnsupportedEncodingException {
+  private static RequestEntity createCommentRequest(Comment comment, boolean isGeneral) throws UnsupportedEncodingException {
     Document doc = new Document();
-    Element root = new Element("generalCommentData");
+    Element root = new Element(isGeneral ? "generalCommentData" : "versionedLineCommentData");
+
     final Element defectApproved = new Element("defectApproved");
     final Element defectRaised = new Element("defectRaised");
     final Element deleted = new Element("deleted");
@@ -186,6 +188,19 @@ public class CrucibleSessionImpl implements CrucibleSession {
     root.addContent(parentCommentId);
     root.addContent(permId);
     root.addContent(permaId);
+
+    if (!isGeneral) {
+      final Element reviewItemId = new Element("reviewItemId");
+      final Element id = new Element("id");
+      id.addContent(comment.getReviewItemId());
+
+      final Element toLineRange = new Element("toLineRange");
+      toLineRange.addContent(comment.getLine());
+
+      root.addContent(reviewItemId);
+      root.addContent(toLineRange);
+    }
+
     doc.setRootElement(root);
 
     XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
@@ -226,10 +241,16 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
-  public boolean postComment(@NotNull final Comment comment, String reviewId) {
-    String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId + COMMENTS;
+  public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
+
+    String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
+    if (!isGeneral)
+      url += REVIEW_ITEMS + "/" + comment.getReviewItemId();
+
+    url += COMMENTS;
+
     try {
-      final RequestEntity request = createCommentRequest(comment);
+      final RequestEntity request = createCommentRequest(comment, isGeneral);
       final Document document = buildSaxResponseForPost(url, request);
       XPath xpath = XPath.newInstance("/error");
       @SuppressWarnings("unchecked")
@@ -266,7 +287,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
           final String name = CrucibleXmlParser.getChildText(element, "name");
           final String type = CrucibleXmlParser.getChildText(element, "type");
           if ("git".equals(type)) {
-            final String localPath = getLocalPath(name);
+            final VirtualFile localPath = getLocalPath(name);
             if (localPath != null)
               myRepoHash.put(name, localPath);
           }
@@ -276,7 +297,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private String getLocalPath(String name) throws IOException, JDOMException {
+  private VirtualFile getLocalPath(String name) throws IOException, JDOMException {
     String url = getHostUrl() + REPOSITORIES + "/" + name;
     final Document doc = buildSaxResponse(url);
     XPath xpath = XPath.newInstance("/gitRepositoryData");
@@ -294,7 +315,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
         if (originFirstUrl == null) continue;
         final String originLocation  = unifyLocation(originFirstUrl);
         if (location.equals(originLocation)) {
-          return repo.getRoot().getPath();
+          return repo.getRoot();
         }
       }
     }
@@ -465,7 +486,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return CrucibleXmlParser.parseBasicReview(getHostUrl(), element);
   }
 
-  public Map<String, String> getRepoHash() {
+  public Map<String, VirtualFile> getRepoHash() {
     return myRepoHash;
   }
 }

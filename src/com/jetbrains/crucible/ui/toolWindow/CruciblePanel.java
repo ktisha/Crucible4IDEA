@@ -11,7 +11,6 @@ import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -155,9 +154,8 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         for (ReviewItem reviewItem : reviewItems) {
           Set<String> revisions = reviewItem.getRevisions();
           String repoName = reviewItem.getRepo();
-          final Map<String,String> hash = CrucibleManager.getInstance(myProject).getRepoHash();
-          final VirtualFile root = hash.containsKey(repoName) ?
-                                   LocalFileSystem.getInstance().findFileByPath(hash.get(repoName)) : virtualFile;
+          final Map<String, VirtualFile> hash = CrucibleManager.getInstance(myProject).getRepoHash();
+          final VirtualFile root = hash.containsKey(repoName) ? hash.get(repoName) : virtualFile;
 
           for (String revision : revisions) {
             if (!loadedRevisions.contains(revision)) {

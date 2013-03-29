@@ -68,7 +68,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     final Editor editor2 = diffPanel.getEditor2();
 
     String name = vFile == null ? "file" : vFile.getName();
-    addCommentAction(editor2, name);
+    addCommentAction(editor2, vFile, review, name);
 
     builder.removeAllActions();
     builder.setCenterPanel(diffPanel.getComponent());
@@ -90,10 +90,12 @@ public class CommentsDiffTool extends FrameDiffTool {
     builder.showModal(true);
   }
 
-  private static void addCommentAction(@Nullable final Editor editor2, String name) {
+  private static void addCommentAction(@Nullable final Editor editor2, VirtualFile vFile, Review review, String name) {
     if (editor2 != null) {
       DefaultActionGroup group = new DefaultActionGroup();
       final AddCommentAction addCommentAction = new AddCommentAction("Add Comment", name);
+      addCommentAction.setVirtualFile(vFile);
+      addCommentAction.setReview(review);
       addCommentAction.setContextComponent(editor2.getComponent());
       group.add(addCommentAction);
       PopupHandler.installUnknownPopupHandler(editor2.getContentComponent(), group, ActionManager.getInstance());

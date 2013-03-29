@@ -138,6 +138,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     DefaultActionGroup actionGroup = new DefaultActionGroup();
     final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId());
+    addCommentAction.setReview(myReview);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 

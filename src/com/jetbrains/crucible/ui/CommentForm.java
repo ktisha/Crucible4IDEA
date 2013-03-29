@@ -1,9 +1,12 @@
-package com.jetbrains.crucible.ui.toolWindow;
+package com.jetbrains.crucible.ui;
 
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.*;
@@ -11,6 +14,7 @@ import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.model.Comment;
+import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
 
 import javax.swing.*;
@@ -25,14 +29,21 @@ import java.util.Set;
  */
 public class CommentForm extends JPanel {
 
-  private final String myContentName;
+  private String myContentName;
   private EditorTextField myReviewTextField;
+  private Editor myEditor;
 
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
   private Balloon myBalloon;
+  private VirtualFile myVitualFile;
+  private Review myReview;
 
-  public CommentForm(final Project project, final String contentName) {
+  public CommentForm(final Project project, final String contentName, final boolean isGeneral) {
+    createMainPanel(project, contentName, isGeneral);
+  }
+
+  private void createMainPanel(final Project project, final String contentName, final boolean isGeneral) {
     myContentName = contentName;
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
@@ -52,7 +63,17 @@ public class CommentForm extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         final Comment comment = new Comment(new User(CrucibleSettings.getInstance(project).USERNAME), getText());
-        final boolean success = CrucibleManager.getInstance(project).postComment(comment, contentName);
+        assert myReview != null;
+        if (myEditor != null) {
+          final Document document = myEditor.getDocument();
+          final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset());
+          comment.setLine(String.valueOf(lineNumber));
+          final String path = myVitualFile.getPath();
+          final String id = myReview.getIdByPath(path, project);
+          comment.setReviewItemId(id);
+        }
+
+        final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
         if (success && myBalloon != null)
           myBalloon.dispose();
       }
@@ -73,5 +94,17 @@ public class CommentForm extends JPanel {
 
   public String getContentName() {
     return myContentName;
+  }
+
+  public void setEditor(Editor editor) {
+    myEditor = editor;
+  }
+
+  public void setVirtualFile(VirtualFile vitualFile) {
+    myVitualFile = vitualFile;
+  }
+
+  public void setReview(Review review) {
+    myReview = review;
   }
 }
