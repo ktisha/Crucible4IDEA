@@ -137,7 +137,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     setUpColumnWidths(myGeneralComments);
 
     DefaultActionGroup actionGroup = new DefaultActionGroup();
-    actionGroup.add(new AddCommentAction("Add comment", myReview.getPermaId()));
+    final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId());
+    addCommentAction.setContextComponent(myGeneralComments);
+    actionGroup.add(addCommentAction);
 
     ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
       .createActionPopupMenu("Crucible", actionGroup);
@@ -148,7 +150,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
       setToolbarPosition(ActionToolbarPosition.LEFT);
-    decorator.addExtraAction(new AddCommentAction("Add comment", myReview.getPermaId()));
+    decorator.addExtraAction(addCommentAction);
 
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
