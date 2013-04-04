@@ -15,6 +15,7 @@ import com.jetbrains.crucible.ui.ReviewForm;
  * <p/>
  * Show comments for file
  */
+@SuppressWarnings("ComponentNotRegistered")
 public class ShowCommentAction extends AnAction implements DumbAware {
   private final Comment myComment;
 

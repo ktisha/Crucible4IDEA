@@ -93,9 +93,7 @@ public class CommentsDiffTool extends FrameDiffTool {
   private static void addCommentAction(@Nullable final Editor editor2, VirtualFile vFile, Review review, String name) {
     if (editor2 != null) {
       DefaultActionGroup group = new DefaultActionGroup();
-      final AddCommentAction addCommentAction = new AddCommentAction("Add Comment", name);
-      addCommentAction.setVirtualFile(vFile);
-      addCommentAction.setReview(review);
+      final AddCommentAction addCommentAction = new AddCommentAction("Add Comment", name, vFile, review);
       addCommentAction.setContextComponent(editor2.getComponent());
       group.add(addCommentAction);
       PopupHandler.installUnknownPopupHandler(editor2.getContentComponent(), group, ActionManager.getInstance());

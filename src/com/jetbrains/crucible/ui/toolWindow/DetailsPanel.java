@@ -14,6 +14,7 @@ import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
 import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
+import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
@@ -137,10 +138,16 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     setUpColumnWidths(myGeneralComments);
 
     DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId());
-    addCommentAction.setReview(myReview);
+    final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId(), null, myReview);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
+
+    String selectedComment = myGeneralComments.getSelectedRow() < 0 ? null : (String)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0) ;
+    final ReplyToCommentAction replyToCommentAction =
+      new ReplyToCommentAction(myReview, "Reply", myReview.getPermaId(), selectedComment);
+
+    replyToCommentAction.setContextComponent(myGeneralComments);
+    actionGroup.add(replyToCommentAction);
 
     ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
       .createActionPopupMenu("Crucible", actionGroup);
@@ -152,6 +159,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
       setToolbarPosition(ActionToolbarPosition.LEFT);
     decorator.addExtraAction(addCommentAction);
+    decorator.addExtraAction(replyToCommentAction);
 
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);

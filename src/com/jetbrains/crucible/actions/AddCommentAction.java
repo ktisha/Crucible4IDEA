@@ -12,8 +12,8 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
 import com.jetbrains.crucible.ui.CommentForm;
+import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -30,9 +30,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   private VirtualFile myVirtualFile;
   private Review myReview;
 
-  public AddCommentAction(String s, String name) {
+  public AddCommentAction(String s, String name, VirtualFile virtualFile, Review review) {
     super(s, s, IconLoader.getIcon("/images/comment.png"));
     myName = name;
+    myVirtualFile = virtualFile;
+    myReview = review;
   }
 
   public void actionPerformed(AnActionEvent e) {
@@ -66,13 +68,5 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     final Point targetPoint = editor.visualPositionToXY(editor.getCaretModel().getVisualPosition());
     balloon.show(new RelativePoint(editor.getContentComponent(), targetPoint), Balloon.Position.below);
     commentForm.requestFocus();
-  }
-
-  public void setVirtualFile(VirtualFile virtualFile) {
-    myVirtualFile = virtualFile;
-  }
-
-  public void setReview(Review review) {
-    myReview = review;
   }
 }
