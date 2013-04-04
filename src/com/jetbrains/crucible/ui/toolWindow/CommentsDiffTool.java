@@ -116,7 +116,7 @@ public class CommentsDiffTool extends FrameDiffTool {
         final RangeHighlighter highlighter = markup.addPersistentLineHighlighter(Integer.parseInt(comment.getLine()),
                                                                                  HighlighterLayer.ERROR + 1, null);
         if(highlighter == null) return;
-        final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(comment);
+        final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(review, comment);
         highlighter.setGutterIconRenderer(gutterIconRenderer);
       }
     }
@@ -125,9 +125,11 @@ public class CommentsDiffTool extends FrameDiffTool {
 
   private class ReviewGutterIconRenderer extends GutterIconRenderer {
     private final Icon icon = IconLoader.getIcon("/images/comment.png");
+    private final Review myReview;
     private final Comment myComment;
 
-    ReviewGutterIconRenderer(Comment comment) {
+    ReviewGutterIconRenderer(Review review, Comment comment) {
+      myReview = review;
       myComment = comment;
     }
     @NotNull
@@ -151,7 +153,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     @Override
     public AnAction getClickAction() {
-      return new ShowCommentAction(myComment);
+      return new ShowCommentAction(myComment, myReview);
     }
 
     @Override
