@@ -36,8 +36,9 @@ public class CommentForm extends JPanel {
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
   private Balloon myBalloon;
-  private VirtualFile myVitualFile;
+  private VirtualFile myVirtualFile;
   private Review myReview;
+  private String myParentCommentId;
 
   public CommentForm(final Project project, final String contentName, final boolean isGeneral) {
     createMainPanel(project, contentName, isGeneral);
@@ -64,18 +65,24 @@ public class CommentForm extends JPanel {
       public void actionPerformed(ActionEvent e) {
         final Comment comment = new Comment(new User(CrucibleSettings.getInstance(project).USERNAME), getText());
         assert myReview != null;
+
+        final String parentCommentId = getParentCommentId();
+        if (parentCommentId != null) {
+          comment.setParentCommentId(parentCommentId);
+        }
         if (myEditor != null) {
           final Document document = myEditor.getDocument();
           final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset());
           comment.setLine(String.valueOf(lineNumber));
-          final String path = myVitualFile.getPath();
+          final String path = myVirtualFile.getPath();
           final String id = myReview.getIdByPath(path, project);
           comment.setReviewItemId(id);
         }
 
         final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
-        if (success && myBalloon != null)
+        if (success && myBalloon != null) {
           myBalloon.dispose();
+        }
       }
     });
   }
@@ -100,11 +107,19 @@ public class CommentForm extends JPanel {
     myEditor = editor;
   }
 
-  public void setVirtualFile(VirtualFile vitualFile) {
-    myVitualFile = vitualFile;
+  public void setVirtualFile(VirtualFile virtualFile) {
+    myVirtualFile = virtualFile;
   }
 
   public void setReview(Review review) {
     myReview = review;
+  }
+
+  public String getParentCommentId() {
+    return myParentCommentId;
+  }
+
+  public void setParentCommentId(String parentCommentId) {
+    myParentCommentId = parentCommentId;
   }
 }
