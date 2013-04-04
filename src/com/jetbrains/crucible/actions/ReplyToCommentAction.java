@@ -27,7 +27,7 @@ public class ReplyToCommentAction extends AnActionButton implements DumbAware {
   private VirtualFile myVirtualFile;
   private Review myReview;
 
-  public ReplyToCommentAction(Review review, String s, String name, String parentComment) {
+  public ReplyToCommentAction(Review review, String s, String name) {
     super(s, s, PlatformIcons.EDIT_IN_SECTION_ICON);
     myReview = review;
     myName = name;
