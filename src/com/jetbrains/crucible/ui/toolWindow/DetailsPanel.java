@@ -142,9 +142,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
-    String selectedComment = myGeneralComments.getSelectedRow() < 0 ? null : (String)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0) ;
     final ReplyToCommentAction replyToCommentAction =
-      new ReplyToCommentAction(myReview, "Reply", myReview.getPermaId(), selectedComment);
+      new ReplyToCommentAction(myReview, "Reply", myReview.getPermaId());
 
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
