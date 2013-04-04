@@ -256,6 +256,11 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
     url += COMMENTS;
 
+    final String parentCommentId = comment.getParentCommentId();
+    if (parentCommentId != null) {
+      url += "/" + parentCommentId + REPLIES;
+    }
+
     try {
       final RequestEntity request = createCommentRequest(comment, isGeneral);
       final Document document = buildSaxResponseForPost(url, request);

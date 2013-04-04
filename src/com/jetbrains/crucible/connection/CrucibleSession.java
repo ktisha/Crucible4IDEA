@@ -24,6 +24,7 @@ public interface CrucibleSession {
   String LOGIN = "/login";
   String FILTERED_REVIEWS = "/filter";
   String COMMENTS = "/comments";
+  String REPLIES = "/replies";
   String REPOSITORIES = "/rest-service/repositories-v1";
   void login() throws CrucibleApiLoginException;
 
