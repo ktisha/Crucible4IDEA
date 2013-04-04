@@ -1,10 +1,15 @@
 package com.jetbrains.crucible.ui;
 
 import com.intellij.ide.util.treeView.AbstractTreeBuilder;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.PopupHandler;
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
+import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
+import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleTreeStructure;
 
 import javax.swing.*;
@@ -22,7 +27,7 @@ public class ReviewForm extends JTree {
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
 
-  public ReviewForm(final Comment comment, final Project project, boolean editable) {
+  public ReviewForm(Review review, final Comment comment, final Project project, boolean editable) {
     final CommentNode root = new CommentNode(comment);
     SimpleTreeStructure structure = new CrucibleTreeStructure(project, root);
     final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode());
@@ -31,13 +36,23 @@ public class ReviewForm extends JTree {
     invalidate();
 
     setPreferredSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
+
+    DefaultActionGroup group = new DefaultActionGroup();
+    final ReplyToCommentAction addCommentAction = new ReplyToCommentAction(review, "Add Reply", "Comment");
+    addCommentAction.setContextComponent(this);
+    group.add(addCommentAction);
+    PopupHandler.installUnknownPopupHandler(this, group, ActionManager.getInstance());
   }
 
-  class CommentNode extends SimpleNode {
+  public class CommentNode extends SimpleNode {
     private final Comment myComment;
 
     CommentNode(Comment comment) {
       myComment = comment;
+    }
+
+    public Comment getComment() {
+      return myComment;
     }
 
     @Override

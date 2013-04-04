@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.table.JBTable;
@@ -14,6 +13,7 @@ import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.CommentForm;
 import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
+import com.jetbrains.crucible.ui.ReviewForm;
 
 /**
  * User: ktisha
@@ -24,7 +24,6 @@ import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
 public class ReplyToCommentAction extends AnActionButton implements DumbAware {
 
   private final String myName;
-  private VirtualFile myVirtualFile;
   private Review myReview;
 
   public ReplyToCommentAction(Review review, String s, String name) {
@@ -55,5 +54,27 @@ public class ReplyToCommentAction extends AnActionButton implements DumbAware {
       balloon.showInCenterOf(toolWindow.getComponent());
       replyForm.requestFocus();
     }
+    else {
+      addReplyToVersionedComment(project);
+    }
+  }
+
+  private void addReplyToVersionedComment(Project project) {
+    ReviewBalloonBuilder builder = new ReviewBalloonBuilder();
+    final CommentForm replyForm = new CommentForm(project, myName, false);
+    replyForm.setReview(myReview);
+
+    final ReviewForm contextComponent = (ReviewForm)getContextComponent();
+    final Object selected = contextComponent.getLastSelectedPathComponent();
+    if (selected instanceof ReviewForm.CommentNode) {
+      final Comment comment = ((ReviewForm.CommentNode)selected).getComment();
+      replyForm.setParentCommentId(((Comment)comment).getPermId());
+    }
+
+    final Balloon balloon = builder.getCommentBalloon(replyForm);
+    replyForm.setBalloon(balloon);
+
+    balloon.showInCenterOf(contextComponent);
+    replyForm.requestFocus();
   }
 }
