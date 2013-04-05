@@ -85,7 +85,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     if (changes != null && changes.length == 1 && review != null) {
       final ContentRevision revision = changes[0].getAfterRevision();
-      addGutter(contents[1], review, revision, request.getProject());
+      addGutter(contents[1], review, revision, request.getProject(), vFile);
     }
     builder.showModal(true);
   }
@@ -101,7 +101,8 @@ public class CommentsDiffTool extends FrameDiffTool {
   }
 
   private void addGutter(@NotNull final DiffContent content, @NotNull final Review review,
-                         @Nullable ContentRevision revision, @Nullable final Project project) {
+                         @Nullable ContentRevision revision, @Nullable final Project project,
+                         VirtualFile vFile) {
     final List<Comment> comments = review.getComments();
     final FilePath filePath = revision == null? null : revision.getFile();
 
@@ -116,7 +117,7 @@ public class CommentsDiffTool extends FrameDiffTool {
         final RangeHighlighter highlighter = markup.addPersistentLineHighlighter(Integer.parseInt(comment.getLine()),
                                                                                  HighlighterLayer.ERROR + 1, null);
         if(highlighter == null) return;
-        final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(review, comment);
+        final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(review, vFile, comment);
         highlighter.setGutterIconRenderer(gutterIconRenderer);
       }
     }
@@ -126,10 +127,12 @@ public class CommentsDiffTool extends FrameDiffTool {
   private class ReviewGutterIconRenderer extends GutterIconRenderer {
     private final Icon icon = IconLoader.getIcon("/images/comment.png");
     private final Review myReview;
+    private VirtualFile myVFile;
     private final Comment myComment;
 
-    ReviewGutterIconRenderer(Review review, Comment comment) {
+    ReviewGutterIconRenderer(Review review, VirtualFile vFile, Comment comment) {
       myReview = review;
+      myVFile = vFile;
       myComment = comment;
     }
     @NotNull
@@ -153,7 +156,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     @Override
     public AnAction getClickAction() {
-      return new ShowCommentAction(myComment, myReview);
+      return new ShowCommentAction(myComment, myVFile, myReview);
     }
 
     @Override

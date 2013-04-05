@@ -251,18 +251,19 @@ public class CrucibleSessionImpl implements CrucibleSession {
   public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
-    if (!isGeneral)
+    final String parentCommentId = comment.getParentCommentId();
+    if (!isGeneral && parentCommentId == null)
       url += REVIEW_ITEMS + "/" + comment.getReviewItemId();
 
     url += COMMENTS;
 
-    final String parentCommentId = comment.getParentCommentId();
+
     if (parentCommentId != null) {
       url += "/" + parentCommentId + REPLIES;
     }
 
     try {
-      final RequestEntity request = createCommentRequest(comment, isGeneral);
+      final RequestEntity request = createCommentRequest(comment, isGeneral || parentCommentId != null);
       final Document document = buildSaxResponseForPost(url, request);
       XPath xpath = XPath.newInstance("/error");
       @SuppressWarnings("unchecked")
@@ -440,6 +441,9 @@ public class CrucibleSessionImpl implements CrucibleSession {
           final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
           comment.setRevision(revision);
         }
+        final Element permId = commentNode.getChild("permaId");
+        final String commentId = CrucibleXmlParser.getChildText(permId, "id");
+        comment.setPermId(commentId);
         final Element reviewItemId = commentNode.getChild("reviewItemId");
         final String id = CrucibleXmlParser.getChildText(reviewItemId, "id");
         comment.setReviewItemId(id);

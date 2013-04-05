@@ -18,7 +18,7 @@ public class ReviewBalloonBuilder {
   }
 
   public void showBalloon(@NotNull final Comment comment, @NotNull final Editor editor,
-                          final ReviewForm balloonContent, final String title) {
+                          final CommentsTree balloonContent, final String title) {
 
     final Document document = editor.getDocument();
     final int endOffset = document.getLineEndOffset(Integer.parseInt(comment.getLine()));

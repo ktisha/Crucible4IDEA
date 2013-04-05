@@ -5,3 +5,8 @@ and then restart Intellij IDEA for changes to take effect.
 3. Open Idea-> Settings and set your Crucible server/username
 4. Open Crucible toolwindow
 5. Review with pleasure )
+
+
+For developers:
+Setup IntelliJ plugin SDK (see http://confluence.jetbrains.com/display/IDEADEV/PluginDevelopment)
+Add git4idea classpath to sdk

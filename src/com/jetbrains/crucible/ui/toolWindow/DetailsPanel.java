@@ -143,7 +143,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     actionGroup.add(addCommentAction);
 
     final ReplyToCommentAction replyToCommentAction =
-      new ReplyToCommentAction(myReview, "Reply", myReview.getPermaId());
+      new ReplyToCommentAction(myReview, null, null, "Reply", myReview.getPermaId());
 
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);

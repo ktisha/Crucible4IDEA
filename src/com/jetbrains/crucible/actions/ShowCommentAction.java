@@ -6,10 +6,11 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.ui.CommentsTree;
 import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
-import com.jetbrains.crucible.ui.ReviewForm;
 
 /**
  * User: ktisha
@@ -19,10 +20,12 @@ import com.jetbrains.crucible.ui.ReviewForm;
 @SuppressWarnings("ComponentNotRegistered")
 public class ShowCommentAction extends AnAction implements DumbAware {
   private final Comment myComment;
+  private VirtualFile myVFile;
   private final Review myReview;
 
-  public ShowCommentAction (Comment comment, Review review) {
+  public ShowCommentAction(Comment comment, VirtualFile VFile, Review review) {
     myComment = comment;
+    myVFile = VFile;
     myReview = review;
   }
 
@@ -33,8 +36,8 @@ public class ShowCommentAction extends AnAction implements DumbAware {
     final Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
     if (editor == null) return;
 
-    final ReviewForm reviewForm = new ReviewForm(myReview, myComment, editor.getProject(), false);
+    final CommentsTree commentsTree = new CommentsTree(myReview, myComment, editor.getProject(), editor, myVFile);
     final ReviewBalloonBuilder reviewBalloonBuilder = new ReviewBalloonBuilder();
-    reviewBalloonBuilder.showBalloon(myComment, editor, reviewForm, myComment.getAuthor().getUserName());
+    reviewBalloonBuilder.showBalloon(myComment, editor, commentsTree, myComment.getAuthor().getUserName());
   }
 }
