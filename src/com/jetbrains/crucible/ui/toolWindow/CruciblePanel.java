@@ -139,7 +139,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     contentManager.addContent(content);
     contentManager.setSelectedContent(content);
     details.setBusy(true);
-    details.updateComments(review.getGeneralComments());
+    //details.updateComments(review.getGeneralComments());
     ApplicationManager.getApplication().invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -174,7 +174,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
             }
           }
         }
-        details.updateList(list);
+        details.updateCommitsList(list);
         details.setBusy(false);
 
       }

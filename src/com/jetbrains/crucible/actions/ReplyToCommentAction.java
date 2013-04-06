@@ -16,6 +16,7 @@ import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.CommentForm;
 import com.jetbrains.crucible.ui.CommentsTree;
 import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
+import com.jetbrains.crucible.ui.toolWindow.CommentNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -76,8 +77,8 @@ public class ReplyToCommentAction extends AnActionButton implements DumbAware {
     final Object selected = contextComponent.getLastSelectedPathComponent();
     if (selected instanceof DefaultMutableTreeNode) {
       Object userObject = ((DefaultMutableTreeNode)selected).getUserObject();
-      if (userObject instanceof CommentsTree.CommentNode) {
-        final Comment comment = ((CommentsTree.CommentNode)userObject).getComment();
+      if (userObject instanceof CommentNode) {
+        final Comment comment = ((CommentNode)userObject).getComment();
         replyForm.setParentCommentId(((Comment)comment).getPermId());
       }
     }

@@ -12,11 +12,18 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModel;
+import com.intellij.ui.treeStructure.treetable.TreeTable;
+import com.intellij.ui.treeStructure.treetable.TreeTableModel;
+import com.intellij.ui.treeStructure.treetable.TreeTableTree;
+import com.intellij.util.ui.ColumnInfo;
+import com.intellij.util.ui.tree.TreeUtil;
 import com.jetbrains.crucible.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.model.User;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -26,6 +33,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -33,7 +42,7 @@ import java.util.List;
 /**
  * User: ktisha
  * <p/>
- * Show changes and comments for review
+ * Show changes and general comments for review
  */
 public class DetailsPanel extends SimpleToolWindowPanel {
 
@@ -42,72 +51,28 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
-  private DefaultTableModel myCommentsModel;
-  private JBTable myGeneralComments;
+  private ListTreeTableModel myCommentsModel;
+  private TreeTable myGeneralComments;
 
   @SuppressWarnings("UseOfObsoleteCollectionType")
-  public DetailsPanel(Project project, Review review) {
+  public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
     super(false);
     myProject = project;
     myReview = review;
-    @SuppressWarnings("UseOfObsoleteCollectionType")
-    final Vector<String> commitColumnNames = new Vector<String>();
-    commitColumnNames.add("Commit");
-    commitColumnNames.add("Author");
-    commitColumnNames.add("Date");
-
-    @SuppressWarnings("UseOfObsoleteCollectionType")
-    final Vector<String> commentColumnNames = new Vector<String>();
-    commentColumnNames.add("Message");
-    commentColumnNames.add("Author");
-    commentColumnNames.add("Date");
-
-    myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
-      @Override
-      public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-
-      @Override
-      public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 0) return CommittedChangeList.class;
-        if (columnIndex == 2) return Date.class;
-        return String.class;
-      }
-    };
-    myCommentsModel = new DefaultTableModel(new Vector(), commentColumnNames) {
-      @Override
-      public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-
-      @Override
-      public Class<?> getColumnClass(int columnIndex) {
-        if (columnIndex == 2) return Date.class;
-        if (columnIndex == 0) return Comment.class;
-        return String.class;
-      }
-    };
 
     Splitter splitter = new Splitter(false, 0.7f);
-    final JPanel wrapper = createMainTable();
+    final JPanel mainTable = createMainTable();
 
-    splitter.setFirstComponent(wrapper);
-    final JComponent component = createRepositoryBrowserDetails();
-    splitter.setSecondComponent(component);
+    splitter.setFirstComponent(mainTable);
+    final JComponent repoBrowser = createRepositoryBrowserDetails();
+    splitter.setSecondComponent(repoBrowser);
 
     setContent(splitter);
   }
 
-  public void updateList(List<CommittedChangeList> list) {
-    for (CommittedChangeList committedChangeList : list) {
+  public void updateCommitsList(final @NotNull List<CommittedChangeList> changeLists) {
+    for (CommittedChangeList committedChangeList : changeLists) {
       myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName(), committedChangeList.getCommitDate()});
-    }
-  }
-
-  public void updateComments(List<Comment> list) {
-    for (Comment comment : list) {
-      myCommentsModel.addRow(new Object[]{comment, comment.getAuthor().getUserName(), comment.getCreateDate()});
     }
   }
 
@@ -115,28 +80,55 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable.setPaintBusy(busy);
   }
 
+  @NotNull
   private JPanel createMainTable() {
     JBSplitter splitter = new JBSplitter(true, 0.65f);
+    JScrollPane commitsPane = createCommitsPane();
 
-    myCommitsTable = new JBTable(myCommitsModel) {
-      @Override
-      public TableCellRenderer getCellRenderer(int row, int column) {
-        if (column == 0)
-          return new MyCellRenderer();
-        return super.getCellRenderer(row, column);
-      }
-    };
-    myCommitsTable.setStriped(true);
-    myCommitsTable.setAutoCreateRowSorter(true);
+    final JPanel commentsPane = createCommentsPane();
+    splitter.setFirstComponent(commitsPane);
+    splitter.setSecondComponent(commentsPane);
+    return splitter;
+  }
 
-    setUpColumnWidths(myCommitsTable);
+  @NotNull
+  private JPanel createCommentsPane() {
+    List<Comment> comments = myReview.getGeneralComments();
+    MyTreeNode root = new MyTreeNode(new Comment(new User("Root"), "Root message"));
+    for (Comment comment : comments) {
+      final MyTreeNode commentNode = createNode(comment);
+      root.add(commentNode);
+    }
 
-    JScrollPane tableScrollPane = ScrollPaneFactory.createScrollPane(myCommitsTable);
+    myCommentsModel = new ListTreeTableModel(root, new ColumnInfo[]{COMMENT_COLUMN, AUTHOR_COLUMN, DATE_COLUMN });
 
-    myGeneralComments = new JBTable(myCommentsModel);
+    myGeneralComments = new TreeTable(myCommentsModel);
+
+    final TreeTableTree tree = myGeneralComments.getTree();
+    tree.setShowsRootHandles(true);
+    tree.setCellRenderer(new MyTreeCellRenderer());
+
+    TreeUtil.expandAll(myGeneralComments.getTree());
+    myGeneralComments.setRootVisible(false);
+
     myGeneralComments.setStriped(true);
     setUpColumnWidths(myGeneralComments);
 
+    final JPanel decoratedPanel = installActions();
+    return decoratedPanel;
+  }
+
+  private MyTreeNode createNode(@NotNull final Comment comment) {
+    final MyTreeNode commentNode = new MyTreeNode(comment);
+    for (Comment c : comment.getReplies()) {
+      final MyTreeNode node = createNode(c);
+      commentNode.add(node);
+    }
+    return commentNode;
+  }
+
+  @NotNull
+  private JPanel installActions() {
     DefaultActionGroup actionGroup = new DefaultActionGroup();
     final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId(), null, myReview);
     addCommentAction.setContextComponent(myGeneralComments);
@@ -153,19 +145,53 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     JPopupMenu popupMenu = actionPopupMenu.getComponent();
     myGeneralComments.setComponentPopupMenu(popupMenu);
 
-    myGeneralComments.setAutoCreateRowSorter(true);
-    final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
       setToolbarPosition(ActionToolbarPosition.LEFT);
     decorator.addExtraAction(addCommentAction);
     decorator.addExtraAction(replyToCommentAction);
 
+    final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
-    splitter.setFirstComponent(tableScrollPane);
+    return decoratedPanel;
+  }
 
-    splitter.setSecondComponent(decoratedPanel);
-    return splitter;
+  @NotNull
+  private JScrollPane createCommitsPane() {
+    @SuppressWarnings("UseOfObsoleteCollectionType")
+    final Vector<String> commitColumnNames = new Vector<String>();
+    commitColumnNames.add("Commit");
+    commitColumnNames.add("Author");
+    commitColumnNames.add("Date");
+
+    myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+
+      @Override
+      public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 0) return CommittedChangeList.class;
+        if (columnIndex == 2) return Date.class;
+        return String.class;
+      }
+    };
+
+    myCommitsTable = new JBTable(myCommitsModel) {
+      @Override
+      public TableCellRenderer getCellRenderer(int row, int column) {
+        if (column == 0)
+          return new MyCommitsCellRenderer();
+        return super.getCellRenderer(row, column);
+      }
+    };
+    myCommitsTable.setStriped(true);
+    myCommitsTable.setAutoCreateRowSorter(true);
+
+    setUpColumnWidths(myCommitsTable);
+
+    return ScrollPaneFactory.createScrollPane(myCommitsTable);
   }
 
   private static void setUpColumnWidths(@NotNull final JBTable table) {
@@ -177,6 +203,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     table.getColumnModel().getColumn(2).setMaxWidth(130);     //Date
   }
 
+  @NotNull
   private JComponent createRepositoryBrowserDetails() {
     myChangesBrowser = new MyChangesBrowser(myProject);
 
@@ -198,7 +225,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   }
 
 
-  static class MyCellRenderer extends DefaultTableCellRenderer {
+  static class MyCommitsCellRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -248,4 +275,74 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     }
   }
 
+  private class MyTreeNode extends DefaultMutableTreeNode {
+
+    private Comment getComment() {
+      return myComment;
+    }
+
+    private final Comment myComment;
+
+    public MyTreeNode(Comment comment) {
+      myComment = comment;
+    }
+  }
+
+
+  private static final ColumnInfo<MyTreeNode, Comment> COMMENT_COLUMN = new ColumnInfo<MyTreeNode, Comment>("Message"){
+    public Comment valueOf(final MyTreeNode node) {
+      final Comment comment = node.getComment();
+      return comment;
+    }
+
+    @Override
+    public Class getColumnClass() {
+      return TreeTableModel.class;
+    }
+  };
+
+  private static final ColumnInfo<MyTreeNode, Date> DATE_COLUMN = new ColumnInfo<MyTreeNode, Date>("Date"){
+    public Date valueOf(final MyTreeNode object) {
+      Comment comment = object.getComment();
+      return comment.getCreateDate();
+    }
+
+    public final Class getColumnClass() {
+      return Date.class;
+    }
+  };
+
+  private static final ColumnInfo<MyTreeNode, String> AUTHOR_COLUMN = new ColumnInfo<MyTreeNode, String>("Author"){
+    public String valueOf(final MyTreeNode object) {
+      Comment comment = object.getComment();
+      return comment != null ? comment.getAuthor().getUserName() : "";
+    }
+
+    public final Class getColumnClass() {
+      return String.class;
+    }
+  };
+
+  private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
+    public Component getTreeCellRendererComponent(final JTree tree,
+                                                  final Object value,
+                                                  final boolean selected,
+                                                  final boolean expanded,
+                                                  final boolean leaf,
+                                                  final int row,
+                                                  final boolean hasFocus) {
+      final DefaultTreeCellRenderer result = (DefaultTreeCellRenderer)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+
+      if (value instanceof MyTreeNode) {
+        final MyTreeNode node = (MyTreeNode)value;
+        final Comment comment = node.getComment();
+        result.setText(comment.getMessage());
+        result.setOpaque(true);
+        Color background = tree.getBackground();
+        result.setBackground(background);
+      }
+      setIcon(null);
+      return result;
+    }
+  }
 }

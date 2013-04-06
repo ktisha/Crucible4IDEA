@@ -418,6 +418,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
         final String id = CrucibleXmlParser.getChildText(permId, "id");
         comment.setPermId(id);
         if (createDate != null) comment.setCreateDate(createDate);
+        getReplies(generalCommentNode, comment);
         review.addGeneralComment(comment);
       }
     }
@@ -466,6 +467,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
           final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
           final Date createDate = CrucibleXmlParser.parseDate(commentNode);
           final Comment replyComment = new Comment(commentAuthor, message);
+          final Element permId = commentNode.getChild("permId");
+          final String id = CrucibleXmlParser.getChildText(permId, "id");
+          replyComment.setPermId(id);
+
           if (createDate != null) replyComment.setCreateDate(createDate);
           getReplies(commentNode, replyComment);
           comment.addReply(replyComment);
