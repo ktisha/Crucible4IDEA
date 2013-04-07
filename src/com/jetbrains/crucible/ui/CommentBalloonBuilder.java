@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.*;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Comment;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -12,18 +13,19 @@ import java.awt.*;
 /**
  * User: ktisha
  */
-public class ReviewBalloonBuilder {
+public class CommentBalloonBuilder {
 
-  public ReviewBalloonBuilder() {
+  public CommentBalloonBuilder() {
   }
 
   public void showBalloon(@NotNull final Comment comment, @NotNull final Editor editor,
-                          final CommentsTree balloonContent, final String title) {
+                          @NotNull final CommentsTree balloonContent, @NotNull final String title) {
 
     final Document document = editor.getDocument();
     final int endOffset = document.getLineEndOffset(Integer.parseInt(comment.getLine()));
 
-    ComponentPopupBuilder builder = JBPopupFactory.getInstance().createComponentPopupBuilder(balloonContent, balloonContent);
+    final ComponentPopupBuilder builder = JBPopupFactory.getInstance().
+      createComponentPopupBuilder(balloonContent, balloonContent);
     builder.setResizable(true);
     builder.setTitle(title);
     builder.setMovable(true);
@@ -33,9 +35,11 @@ public class ReviewBalloonBuilder {
   }
 
 
-  public Balloon getCommentBalloon(final CommentForm balloonContent) {
+  public Balloon getNewCommentBalloon(final CommentForm balloonContent) {
     final BalloonBuilder balloonBuilder =
-      JBPopupFactory.getInstance().createDialogBalloonBuilder(balloonContent, "New comment for " + balloonContent.getContentName());
+      JBPopupFactory.getInstance().
+        createDialogBalloonBuilder(balloonContent,
+                                   CrucibleBundle.message("crucible.new.comment.$0", balloonContent.getContentName()));
     balloonBuilder.setHideOnClickOutside(true);
     balloonBuilder.setHideOnKeyOutside(true);
 

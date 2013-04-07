@@ -18,7 +18,8 @@ import com.intellij.ui.treeStructure.treetable.TreeTableModel;
 import com.intellij.ui.treeStructure.treetable.TreeTableTree;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.tree.TreeUtil;
-import com.jetbrains.crucible.CrucibleDataKeys;
+import com.jetbrains.crucible.utils.CrucibleBundle;
+import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
@@ -60,10 +61,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myProject = project;
     myReview = review;
 
-    Splitter splitter = new Splitter(false, 0.7f);
+    final Splitter splitter = new Splitter(false, 0.7f);
     final JPanel mainTable = createMainTable();
-
     splitter.setFirstComponent(mainTable);
+
     final JComponent repoBrowser = createRepositoryBrowserDetails();
     splitter.setSecondComponent(repoBrowser);
 
@@ -82,8 +83,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createMainTable() {
-    JBSplitter splitter = new JBSplitter(true, 0.65f);
-    JScrollPane commitsPane = createCommitsPane();
+    final JBSplitter splitter = new JBSplitter(true, 0.65f);
+    final JScrollPane commitsPane = createCommitsPane();
 
     final JPanel commentsPane = createCommentsPane();
     splitter.setFirstComponent(commitsPane);
@@ -93,8 +94,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createCommentsPane() {
-    List<Comment> comments = myReview.getGeneralComments();
-    MyTreeNode root = new MyTreeNode(new Comment(new User("Root"), "Root message"));
+    final List<Comment> comments = myReview.getGeneralComments();
+    final MyTreeNode root = new MyTreeNode(new Comment(new User("Root"), "Root message"));
     for (Comment comment : comments) {
       final MyTreeNode commentNode = createNode(comment);
       root.add(commentNode);
@@ -129,20 +130,21 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel installActions() {
-    DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction("Add comment", myReview.getPermaId(), null, myReview);
+    final DefaultActionGroup actionGroup = new DefaultActionGroup();
+    final AddCommentAction addCommentAction = new AddCommentAction(CrucibleBundle.message("crucible.add.comment"),
+                                                                   myReview.getPermaId(), null, myReview);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
     final ReplyToCommentAction replyToCommentAction =
-      new ReplyToCommentAction(myReview, null, null, "Reply", myReview.getPermaId());
+      new ReplyToCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), myReview.getPermaId());
 
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
 
-    ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
-      .createActionPopupMenu("Crucible", actionGroup);
-    JPopupMenu popupMenu = actionPopupMenu.getComponent();
+    final ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
+      .createActionPopupMenu(CrucibleBundle.message("crucible.main.name"), actionGroup);
+    final JPopupMenu popupMenu = actionPopupMenu.getComponent();
     myGeneralComments.setComponentPopupMenu(popupMenu);
 
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
@@ -150,7 +152,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     decorator.addExtraAction(addCommentAction);
     decorator.addExtraAction(replyToCommentAction);
 
-    final Border border = IdeBorderFactory.createTitledBorder("General Comments", false);
+    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"),
+                                                              false);
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
     return decoratedPanel;
@@ -160,9 +163,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private JScrollPane createCommitsPane() {
     @SuppressWarnings("UseOfObsoleteCollectionType")
     final Vector<String> commitColumnNames = new Vector<String>();
-    commitColumnNames.add("Commit");
-    commitColumnNames.add("Author");
-    commitColumnNames.add("Date");
+    commitColumnNames.add(CrucibleBundle.message("crucible.commit"));
+    commitColumnNames.add(CrucibleBundle.message("crucible.author"));
+    commitColumnNames.add(CrucibleBundle.message("crucible.date"));
 
     myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
       @Override
@@ -229,7 +232,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      Component orig = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+      final Component orig = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
       final Color bg = orig.getBackground();
       if (value instanceof CommittedChangeList) {
         setText(((CommittedChangeList)value).getName());
@@ -250,10 +253,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     protected void buildToolBar(final DefaultActionGroup toolBarGroup) {
       super.buildToolBar(toolBarGroup);
       toolBarGroup.add(new ShowDiffWithLocalAction());
-      OpenRepositoryVersionAction action = new OpenRepositoryVersionAction();
+      final OpenRepositoryVersionAction action = new OpenRepositoryVersionAction();
       toolBarGroup.add(action);
 
-      ActionGroup group = (ActionGroup) ActionManager.getInstance().getAction("RepositoryChangesBrowserToolbar");
+      final ActionGroup group = (ActionGroup) ActionManager.getInstance().getAction("RepositoryChangesBrowserToolbar");
       final AnAction[] actions = group.getChildren(null);
       for (AnAction anAction : actions) {
         toolBarGroup.add(anAction);

@@ -16,44 +16,49 @@ public class ReviewItem {
   private String myRepo;
   private Set<String> myRevisions = new HashSet<String>();
 
-  public ReviewItem(@NotNull String id, @NotNull String path, @Nullable String repo) {
+  public ReviewItem(@NotNull final String id, @NotNull final String path,
+                    @Nullable final String repo) {
     myId = id;
     myPath = path;
     myRepo = repo;
   }
 
+  @NotNull
   public String getRepo() {
     return myRepo;
   }
 
-  public void setRepo(String repo) {
+  public void setRepo(@NotNull final String repo) {
     myRepo = repo;
   }
 
+  @NotNull
   public String getPath() {
     return myPath;
   }
 
-  public void setPath(String path) {
+  public void setPath(@NotNull final String path) {
     myPath = path;
   }
 
+  @NotNull
   public String getId() {
     return myId;
   }
 
-  public void setId(String id) {
+  public void setId(@NotNull final String id) {
     myId = id;
   }
-  public void addRevision(String revision) {
+  public void addRevision(@NotNull final String revision) {
     myRevisions.add(revision);
   }
 
+  @NotNull
   public Set<String> getRevisions() {
     return myRevisions;
   }
 
-  public void setRevisions(Set<String> revisions) {
+  public void setRevisions(@NotNull final Set<String> revisions) {
     myRevisions = revisions;
   }
 }

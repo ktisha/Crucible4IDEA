@@ -13,14 +13,14 @@ import java.util.*;
  * User : ktisha
  */
 public class Review extends BasicReview {
-  private List<Comment> myGeneralComments = new ArrayList<Comment>();
-  private List<Comment> myComments = new ArrayList<Comment>();
+  private final List<Comment> myGeneralComments = new ArrayList<Comment>();
+  private final List<Comment> myComments = new ArrayList<Comment>();
 
-  private Set<ReviewItem> myItems = new HashSet<ReviewItem>();
+  private final Set<ReviewItem> myItems = new HashSet<ReviewItem>();
 
-  public Review(@NotNull String serverUrl, @NotNull String id, @NotNull User author,
-                @Nullable User moderator) {
-    super(serverUrl, id, author, moderator);
+  public Review(@NotNull final String id, @NotNull final User author,
+                @Nullable final User moderator) {
+    super(id, author, moderator);
   }
 
   public void addGeneralComment(@NotNull Comment generalComment) {

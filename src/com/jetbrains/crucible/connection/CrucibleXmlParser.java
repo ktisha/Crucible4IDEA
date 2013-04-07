@@ -33,7 +33,8 @@ public final class CrucibleXmlParser {
   }
 
   @NotNull
-  public static String getChildAttribute(@NotNull final Element node, @NotNull final String childName,
+  public static String getChildAttribute(@NotNull final Element node,
+                                         @NotNull final String childName,
                                          @NotNull final String attributeName) {
     final Element child = node.getChild(childName);
     if (child != null) {
@@ -60,7 +61,7 @@ public final class CrucibleXmlParser {
     return new CrucibleVersionInfo(getChildText(element, "releaseNumber"), getChildText(element, "buildDate"));
   }
 
-  public static BasicReview parseBasicReview(@NotNull final String serverUrl, @NotNull final Element reviewNode) {
+  public static BasicReview parseBasicReview(@NotNull final Element reviewNode) {
     final String permaId = getSubChildText(reviewNode, "permaId/id");
     final User author = parseUserNode(reviewNode.getChild("author"));
     final String description = getChildText(reviewNode, "name");
@@ -70,7 +71,7 @@ public final class CrucibleXmlParser {
                            ? parseUserNode(reviewNode.getChild("moderator")) : null;
 
     final Date date = parseDate(reviewNode);
-    final BasicReview review = new BasicReview(serverUrl, permaId, author, moderator);
+    final BasicReview review = new BasicReview(permaId, author, moderator);
     if (date != null)
       review.setCreateDate(date);
     review.setDescription(description);

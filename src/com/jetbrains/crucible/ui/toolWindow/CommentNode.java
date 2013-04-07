@@ -2,6 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.jetbrains.crucible.model.Comment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,11 @@ import java.util.List;
 public class CommentNode extends SimpleNode {
   private final Comment myComment;
 
-  public CommentNode(Comment comment) {
+  public CommentNode(@NotNull final Comment comment) {
     myComment = comment;
   }
 
+  @NotNull
   public Comment getComment() {
     return myComment;
   }

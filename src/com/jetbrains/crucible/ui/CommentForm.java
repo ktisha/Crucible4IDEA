@@ -16,6 +16,8 @@ import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,23 +30,21 @@ import java.util.Set;
  * User: ktisha
  */
 public class CommentForm extends JPanel {
-
-  private String myContentName;
-  private EditorTextField myReviewTextField;
-  private Editor myEditor;
-
   private static final int ourBalloonWidth = 400;
   private static final int ourBalloonHeight = 400;
+
+  private final String myContentName;
+
+  private final EditorTextField myReviewTextField;
   private Balloon myBalloon;
+
   private VirtualFile myVirtualFile;
+  private Editor myEditor;
   private Review myReview;
   private String myParentCommentId;
 
-  public CommentForm(final Project project, final String contentName, final boolean isGeneral) {
-    createMainPanel(project, contentName, isGeneral);
-  }
-
-  private void createMainPanel(final Project project, final String contentName, final boolean isGeneral) {
+  public CommentForm(@NotNull final Project project, @NotNull final String contentName,
+                     final boolean isGeneral) {
     myContentName = contentName;
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
@@ -91,35 +91,38 @@ public class CommentForm extends JPanel {
     IdeFocusManager.findInstanceByComponent(myReviewTextField).requestFocus(myReviewTextField, true);
   }
 
+  @NotNull
   public String getText() {
     return myReviewTextField.getText();
   }
 
-  public void setBalloon(Balloon balloon) {
+  public void setBalloon(@NotNull final Balloon balloon) {
     myBalloon = balloon;
   }
 
+  @NotNull
   public String getContentName() {
     return myContentName;
   }
 
-  public void setEditor(Editor editor) {
+  public void setEditor(@NotNull final Editor editor) {
     myEditor = editor;
   }
 
-  public void setVirtualFile(VirtualFile virtualFile) {
+  public void setVirtualFile(@NotNull final VirtualFile virtualFile) {
     myVirtualFile = virtualFile;
   }
 
-  public void setReview(Review review) {
+  public void setReview(@NotNull final Review review) {
     myReview = review;
   }
 
+  @Nullable
   public String getParentCommentId() {
     return myParentCommentId;
   }
 
-  public void setParentCommentId(String parentCommentId) {
+  public void setParentCommentId(@NotNull final String parentCommentId) {
     myParentCommentId = parentCommentId;
   }
 }

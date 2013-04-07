@@ -24,9 +24,9 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.PopupHandler;
-import com.jetbrains.crucible.CrucibleDataKeys;
+import com.jetbrains.crucible.actions.ShowFileCommentsAction;
+import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
-import com.jetbrains.crucible.actions.ShowCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +54,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     if (contents.length != 2) return;
 
     final DialogBuilder builder = new DialogBuilder(request.getProject());
-    DiffPanelImpl diffPanel = (DiffPanelImpl)createComponent("", request, builder.getWindow(), builder);
+    final DiffPanelImpl diffPanel = (DiffPanelImpl)createComponent("", request, builder.getWindow(), builder);
     if (diffPanel == null) {
       Disposer.dispose(builder);
       return;
@@ -67,7 +67,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     final VirtualFile vFile = PlatformDataKeys.VIRTUAL_FILE.getData(context);
     final Editor editor2 = diffPanel.getEditor2();
 
-    String name = vFile == null ? "file" : vFile.getName();
+    final String name = vFile == null ? "file" : vFile.getName();
     addCommentAction(editor2, vFile, review, name);
 
     builder.removeAllActions();
@@ -83,15 +83,17 @@ public class CommentsDiffTool extends FrameDiffTool {
     }.registerCustomShortcutSet(new CustomShortcutSet(KeymapManager.getInstance().getActiveKeymap().getShortcuts("CloseContent")),
                                 diffPanel.getComponent());
 
-    if (changes != null && changes.length == 1 && review != null) {
+    if (changes != null && changes.length == 1 && review != null && vFile != null) {
       final ContentRevision revision = changes[0].getAfterRevision();
       addGutter(contents[1], review, revision, request.getProject(), vFile);
     }
     builder.showModal(true);
   }
 
-  private static void addCommentAction(@Nullable final Editor editor2, VirtualFile vFile, Review review, String name) {
-    if (editor2 != null) {
+  private static void addCommentAction(@Nullable final Editor editor2,
+                                       @Nullable final VirtualFile vFile,
+                                       @Nullable final Review review, @NotNull final String name) {
+    if (editor2 != null && review != null) {
       DefaultActionGroup group = new DefaultActionGroup();
       final AddCommentAction addCommentAction = new AddCommentAction("Add Comment", name, vFile, review);
       addCommentAction.setContextComponent(editor2.getComponent());
@@ -101,8 +103,8 @@ public class CommentsDiffTool extends FrameDiffTool {
   }
 
   private void addGutter(@NotNull final DiffContent content, @NotNull final Review review,
-                         @Nullable ContentRevision revision, @Nullable final Project project,
-                         VirtualFile vFile) {
+                         @Nullable final ContentRevision revision, @Nullable final Project project,
+                         @NotNull final VirtualFile vFile) {
     final List<Comment> comments = review.getComments();
     final FilePath filePath = revision == null? null : revision.getFile();
 
@@ -117,7 +119,8 @@ public class CommentsDiffTool extends FrameDiffTool {
         final RangeHighlighter highlighter = markup.addPersistentLineHighlighter(Integer.parseInt(comment.getLine()),
                                                                                  HighlighterLayer.ERROR + 1, null);
         if(highlighter == null) return;
-        final ReviewGutterIconRenderer gutterIconRenderer = new ReviewGutterIconRenderer(review, vFile, comment);
+        final ReviewGutterIconRenderer gutterIconRenderer =
+          new ReviewGutterIconRenderer(review, vFile, comment);
         highlighter.setGutterIconRenderer(gutterIconRenderer);
       }
     }
@@ -127,10 +130,12 @@ public class CommentsDiffTool extends FrameDiffTool {
   private class ReviewGutterIconRenderer extends GutterIconRenderer {
     private final Icon icon = IconLoader.getIcon("/images/comment.png");
     private final Review myReview;
-    private VirtualFile myVFile;
+    private final VirtualFile myVFile;
     private final Comment myComment;
 
-    ReviewGutterIconRenderer(Review review, VirtualFile vFile, Comment comment) {
+    ReviewGutterIconRenderer(@NotNull final Review review,
+                             @NotNull final VirtualFile vFile,
+                             @NotNull final Comment comment) {
       myReview = review;
       myVFile = vFile;
       myComment = comment;
@@ -156,7 +161,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     @Override
     public AnAction getClickAction() {
-      return new ShowCommentAction(myComment, myVFile, myReview);
+      return new ShowFileCommentsAction(myComment, myVFile, myReview);
     }
 
     @Override

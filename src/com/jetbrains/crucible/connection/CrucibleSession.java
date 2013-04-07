@@ -1,7 +1,6 @@
 package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
 import org.jdom.JDOMException;
@@ -31,7 +30,7 @@ public interface CrucibleSession {
   @Nullable
   CrucibleVersionInfo getServerVersion();
 
-  List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException;
+  List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws JDOMException, IOException;
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
 
   boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);

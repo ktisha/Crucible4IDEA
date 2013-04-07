@@ -4,6 +4,7 @@ import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User : ktisha
@@ -12,10 +13,11 @@ public class CrucibleOutForReviewNode extends SimpleNode {
   private static final String NAME = "Out For Review";
   private final CrucibleReviewModel myReviewModel;
 
-  public CrucibleOutForReviewNode(CrucibleReviewModel reviewModel) {
+  public CrucibleOutForReviewNode(@NotNull final CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;
   }
 
+  @NotNull
   public String toString() {
     return NAME;
   }

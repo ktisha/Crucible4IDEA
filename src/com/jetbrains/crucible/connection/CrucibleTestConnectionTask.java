@@ -17,8 +17,8 @@ public class CrucibleTestConnectionTask extends Task.Modal {
   private static final int CHECK_CANCEL_INTERVAL = 500;
   private static final Logger LOG = Logger.getInstance(CrucibleTestConnectionTask.class.getName());
 
-  public CrucibleTestConnectionTask(@Nullable Project project, boolean canBeCancelled) {
-    super(project, "Testing Connection", canBeCancelled);
+  public CrucibleTestConnectionTask(@Nullable Project project) {
+    super(project, "Testing Connection", true);
     setCancelText("Stop");
   }
 

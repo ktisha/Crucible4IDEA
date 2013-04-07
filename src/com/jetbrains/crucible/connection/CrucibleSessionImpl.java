@@ -49,7 +49,6 @@ import java.util.regex.Pattern;
  */
 public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
-  private String myAuthentification;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
 
   private final Map<String, VirtualFile> myRepoHash = new HashMap<String, VirtualFile>();
@@ -91,7 +90,6 @@ public class CrucibleSessionImpl implements CrucibleSession {
         throw new CrucibleApiLoginException("Server returned unexpected number of authentication tokens ("
                                           + elements.size() + ")");
       }
-      myAuthentification = ((Element)elements.get(0)).getText();
     }
     catch (IOException e) {
       throw new CrucibleApiLoginException(getHostUrl() + ":" + e.getMessage(), e);
@@ -113,7 +111,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
       final XPath xpath = XPath.newInstance("versionInfo");
 
       @SuppressWarnings("unchecked")
-      List<Element> elements = xpath.selectNodes(doc);
+      final List<Element> elements = xpath.selectNodes(doc);
 
       if (elements != null && !elements.isEmpty()) {
         return CrucibleXmlParser.parseVersionNode(elements.get(0));
@@ -248,7 +246,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
-  public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
+  public boolean postComment(@NotNull final Comment comment, boolean isGeneral,
+                             @NotNull final String reviewId) {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
     final String parentCommentId = comment.getParentCommentId();
@@ -310,7 +309,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private VirtualFile getLocalPath(String name) throws IOException, JDOMException {
+  private VirtualFile getLocalPath(@NotNull final String name) throws IOException, JDOMException {
     String url = getHostUrl() + REPOSITORIES + "/" + name;
     final Document doc = buildSaxResponse(url);
     XPath xpath = XPath.newInstance("/gitRepositoryData");
@@ -358,7 +357,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
 
-  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException, IOException {
+  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws JDOMException, IOException {
     String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;
     final String urlFilter = filter.getFilterUrl();
     if (!StringUtils.isEmpty(urlFilter)) {
@@ -392,7 +391,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final User moderator = (node.getChild("moderator") != null)
                            ? CrucibleXmlParser.parseUserNode(node.getChild("moderator")) : null;
 
-    final Review review = new Review(getHostUrl(), permId, author, moderator);
+    final Review review = new Review(permId, author, moderator);
 
     if (reviewItems != null && !reviewItems.isEmpty()) {
       addReviewItems(reviewItems, review);
@@ -404,7 +403,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return review;
   }
 
-  private static void addGeneralComments(Document doc, Review review) throws JDOMException {
+  private static void addGeneralComments(@NotNull final Document doc,
+                                         @NotNull final Review review) throws JDOMException {
     @SuppressWarnings("unchecked")
     final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
     if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
@@ -424,7 +424,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private static void addVersionedComments(Document doc, Review review) throws JDOMException {
+  private static void addVersionedComments(@NotNull final Document doc,
+                                           @NotNull final Review review) throws JDOMException {
     @SuppressWarnings("unchecked")
     final List<Element> commentNodes = XPath.newInstance("/detailedReviewData/versionedComments/versionedLineCommentData").
       selectNodes(doc);
@@ -455,7 +456,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private static void getReplies(Element node, Comment comment) {
+  private static void getReplies(@NotNull final Element node, @NotNull final Comment comment) {
     @SuppressWarnings("unchecked")
     final List<Element> replies = node.getChildren("replies");
     for (Element replyNode : replies) {
@@ -479,7 +480,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private static void addReviewItems(@NotNull final List<Element> reviewItems, @NotNull final Review review) {
+  private static void addReviewItems(@NotNull final List<Element> reviewItems,
+                                     @NotNull final Review review) {
     for (Element element : reviewItems) {
       @SuppressWarnings("unchecked")
       final List<Element> items = element.getChildren("reviewItem");
@@ -507,8 +509,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  private BasicReview parseBasicReview(Element element) throws CrucibleApiException {
-    return CrucibleXmlParser.parseBasicReview(getHostUrl(), element);
+  private BasicReview parseBasicReview(@NotNull final Element element) {
+    return CrucibleXmlParser.parseBasicReview(element);
   }
 
   public Map<String, VirtualFile> getRepoHash() {
