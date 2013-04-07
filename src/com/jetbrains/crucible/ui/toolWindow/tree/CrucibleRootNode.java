@@ -3,6 +3,7 @@ package com.jetbrains.crucible.ui.toolWindow.tree;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,9 @@ import java.util.List;
 public class CrucibleRootNode extends SimpleNode {
   private static final String NAME = "All My Reviews";
   private final CrucibleReviewModel myReviewModel;
-  private List<SimpleNode> myChildren = new ArrayList<SimpleNode>();
+  private final List<SimpleNode> myChildren = new ArrayList<SimpleNode>();
 
-  public CrucibleRootNode(CrucibleReviewModel reviewModel) {
+  public CrucibleRootNode(@NotNull final CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;
     myChildren.add(new CrucibleToReviewNode(myReviewModel));
     myChildren.add(new CrucibleRequireApprovalNode(myReviewModel));
@@ -23,6 +24,7 @@ public class CrucibleRootNode extends SimpleNode {
     myChildren.add(new CrucibleClosedNode(myReviewModel));
   }
 
+  @NotNull
   public String toString() {
     return NAME;
   }

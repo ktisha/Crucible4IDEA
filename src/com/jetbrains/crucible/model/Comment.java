@@ -18,7 +18,7 @@ public class Comment {
   private String myRevision;
   private User myAuthor;
   private Date myCreateDate = new Date();
-  private List<Comment> myReplies = new ArrayList<Comment>();
+  private final List<Comment> myReplies = new ArrayList<Comment>();
   private String myParentCommentId;
 
   public Comment(@NotNull final User commentAuthor, @NotNull final String message) {

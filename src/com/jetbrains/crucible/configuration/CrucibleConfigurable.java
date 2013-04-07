@@ -27,11 +27,11 @@ public class CrucibleConfigurable implements SearchableConfigurable {
   private JTextField myUsernameField;
   private JPasswordField myPasswordField;
   private JButton myTestButton;
-  private CrucibleSettings myCrucibleSettings;
+  private final CrucibleSettings myCrucibleSettings;
   private static final String DEFAULT_PASSWORD_TEXT = "************";
   private boolean myPasswordModified;
 
-  public CrucibleConfigurable(Project project) {
+  public CrucibleConfigurable(@NotNull final Project project) {
     myProject = project;
     myCrucibleSettings = CrucibleSettings.getInstance(myProject);
 
@@ -39,7 +39,7 @@ public class CrucibleConfigurable implements SearchableConfigurable {
       @Override
       public void actionPerformed(ActionEvent e) {
         saveSettings();
-        final Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject, true);
+        final Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject);
         ProgressManager.getInstance().run(testConnectionTask);
       }
     }

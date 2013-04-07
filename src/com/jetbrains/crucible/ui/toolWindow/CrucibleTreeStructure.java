@@ -1,20 +1,18 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User: ktisha
  */
 
 public class CrucibleTreeStructure extends SimpleTreeStructure {
-  private SimpleNode myRootElement;
-  private Project myProject;
+  private final SimpleNode myRootElement;
 
-  public CrucibleTreeStructure(Project project, SimpleNode root) {
+  public CrucibleTreeStructure(@NotNull final SimpleNode root) {
     super();
-    myProject = project;
     myRootElement = root;
   }
 

@@ -51,11 +51,11 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   private final CrucibleReviewModel myReviewModel;
   private final JBTable myReviewTable;
 
-  public CruciblePanel(Project project) {
+  public CruciblePanel(@NotNull final Project project) {
     super(false);
     myProject = project;
 
-    JBSplitter splitter = new JBSplitter(false, 0.2f);
+    final JBSplitter splitter = new JBSplitter(false, 0.2f);
 
     myReviewModel = new CrucibleReviewModel(project);
     myReviewTable = new JBTable(myReviewModel);
@@ -98,11 +98,10 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     final JScrollPane detailsScrollPane = ScrollPaneFactory.createScrollPane(myReviewTable);
 
     final SimpleTreeStructure reviewTreeStructure = createTreeStructure();
-    final DefaultTreeModel model = new CrucibleTreeModel(project);
-    SimpleTree reviewTree = new SimpleTree(model);
+    final DefaultTreeModel model = new CrucibleTreeModel();
+    final SimpleTree reviewTree = new SimpleTree(model);
 
-    AbstractTreeBuilder reviewTreeBuilder =
-      new AbstractTreeBuilder(reviewTree, model, reviewTreeStructure, null);
+    new AbstractTreeBuilder(reviewTree, model, reviewTreeStructure, null);
     reviewTree.invalidate();
 
     final JScrollPane scrollPane = ScrollPaneFactory.createScrollPane(reviewTree);
@@ -139,7 +138,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     contentManager.addContent(content);
     contentManager.setSelectedContent(content);
     details.setBusy(true);
-    //details.updateComments(review.getGeneralComments());
+
     ApplicationManager.getApplication().invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -149,11 +148,11 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
         if (vcsFor == null) return;
         final Set<ReviewItem> reviewItems = review.getReviewItems();
-        Set<String> loadedRevisions = new HashSet<String>();
+        final Set<String> loadedRevisions = new HashSet<String>();
 
         for (ReviewItem reviewItem : reviewItems) {
-          Set<String> revisions = reviewItem.getRevisions();
-          String repoName = reviewItem.getRepo();
+          final Set<String> revisions = reviewItem.getRevisions();
+          final String repoName = reviewItem.getRepo();
           final Map<String, VirtualFile> hash = CrucibleManager.getInstance(myProject).getRepoHash();
           final VirtualFile root = hash.containsKey(repoName) ? hash.get(repoName) : virtualFile;
 
@@ -183,6 +182,6 @@ public class CruciblePanel extends SimpleToolWindowPanel {
 
   private SimpleTreeStructure createTreeStructure() {
     final CrucibleRootNode rootNode = new CrucibleRootNode(myReviewModel);
-    return new CrucibleTreeStructure(myProject, rootNode);
+    return new CrucibleTreeStructure(rootNode);
   }
 }

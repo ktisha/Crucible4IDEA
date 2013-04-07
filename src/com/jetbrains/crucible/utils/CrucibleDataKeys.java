@@ -1,4 +1,4 @@
-package com.jetbrains.crucible;
+package com.jetbrains.crucible.utils;
 
 import com.intellij.openapi.actionSystem.DataKey;
 import com.jetbrains.crucible.model.Comment;

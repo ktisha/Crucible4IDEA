@@ -12,9 +12,10 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.ui.CommentBalloonBuilder;
 import com.jetbrains.crucible.ui.CommentForm;
-import com.jetbrains.crucible.ui.ReviewBalloonBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -27,10 +28,12 @@ import java.awt.*;
 public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private final String myName;
-  private VirtualFile myVirtualFile;
-  private Review myReview;
+  private final VirtualFile myVirtualFile;
+  private final Review myReview;
 
-  public AddCommentAction(String s, String name, VirtualFile virtualFile, Review review) {
+  public AddCommentAction(@NotNull final String s, @NotNull final String name,
+                          @Nullable final VirtualFile virtualFile,
+                          @NotNull final Review review) {
     super(s, s, IconLoader.getIcon("/images/comment.png"));
     myName = name;
     myVirtualFile = virtualFile;
@@ -42,10 +45,10 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     if (project == null) return;
     final ToolWindow toolWindow = e.getData(PlatformDataKeys.TOOL_WINDOW);
     if (toolWindow != null) {
-      ReviewBalloonBuilder builder = new ReviewBalloonBuilder();
+      final CommentBalloonBuilder builder = new CommentBalloonBuilder();
       final CommentForm commentForm = new CommentForm(project, myName, true);
       commentForm.setReview(myReview);
-      final Balloon balloon = builder.getCommentBalloon(commentForm);
+      final Balloon balloon = builder.getNewCommentBalloon(commentForm);
       commentForm.setBalloon(balloon);
       balloon.showInCenterOf(toolWindow.getComponent());
       commentForm.requestFocus();
@@ -57,13 +60,14 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     }
   }
 
-  private void addCommentToFile(@NotNull Editor editor, Project project) {
-    ReviewBalloonBuilder builder = new ReviewBalloonBuilder();
+  private void addCommentToFile(@NotNull final Editor editor, @NotNull final Project project) {
+    if (myVirtualFile == null) return;
+    final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, myName, false);
     commentForm.setEditor(editor);
     commentForm.setVirtualFile(myVirtualFile);
     commentForm.setReview(myReview);
-    final Balloon balloon = builder.getCommentBalloon(commentForm);
+    final Balloon balloon = builder.getNewCommentBalloon(commentForm);
     commentForm.setBalloon(balloon);
     final Point targetPoint = editor.visualPositionToXY(editor.getCaretModel().getVisualPosition());
     balloon.show(new RelativePoint(editor.getContentComponent(), targetPoint), Balloon.Position.below);

@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class User {
   @NotNull
-  protected String myUserName;
+  protected final String myUserName;
 
-  public User(@NotNull String userName) {
+  public User(@NotNull final String userName) {
     myUserName = userName;
   }
 

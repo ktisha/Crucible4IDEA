@@ -11,12 +11,12 @@ public enum CrucibleFilter {
   OutForReview("outForReview", "Out For Review"),
   Closed("closed", "Closed");
 
-  private String myFilterUrl;
-  private String myFilterName;
+  private final String myFilterUrl;
+  private final String myFilterName;
 
   CrucibleFilter(@NotNull final String filterUrl, @NotNull final String filterName) {
-    this.myFilterUrl = filterUrl;
-    this.myFilterName = filterName;
+    myFilterUrl = filterUrl;
+    myFilterName = filterName;
   }
 
   @NotNull

@@ -4,6 +4,7 @@ import com.intellij.ui.treeStructure.SimpleNode;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User : ktisha
@@ -12,10 +13,11 @@ public class CrucibleRequireApprovalNode extends SimpleNode {
   private static final String NAME = "Require My Approval";
   private final CrucibleReviewModel myReviewModel;
 
-  public CrucibleRequireApprovalNode(CrucibleReviewModel reviewModel) {
+  public CrucibleRequireApprovalNode(@NotNull final CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;
   }
 
+  @NotNull
   public String toString() {
     return NAME;
   }

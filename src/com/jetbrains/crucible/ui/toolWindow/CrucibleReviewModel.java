@@ -6,7 +6,9 @@ import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jdom.JDOMException;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Date;
@@ -38,15 +40,15 @@ public class CrucibleReviewModel extends DefaultTableModel {
   public String getColumnName(int column) {
     switch (column) {
       case 0:
-        return "ID";
+        return CrucibleBundle.message("crucible.id");
       case 1:
-        return "Description";
+        return CrucibleBundle.message("crucible.description");
       case 2:
-        return "State";
+        return CrucibleBundle.message("crucible.state");
       case 3:
-        return "Author";
+        return CrucibleBundle.message("crucible.author");
       case 4:
-        return "Date";
+        return CrucibleBundle.message("crucible.author");
     }
     return super.getColumnName(column);
   }
@@ -56,15 +58,17 @@ public class CrucibleReviewModel extends DefaultTableModel {
     return false;
   }
 
-  public void updateModel(CrucibleFilter filter) {
+  public void updateModel(@NotNull final CrucibleFilter filter) {
     setRowCount(0);
     final CrucibleManager manager = CrucibleManager.getInstance(myProject);
     final List<BasicReview> reviews;
     try {
       reviews = manager.getReviewsForFilter(filter);
-      for (BasicReview review : reviews) {
-        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
-        review.getCreateDate()});
+      if (reviews != null) {
+        for (BasicReview review : reviews) {
+          addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
+          review.getCreateDate()});
+        }
       }
     }
     catch (CrucibleApiException e) {

@@ -12,21 +12,16 @@ import java.util.Set;
  */
 public class BasicReview {
   private Set<Reviewer> myReviewers;
-  @NotNull
-  private User myAuthor;
+  private final User myAuthor;
   private String myDescription;
-  @Nullable
-  private User myModerator;
+  private final User myModerator;
 
-  @NotNull
-  private String myPermaId;
+  private final String myPermaId;
   private Date myCreateDate;
-  private final String myServerUrl;
   private String myState;
 
-  public BasicReview(@NotNull String serverUrl, @NotNull String permaId, @NotNull User author,
-                     @Nullable User moderator) {
-    myServerUrl = serverUrl;
+  public BasicReview(@NotNull final String permaId, @NotNull final User author,
+                     @Nullable final User moderator) {
     myPermaId = permaId;
     myAuthor = author;
     myModerator = moderator;
@@ -37,11 +32,11 @@ public class BasicReview {
     return myPermaId + "  " + myDescription + "  " + myState + "   " + myAuthor.getUserName();
   }
 
-  public void setDescription(String description) {
+  public void setDescription(@NotNull final String description) {
     myDescription = description;
   }
 
-  public void setState(String state) {
+  public void setState(@NotNull final String state) {
     myState = state;
   }
 
@@ -50,10 +45,12 @@ public class BasicReview {
     return myPermaId;
   }
 
+  @NotNull
   public String getDescription() {
     return myDescription;
   }
 
+  @NotNull
   public String getState() {
     return myState;
   }
@@ -63,11 +60,12 @@ public class BasicReview {
     return myAuthor;
   }
 
+  @NotNull
   public Date getCreateDate() {
     return myCreateDate;
   }
 
-  public void setCreateDate(Date createDate) {
+  public void setCreateDate(@NotNull final Date createDate) {
     myCreateDate = createDate;
   }
 }
