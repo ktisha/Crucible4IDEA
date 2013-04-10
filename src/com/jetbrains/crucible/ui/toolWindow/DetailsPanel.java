@@ -18,13 +18,13 @@ import com.intellij.ui.treeStructure.treetable.TreeTableModel;
 import com.intellij.ui.treeStructure.treetable.TreeTableTree;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.tree.TreeUtil;
-import com.jetbrains.crucible.utils.CrucibleBundle;
-import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
+import com.jetbrains.crucible.utils.CrucibleBundle;
+import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -115,11 +115,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myGeneralComments.setStriped(true);
     setUpColumnWidths(myGeneralComments);
 
-    final JPanel decoratedPanel = installActions();
-    return decoratedPanel;
+    return installActions();
   }
 
-  private MyTreeNode createNode(@NotNull final Comment comment) {
+  private static MyTreeNode createNode(@NotNull final Comment comment) {
     final MyTreeNode commentNode = new MyTreeNode(comment);
     for (Comment c : comment.getReplies()) {
       final MyTreeNode node = createNode(c);
@@ -167,6 +166,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     commitColumnNames.add(CrucibleBundle.message("crucible.author"));
     commitColumnNames.add(CrucibleBundle.message("crucible.date"));
 
+    //noinspection UseOfObsoleteCollectionType
     myCommitsModel = new DefaultTableModel(new Vector(), commitColumnNames) {
       @Override
       public boolean isCellEditable(int row, int column) {
@@ -278,7 +278,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     }
   }
 
-  private class MyTreeNode extends DefaultMutableTreeNode {
+  private static class MyTreeNode extends DefaultMutableTreeNode {
 
     private Comment getComment() {
       return myComment;
@@ -294,8 +294,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   private static final ColumnInfo<MyTreeNode, Comment> COMMENT_COLUMN = new ColumnInfo<MyTreeNode, Comment>("Message"){
     public Comment valueOf(final MyTreeNode node) {
-      final Comment comment = node.getComment();
-      return comment;
+      return node.getComment();
     }
 
     @Override
@@ -326,7 +325,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     }
   };
 
-  private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {
+  private static class MyTreeCellRenderer extends JLabel implements TreeCellRenderer {
     public Component getTreeCellRendererComponent(final JTree tree,
                                                   final Object value,
                                                   final boolean selected,
@@ -334,18 +333,17 @@ public class DetailsPanel extends SimpleToolWindowPanel {
                                                   final boolean leaf,
                                                   final int row,
                                                   final boolean hasFocus) {
-      final DefaultTreeCellRenderer result = (DefaultTreeCellRenderer)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
       if (value instanceof MyTreeNode) {
         final MyTreeNode node = (MyTreeNode)value;
         final Comment comment = node.getComment();
-        result.setText(comment.getMessage());
-        result.setOpaque(true);
+        setText(comment.getMessage());
+        setOpaque(true);
         Color background = tree.getBackground();
-        result.setBackground(background);
+        setBackground(background);
       }
       setIcon(null);
-      return result;
+      return this;
     }
   }
 }
