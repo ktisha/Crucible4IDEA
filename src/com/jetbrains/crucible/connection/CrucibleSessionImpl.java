@@ -53,7 +53,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   private final Map<String, VirtualFile> myRepoHash = new HashMap<String, VirtualFile>();
 
-  CrucibleSessionImpl(Project project) {
+  CrucibleSessionImpl(@NotNull final Project project) {
     myProject = project;
   }
 
@@ -218,15 +218,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   private String getUsername() {
-    return CrucibleSettings.getInstance(myProject).USERNAME;
+    return CrucibleSettings.getInstance().USERNAME;
   }
 
   private String getPassword() {
-    return CrucibleSettings.getInstance(myProject).getPassword();
+    return CrucibleSettings.getInstance().getPassword();
   }
 
   private String getHostUrl() {
-    return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance(myProject).SERVER_URL);
+    return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance().SERVER_URL);
   }
 
   @Nullable

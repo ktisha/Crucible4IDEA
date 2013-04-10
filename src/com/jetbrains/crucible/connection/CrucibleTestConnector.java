@@ -53,7 +53,7 @@ public class CrucibleTestConnector {
   }
 
   public void testConnect() throws CrucibleApiException {
-    final CrucibleSession session = CrucibleManager.getInstance(myProject).getSession();
+    final CrucibleSession session = new CrucibleSessionImpl(myProject);
     session.login();
     session.getServerVersion();
   }

@@ -4,7 +4,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.jetbrains.crucible.connection.CrucibleTestConnectionTask;
 import org.jetbrains.annotations.Nls;
@@ -21,7 +21,6 @@ import java.awt.event.ActionListener;
  * User: ktisha
  */
 public class CrucibleConfigurable implements SearchableConfigurable {
-  private final Project myProject;
   private JPanel myMainPanel;
   private JTextField myServerField;
   private JTextField myUsernameField;
@@ -31,15 +30,15 @@ public class CrucibleConfigurable implements SearchableConfigurable {
   private static final String DEFAULT_PASSWORD_TEXT = "************";
   private boolean myPasswordModified;
 
-  public CrucibleConfigurable(@NotNull final Project project) {
-    myProject = project;
-    myCrucibleSettings = CrucibleSettings.getInstance(myProject);
+
+  public CrucibleConfigurable() {
+    myCrucibleSettings = CrucibleSettings.getInstance();
 
     myTestButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         saveSettings();
-        final Task.Modal testConnectionTask = new CrucibleTestConnectionTask(myProject);
+        final Task.Modal testConnectionTask = new CrucibleTestConnectionTask(ProjectManager.getInstance().getDefaultProject());
         ProgressManager.getInstance().run(testConnectionTask);
       }
     }
@@ -109,13 +108,8 @@ public class CrucibleConfigurable implements SearchableConfigurable {
         return true;
       }
     }
-    if (!StringUtil.equals(myCrucibleSettings.SERVER_URL, new String(myServerField.getText()))) {
-      return true;
-    }
-    if (!StringUtil.equals(myCrucibleSettings.USERNAME, new String(myUsernameField.getText()))) {
-      return true;
-    }
-    return false;
+    return !StringUtil.equals(myCrucibleSettings.SERVER_URL, myServerField.getText()) ||
+           !StringUtil.equals(myCrucibleSettings.USERNAME, myUsernameField.getText());
   }
 
   @Override
