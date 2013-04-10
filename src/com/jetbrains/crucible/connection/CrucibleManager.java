@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.connection;
 
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -24,20 +25,18 @@ import java.util.Map;
  */
 public class CrucibleManager {
   private final Project myProject;
-  private static CrucibleManager ourInstance;
   private final Map<String, CrucibleSession> mySessions = new HashMap<String, CrucibleSession>();
 
   private static final Logger LOG = Logger.getInstance(CrucibleManager.class.getName());
 
+  // implicitly constructed by pico container
+  @SuppressWarnings("UnusedDeclaration")
   private CrucibleManager(@NotNull final Project project) {
     myProject = project;
   }
 
   public static CrucibleManager getInstance(@NotNull final Project project) {
-    if (ourInstance == null) {
-      ourInstance = new CrucibleManager(project);
-    }
-    return ourInstance;
+    return ServiceManager.getService(project, CrucibleManager.class);
   }
 
   @Nullable
@@ -76,7 +75,7 @@ public class CrucibleManager {
   }
 
   public CrucibleSession getSession() throws CrucibleApiException {
-    final CrucibleSettings crucibleSettings = CrucibleSettings.getInstance(myProject);
+    final CrucibleSettings crucibleSettings = CrucibleSettings.getInstance();
     String key = crucibleSettings.SERVER_URL + crucibleSettings.USERNAME + crucibleSettings.getPassword();
     CrucibleSession session = mySessions.get(key);
     if (session == null) {
