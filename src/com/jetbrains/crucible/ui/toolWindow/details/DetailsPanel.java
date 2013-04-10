@@ -1,4 +1,4 @@
-package com.jetbrains.crucible.ui.toolWindow;
+package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
@@ -13,16 +13,10 @@ import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.treeStructure.treetable.ListTreeTableModel;
-import com.intellij.ui.treeStructure.treetable.TreeTable;
-import com.intellij.ui.treeStructure.treetable.TreeTableModel;
-import com.intellij.ui.treeStructure.treetable.TreeTableTree;
-import com.intellij.util.ui.ColumnInfo;
-import com.intellij.util.ui.tree.TreeUtil;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.model.User;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +28,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -53,7 +45,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
   private ListTreeTableModel myCommentsModel;
-  private TreeTable myGeneralComments;
+  private CommentsTreeTable myGeneralComments;
 
   @SuppressWarnings("UseOfObsoleteCollectionType")
   public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
@@ -94,38 +86,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createCommentsPane() {
-    final List<Comment> comments = myReview.getGeneralComments();
-    final MyTreeNode root = new MyTreeNode(new Comment(new User("Root"), "Root message"));
-    for (Comment comment : comments) {
-      final MyTreeNode commentNode = createNode(comment);
-      root.add(commentNode);
-    }
-
-    myCommentsModel = new ListTreeTableModel(root, new ColumnInfo[]{COMMENT_COLUMN, AUTHOR_COLUMN, DATE_COLUMN });
-
-    myGeneralComments = new TreeTable(myCommentsModel);
-
-    final TreeTableTree tree = myGeneralComments.getTree();
-    tree.setShowsRootHandles(true);
-    tree.setCellRenderer(new MyTreeCellRenderer());
-
-    TreeUtil.expandAll(myGeneralComments.getTree());
-    myGeneralComments.setRootVisible(false);
-
-    myGeneralComments.setStriped(true);
+    myGeneralComments = new CommentsTreeTable();
+    myGeneralComments.updateModel(myReview);
     setUpColumnWidths(myGeneralComments);
-
     return installActions();
   }
 
-  private static MyTreeNode createNode(@NotNull final Comment comment) {
-    final MyTreeNode commentNode = new MyTreeNode(comment);
-    for (Comment c : comment.getReplies()) {
-      final MyTreeNode node = createNode(c);
-      commentNode.add(node);
-    }
-    return commentNode;
-  }
+
 
   @NotNull
   private JPanel installActions() {
@@ -269,7 +236,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       if (key == CrucibleDataKeys.REVIEW)
         sink.put(CrucibleDataKeys.REVIEW, myReview);
       if (key == CrucibleDataKeys.SELECTED_COMMENT)
-        sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myCommentsModel.getValueAt(myGeneralComments.getSelectedRow(), 0));
+        sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0));
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
         sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));
@@ -278,72 +245,5 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     }
   }
 
-  private static class MyTreeNode extends DefaultMutableTreeNode {
 
-    private Comment getComment() {
-      return myComment;
-    }
-
-    private final Comment myComment;
-
-    public MyTreeNode(Comment comment) {
-      myComment = comment;
-    }
-  }
-
-
-  private static final ColumnInfo<MyTreeNode, Comment> COMMENT_COLUMN = new ColumnInfo<MyTreeNode, Comment>("Message"){
-    public Comment valueOf(final MyTreeNode node) {
-      return node.getComment();
-    }
-
-    @Override
-    public Class getColumnClass() {
-      return TreeTableModel.class;
-    }
-  };
-
-  private static final ColumnInfo<MyTreeNode, Date> DATE_COLUMN = new ColumnInfo<MyTreeNode, Date>("Date"){
-    public Date valueOf(final MyTreeNode object) {
-      Comment comment = object.getComment();
-      return comment.getCreateDate();
-    }
-
-    public final Class getColumnClass() {
-      return Date.class;
-    }
-  };
-
-  private static final ColumnInfo<MyTreeNode, String> AUTHOR_COLUMN = new ColumnInfo<MyTreeNode, String>("Author"){
-    public String valueOf(final MyTreeNode object) {
-      Comment comment = object.getComment();
-      return comment != null ? comment.getAuthor().getUserName() : "";
-    }
-
-    public final Class getColumnClass() {
-      return String.class;
-    }
-  };
-
-  private static class MyTreeCellRenderer extends JLabel implements TreeCellRenderer {
-    public Component getTreeCellRendererComponent(final JTree tree,
-                                                  final Object value,
-                                                  final boolean selected,
-                                                  final boolean expanded,
-                                                  final boolean leaf,
-                                                  final int row,
-                                                  final boolean hasFocus) {
-
-      if (value instanceof MyTreeNode) {
-        final MyTreeNode node = (MyTreeNode)value;
-        final Comment comment = node.getComment();
-        setText(comment.getMessage());
-        setOpaque(true);
-        Color background = tree.getBackground();
-        setBackground(background);
-      }
-      setIcon(null);
-      return this;
-    }
-  }
 }

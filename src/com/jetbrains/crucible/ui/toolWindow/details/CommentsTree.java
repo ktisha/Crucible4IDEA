@@ -1,4 +1,4 @@
-package com.jetbrains.crucible.ui;
+package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.ide.util.treeView.AbstractTreeBuilder;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -11,7 +11,6 @@ import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.ui.toolWindow.CommentNode;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleTreeStructure;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;

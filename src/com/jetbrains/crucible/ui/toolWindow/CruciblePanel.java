@@ -26,6 +26,7 @@ import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.ReviewItem;
+import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import org.jdom.JDOMException;

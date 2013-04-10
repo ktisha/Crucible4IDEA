@@ -9,8 +9,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.ui.CommentBalloonBuilder;
-import com.jetbrains.crucible.ui.CommentsTree;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentBalloonBuilder;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentsTree;
 import org.jetbrains.annotations.NotNull;
 
 /**

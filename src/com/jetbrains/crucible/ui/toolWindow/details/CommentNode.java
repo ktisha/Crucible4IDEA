@@ -1,4 +1,4 @@
-package com.jetbrains.crucible.ui.toolWindow;
+package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.ui.treeStructure.SimpleNode;
 import com.jetbrains.crucible.model.Comment;
