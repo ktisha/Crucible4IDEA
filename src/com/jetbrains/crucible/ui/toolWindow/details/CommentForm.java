@@ -1,4 +1,4 @@
-package com.jetbrains.crucible.ui;
+package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
@@ -40,6 +40,11 @@ public class CommentForm extends JPanel {
 
   private VirtualFile myVirtualFile;
   private Editor myEditor;
+
+  public Review getReview() {
+    return myReview;
+  }
+
   private Review myReview;
   private String myParentCommentId;
 
@@ -81,6 +86,7 @@ public class CommentForm extends JPanel {
 
         final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
         if (success && myBalloon != null) {
+          myReview.addGeneralComment(comment);
           myBalloon.dispose();
         }
       }

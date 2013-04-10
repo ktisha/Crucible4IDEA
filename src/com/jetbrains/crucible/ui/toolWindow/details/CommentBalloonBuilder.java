@@ -1,4 +1,4 @@
-package com.jetbrains.crucible.ui;
+package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;

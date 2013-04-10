@@ -6,17 +6,21 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.ui.popup.JBPopupAdapter;
+import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.ui.CommentBalloonBuilder;
-import com.jetbrains.crucible.ui.CommentForm;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentBalloonBuilder;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentForm;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentsTreeTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -50,6 +54,15 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       commentForm.setReview(myReview);
       final Balloon balloon = builder.getNewCommentBalloon(commentForm);
       commentForm.setBalloon(balloon);
+      balloon.addListener(new JBPopupAdapter() {
+        @Override
+        public void onClosed(LightweightWindowEvent event) {
+          final JComponent component = getContextComponent();
+          if (component instanceof CommentsTreeTable) {
+            ((CommentsTreeTable)component).updateModel(commentForm.getReview());
+          }
+        }
+      });
       balloon.showInCenterOf(toolWindow.getComponent());
       commentForm.requestFocus();
     }

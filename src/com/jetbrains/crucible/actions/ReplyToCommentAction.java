@@ -13,10 +13,10 @@ import com.intellij.ui.table.JBTable;
 import com.intellij.util.PlatformIcons;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
-import com.jetbrains.crucible.ui.CommentBalloonBuilder;
-import com.jetbrains.crucible.ui.CommentForm;
-import com.jetbrains.crucible.ui.CommentsTree;
-import com.jetbrains.crucible.ui.toolWindow.CommentNode;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentBalloonBuilder;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentForm;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentsTree;
+import com.jetbrains.crucible.ui.toolWindow.details.CommentNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
