@@ -63,7 +63,7 @@ public class CommentForm extends JPanel {
     myReviewTextField.getActionMap().put("postComment", new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        final Comment comment = new Comment(new User(CrucibleSettings.getInstance(project).USERNAME), getText());
+        final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME), getText());
         assert myReview != null;
 
         final String parentCommentId = getParentCommentId();
