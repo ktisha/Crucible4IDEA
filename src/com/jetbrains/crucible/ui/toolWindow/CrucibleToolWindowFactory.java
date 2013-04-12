@@ -10,7 +10,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
-import com.jetbrains.crucible.ui.toolWindow.details.CommentsDiffTool;
+import com.jetbrains.crucible.ui.toolWindow.diff.CommentsDiffTool;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 
 /**

@@ -3,6 +3,9 @@ package com.jetbrains.crucible.actions;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.markup.HighlighterLayer;
+import com.intellij.openapi.editor.markup.MarkupModel;
+import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
@@ -13,10 +16,12 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
+import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.details.CommentBalloonBuilder;
 import com.jetbrains.crucible.ui.toolWindow.details.CommentForm;
 import com.jetbrains.crucible.ui.toolWindow.details.CommentsTreeTable;
+import com.jetbrains.crucible.ui.toolWindow.diff.ReviewGutterIconRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,7 +78,8 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     }
   }
 
-  private void addCommentToFile(@NotNull final Editor editor, @NotNull final Project project) {
+  private void addCommentToFile(@NotNull final Editor editor,
+                                @NotNull final Project project) {
     if (myVirtualFile == null) return;
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, myName, false);
@@ -82,6 +88,21 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     commentForm.setReview(myReview);
     final Balloon balloon = builder.getNewCommentBalloon(commentForm);
     commentForm.setBalloon(balloon);
+    balloon.addListener(new JBPopupAdapter() {
+      @Override
+      public void onClosed(LightweightWindowEvent event) {
+        final MarkupModel markup = editor.getMarkupModel();
+        final Comment comment = commentForm.getComment();
+        if (comment != null) {
+          final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()),
+                                                                         HighlighterLayer.ERROR + 1, null);
+
+          final ReviewGutterIconRenderer gutterIconRenderer =
+            new ReviewGutterIconRenderer(myReview, myVirtualFile, comment);
+          highlighter.setGutterIconRenderer(gutterIconRenderer);
+        }
+      }
+    });
     final Point targetPoint = editor.visualPositionToXY(editor.getCaretModel().getVisualPosition());
     balloon.show(new RelativePoint(editor.getContentComponent(), targetPoint), Balloon.Position.below);
     commentForm.requestFocus();
