@@ -3,6 +3,8 @@ package com.jetbrains.crucible.connection;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
@@ -10,6 +12,8 @@ import com.jetbrains.crucible.model.BasicReview;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.ui.UiUtils;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,25 +44,48 @@ public class CrucibleManager {
   }
 
   @Nullable
-  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws CrucibleApiException, JDOMException {
-    final CrucibleSession session = getSession();
+  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) {
     try {
-      return session.getReviewsForFilter(filter);
+      final CrucibleSession session = getSession();
+      if (session != null) {
+        return session.getReviewsForFilter(filter);
+      }
     }
     catch (IOException e) {
       LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
+    }
+    catch (CrucibleApiException e) {
+      LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
+    }
+    catch (JDOMException e) {
+      LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
     return null;
   }
 
   @Nullable
-  public Review getDetailsForReview(@NotNull final String permId) throws CrucibleApiException, JDOMException {
-    final CrucibleSession session = getSession();
+  public Review getDetailsForReview(@NotNull final String permId) {
     try {
-      return session.getDetailsForReview(permId);
+      final CrucibleSession session = getSession();
+      if (session != null) {
+        return session.getDetailsForReview(permId);
+      }
+    }
+    catch (CrucibleApiException e) {
+      LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
+
     }
     catch (IOException e) {
       LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
+    }
+    catch (JDOMException e) {
+      LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
     return null;
   }
@@ -66,17 +93,27 @@ public class CrucibleManager {
   public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
     try {
       final CrucibleSession session = getSession();
-      return session.postComment(comment, isGeneral, reviewId);
+      if (session != null) {
+        return session.postComment(comment, isGeneral, reviewId);
+      }
     }
     catch (CrucibleApiException e) {
       LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
     return false;
   }
 
+  @Nullable
   public CrucibleSession getSession() throws CrucibleApiException {
     final CrucibleSettings crucibleSettings = CrucibleSettings.getInstance();
-    String key = crucibleSettings.SERVER_URL + crucibleSettings.USERNAME + crucibleSettings.getPassword();
+    final String serverUrl = crucibleSettings.SERVER_URL;
+    final String username = crucibleSettings.USERNAME;
+    if (StringUtil.isEmptyOrSpaces(serverUrl) || StringUtil.isEmptyOrSpaces(username)) {
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.define.host.username"), MessageType.ERROR);
+      return null;
+    }
+    String key = serverUrl + username + crucibleSettings.getPassword();
     CrucibleSession session = mySessions.get(key);
     if (session == null) {
       session = new CrucibleSessionImpl(myProject);
@@ -98,7 +135,9 @@ public class CrucibleManager {
   public Map<String,VirtualFile> getRepoHash() {
     try {
       final CrucibleSession session = getSession();
-      return session.getRepoHash();
+      if (session != null) {
+        return session.getRepoHash();
+      }
     }
     catch (CrucibleApiException e) {
       LOG.warn(e.getMessage());
