@@ -56,14 +56,14 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     if (project == null) return;
     final ToolWindow toolWindow = e.getData(PlatformDataKeys.TOOL_WINDOW);
     if (toolWindow != null) {
-      addReplyToGeneral(project, toolWindow);
+      addGeneralComment(project, toolWindow);
     }
     else {
-      addReplyToVersionedComment(project);
+      addVersionedComment(project);
     }
   }
 
-  private void addReplyToGeneral(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
+  private void addGeneralComment(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, myName, true, myIsReply);
     commentForm.setReview(myReview);
@@ -94,7 +94,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     commentForm.requestFocus();
   }
 
-  private void addReplyToVersionedComment(@NotNull final Project project) {
+  private void addVersionedComment(@NotNull final Project project) {
     if (myEditor == null || myVirtualFile == null) return;
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, myName, false, myIsReply);
