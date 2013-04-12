@@ -40,6 +40,7 @@ public class CommentForm extends JPanel {
 
   private VirtualFile myVirtualFile;
   private Editor myEditor;
+  private Comment myComment;
 
   public Review getReview() {
     return myReview;
@@ -86,7 +87,11 @@ public class CommentForm extends JPanel {
 
         final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
         if (success && myBalloon != null) {
-          myReview.addGeneralComment(comment);
+          myComment = comment;
+          if (isGeneral)
+            myReview.addGeneralComment(comment);
+          else
+            myReview.addComment(comment);
           myBalloon.dispose();
         }
       }
@@ -130,5 +135,9 @@ public class CommentForm extends JPanel {
 
   public void setParentCommentId(@NotNull final String parentCommentId) {
     myParentCommentId = parentCommentId;
+  }
+
+  public Comment getComment() {
+    return myComment;
   }
 }
