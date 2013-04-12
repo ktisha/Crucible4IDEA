@@ -246,7 +246,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
-  public boolean postComment(@NotNull final Comment comment, boolean isGeneral,
+  @Nullable
+  public String postComment(@NotNull final Comment comment, boolean isGeneral,
                              @NotNull final String reviewId) {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
@@ -268,12 +269,14 @@ public class CrucibleSessionImpl implements CrucibleSession {
       @SuppressWarnings("unchecked")
       Element element = (Element)xpath.selectSingleNode(document);
       if (element != null) {
-        final String returnCode = CrucibleXmlParser.getChildText(element, "code");
         final String message = CrucibleXmlParser.getChildText(element, "message");
         UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + message, MessageType.ERROR);
-        return returnCode.isEmpty();
+        return null;
       }
-      return true;
+      XPath commentId = XPath.newInstance("/generalCommentData/permaId/id");
+      @SuppressWarnings("unchecked")
+      Element id = (Element)commentId.selectSingleNode(document);
+      return id == null ? null : id.getText();
     }
     catch (IOException e) {
       LOG.warn(e.getMessage());
@@ -281,7 +284,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     catch (JDOMException e) {
       LOG.warn(e.getMessage());
     }
-    return false;
+    return null;
   }
 
   @Override

@@ -92,7 +92,8 @@ public class CrucibleManager {
     return null;
   }
 
-  public boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
+  @Nullable
+  public String postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
     try {
       final CrucibleSession session = getSession();
       if (session != null) {
@@ -103,7 +104,7 @@ public class CrucibleManager {
       LOG.warn(e.getMessage());
       UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
-    return false;
+    return null;
   }
 
   @Nullable

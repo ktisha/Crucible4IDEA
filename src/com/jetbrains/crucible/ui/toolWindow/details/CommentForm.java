@@ -85,8 +85,9 @@ public class CommentForm extends JPanel {
           comment.setReviewItemId(id);
         }
 
-        final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
-        if (success && myBalloon != null) {
+        final String id = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
+        if (id != null && myBalloon != null) {
+          comment.setPermId(id);
           myComment = comment;
           if (isReply) {
             myParentComment.addReply(comment);
