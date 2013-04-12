@@ -134,8 +134,8 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
           if (contextComponent instanceof CommentsTree) {
             final TreePath selectionPath = ((JTree)contextComponent).getSelectionPath();
             final Object component = selectionPath.getLastPathComponent();
-            if (component instanceof DefaultMutableTreeNode && comment != null ){
-              ((DefaultMutableTreeNode)component).add( new DefaultMutableTreeNode(new CommentNode(comment)));
+            if (component instanceof DefaultMutableTreeNode && comment != null) {
+              ((DefaultMutableTreeNode)component).add(new DefaultMutableTreeNode(new CommentNode(comment)));
               final TreeModel model = ((JTree)contextComponent).getModel();
               if (model instanceof DefaultTreeModel) {
                 ((DefaultTreeModel)model).reload();
