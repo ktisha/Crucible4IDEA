@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.*;
 
 /**
  * User: ktisha
@@ -65,7 +65,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private void addReplyToGeneral(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, myName, true);
+    final CommentForm commentForm = new CommentForm(project, myName, true, myIsReply);
     commentForm.setReview(myReview);
 
     if (myIsReply) {
@@ -74,7 +74,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       if (selectedRow >= 0) {
         final Object parentComment = contextComponent.getValueAt(selectedRow, 0);
         if (parentComment instanceof Comment) {
-          commentForm.setParentCommentId(((Comment)parentComment).getPermId());
+          commentForm.setParentComment(((Comment)parentComment));
         }
       }
     }
@@ -97,17 +97,17 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   private void addReplyToVersionedComment(@NotNull final Project project) {
     if (myEditor == null || myVirtualFile == null) return;
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, myName, false);
+    final CommentForm commentForm = new CommentForm(project, myName, false, myIsReply);
     commentForm.setReview(myReview);
 
-    final CommentsTree contextComponent = (CommentsTree)getContextComponent();
-    if (myIsReply) {
-      final Object selected = contextComponent.getLastSelectedPathComponent();
+    final JComponent contextComponent = getContextComponent();
+    if (myIsReply && contextComponent instanceof CommentsTree) {
+      final Object selected = ((CommentsTree)contextComponent).getLastSelectedPathComponent();
       if (selected instanceof DefaultMutableTreeNode) {
         Object userObject = ((DefaultMutableTreeNode)selected).getUserObject();
         if (userObject instanceof CommentNode) {
           final Comment comment = ((CommentNode)userObject).getComment();
-          commentForm.setParentCommentId(comment.getPermId());
+          commentForm.setParentComment(comment);
         }
       }
     }
@@ -117,15 +117,32 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
-        final MarkupModel markup = myEditor.getMarkupModel();
-        final Comment comment = commentForm.getComment();
-        if (comment != null) {
-          final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()),
-                                                                         HighlighterLayer.ERROR + 1, null);
+        if (!myIsReply) {
+          final MarkupModel markup = myEditor.getMarkupModel();
+          final Comment comment = commentForm.getComment();
+          if (comment != null) {
+            final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()),
+                                                                           HighlighterLayer.ERROR + 1, null);
 
-          final ReviewGutterIconRenderer gutterIconRenderer =
-            new ReviewGutterIconRenderer(myReview, myVirtualFile, comment);
-          highlighter.setGutterIconRenderer(gutterIconRenderer);
+            final ReviewGutterIconRenderer gutterIconRenderer =
+              new ReviewGutterIconRenderer(myReview, myVirtualFile, comment);
+            highlighter.setGutterIconRenderer(gutterIconRenderer);
+          }
+        }
+        else {
+          final JComponent contextComponent = getContextComponent();
+          if (contextComponent instanceof CommentsTree) {
+            final TreePath selectionPath = ((JTree)contextComponent).getSelectionPath();
+            final Object component = selectionPath.getLastPathComponent();
+            if (component instanceof DefaultMutableTreeNode){
+              ((DefaultMutableTreeNode)component).add(
+                new DefaultMutableTreeNode(new CommentNode(commentForm.getComment())));
+              final TreeModel model = ((JTree)contextComponent).getModel();
+              if (model instanceof DefaultTreeModel) {
+                ((DefaultTreeModel)model).reload();
+              }
+            }
+          }
         }
       }
     });

@@ -47,10 +47,10 @@ public class CommentForm extends JPanel {
   }
 
   private Review myReview;
-  private String myParentCommentId;
+  private Comment myParentComment;
 
   public CommentForm(@NotNull final Project project, @NotNull final String contentName,
-                     final boolean isGeneral) {
+                     final boolean isGeneral, final boolean isReply) {
     myContentName = contentName;
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
@@ -72,9 +72,9 @@ public class CommentForm extends JPanel {
         final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME), getText());
         assert myReview != null;
 
-        final String parentCommentId = getParentCommentId();
-        if (parentCommentId != null) {
-          comment.setParentCommentId(parentCommentId);
+        final Comment parentComment = getParentComment();
+        if (parentComment != null) {
+          comment.setParentCommentId(parentComment.getPermId());
         }
         if (myEditor != null) {
           final Document document = myEditor.getDocument();
@@ -88,10 +88,17 @@ public class CommentForm extends JPanel {
         final boolean success = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
         if (success && myBalloon != null) {
           myComment = comment;
-          if (isGeneral)
-            myReview.addGeneralComment(comment);
-          else
-            myReview.addComment(comment);
+          if (isReply) {
+            myParentComment.addReply(comment);
+          }
+          else {
+            if (isGeneral) {
+              myReview.addGeneralComment(comment);
+            }
+            else {
+              myReview.addComment(comment);
+            }
+          }
           myBalloon.dispose();
         }
       }
@@ -129,12 +136,12 @@ public class CommentForm extends JPanel {
   }
 
   @Nullable
-  public String getParentCommentId() {
-    return myParentCommentId;
+  public Comment getParentComment() {
+    return myParentComment;
   }
 
-  public void setParentCommentId(@NotNull final String parentCommentId) {
-    myParentCommentId = parentCommentId;
+  public void setParentComment(@NotNull final Comment parentComment) {
+    myParentComment = parentComment;
   }
 
   public Comment getComment() {
