@@ -273,7 +273,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
         UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + message, MessageType.ERROR);
         return null;
       }
-      XPath commentId = XPath.newInstance("/generalCommentData/permaId/id");
+      XPath commentId = XPath.newInstance(isGeneral || parentCommentId != null ? "/generalCommentData/permaId/id" :
+                                          "/versionedLineCommentData/permaId/id");
       @SuppressWarnings("unchecked")
       Element id = (Element)commentId.selectSingleNode(document);
       return id == null ? null : id.getText();
