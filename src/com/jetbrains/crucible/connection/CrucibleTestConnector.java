@@ -1,8 +1,12 @@
 package com.jetbrains.crucible.connection;
 
 import com.intellij.openapi.project.Project;
+import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import org.jetbrains.annotations.Nullable;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * User : ktisha
@@ -54,6 +58,14 @@ public class CrucibleTestConnector {
 
   public void testConnect() throws CrucibleApiException {
     final CrucibleSession session = new CrucibleSessionImpl(myProject);
+    final String url = CrucibleSettings.getInstance().SERVER_URL;
+    try {
+      new URL(url);
+    }
+    catch (MalformedURLException e) {
+      myConnectionState = ConnectionState.FAILED;
+      return;
+    }
     session.login();
     session.getServerVersion();
   }

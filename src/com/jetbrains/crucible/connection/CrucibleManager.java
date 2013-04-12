@@ -19,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +113,13 @@ public class CrucibleManager {
     final String username = crucibleSettings.USERNAME;
     if (StringUtil.isEmptyOrSpaces(serverUrl) || StringUtil.isEmptyOrSpaces(username)) {
       UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.define.host.username"), MessageType.ERROR);
+      return null;
+    }
+    try {
+      new URL(serverUrl);
+    }
+    catch (MalformedURLException e) {
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.wrong.host"), MessageType.ERROR);
       return null;
     }
     String key = serverUrl + username + crucibleSettings.getPassword();
