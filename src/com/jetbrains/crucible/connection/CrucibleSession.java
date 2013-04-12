@@ -33,7 +33,8 @@ public interface CrucibleSession {
   List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws JDOMException, IOException;
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
 
-  boolean postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
+  @Nullable
+  String postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
 
   void fillRepoHash() throws IOException, JDOMException;
   Map<String,VirtualFile> getRepoHash();
