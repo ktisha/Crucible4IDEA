@@ -8,7 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.PopupHandler;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
-import com.jetbrains.crucible.actions.ReplyToCommentAction;
+import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleTreeStructure;
@@ -35,9 +35,9 @@ public class CommentsTree extends SimpleTree {
     setPreferredSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
 
     final DefaultActionGroup group = new DefaultActionGroup();
-    final ReplyToCommentAction replyToComment =
-      new ReplyToCommentAction(review, editor, vFile, CrucibleBundle.message("crucible.add.reply"),
-                               CrucibleBundle.message("crucible.comment"));
+    final AddCommentAction replyToComment =
+      new AddCommentAction(review, editor, vFile, CrucibleBundle.message("crucible.add.reply"),
+                               CrucibleBundle.message("crucible.comment"), true);
     replyToComment.setContextComponent(this);
     group.add(replyToComment);
     PopupHandler.installUnknownPopupHandler(this, group, ActionManager.getInstance());

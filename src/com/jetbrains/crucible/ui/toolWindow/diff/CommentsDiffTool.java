@@ -23,6 +23,7 @@ import com.intellij.ui.PopupHandler;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import com.jetbrains.crucible.utils.CrucibleDataKeys;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -89,7 +90,8 @@ public class CommentsDiffTool extends FrameDiffTool {
                                        @Nullable final Review review, @NotNull final String name) {
     if (editor2 != null && review != null) {
       DefaultActionGroup group = new DefaultActionGroup();
-      final AddCommentAction addCommentAction = new AddCommentAction("Add Comment", name, vFile, review);
+      final AddCommentAction addCommentAction = new AddCommentAction(review, editor2, vFile, CrucibleBundle.message("crucible.add.comment"),
+                                                                             name, false);
       addCommentAction.setContextComponent(editor2.getComponent());
       group.add(addCommentAction);
       PopupHandler.installUnknownPopupHandler(editor2.getContentComponent(), group, ActionManager.getInstance());

@@ -12,9 +12,7 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
-import com.intellij.ui.treeStructure.treetable.ListTreeTableModel;
 import com.jetbrains.crucible.actions.AddCommentAction;
-import com.jetbrains.crucible.actions.ReplyToCommentAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.utils.CrucibleBundle;
@@ -44,7 +42,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
-  private ListTreeTableModel myCommentsModel;
   private CommentsTreeTable myGeneralComments;
 
   @SuppressWarnings("UseOfObsoleteCollectionType")
@@ -97,13 +94,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   @NotNull
   private JPanel installActions() {
     final DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction(CrucibleBundle.message("crucible.add.comment"),
-                                                                   myReview.getPermaId(), null, myReview);
+    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.add.comment"),
+                                                                   myReview.getPermaId(), false);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
-    final ReplyToCommentAction replyToCommentAction =
-      new ReplyToCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), myReview.getPermaId());
+    final AddCommentAction replyToCommentAction =
+      new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), myReview.getPermaId(), true);
 
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
