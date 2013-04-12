@@ -1,13 +1,10 @@
 package com.jetbrains.crucible.ui.toolWindow;
 
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
-import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.connection.CrucibleManager;
-import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.BasicReview;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.utils.CrucibleBundle;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +15,6 @@ import java.util.List;
  * User: ktisha
  */
 public class CrucibleReviewModel extends DefaultTableModel {
-  private static final Logger LOG = Logger.getInstance(CrucibleReviewModel.class.getName());
   private final Project myProject;
 
   public CrucibleReviewModel(Project project) {
@@ -62,20 +58,12 @@ public class CrucibleReviewModel extends DefaultTableModel {
     setRowCount(0);
     final CrucibleManager manager = CrucibleManager.getInstance(myProject);
     final List<BasicReview> reviews;
-    try {
-      reviews = manager.getReviewsForFilter(filter);
-      if (reviews != null) {
-        for (BasicReview review : reviews) {
-          addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
-          review.getCreateDate()});
-        }
+    reviews = manager.getReviewsForFilter(filter);
+    if (reviews != null) {
+      for (BasicReview review : reviews) {
+        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
+        review.getCreateDate()});
       }
-    }
-    catch (CrucibleApiException e) {
-      LOG.warn(e.getMessage());
-    }
-    catch (JDOMException e) {
-      LOG.warn(e.getMessage());
     }
   }
 }

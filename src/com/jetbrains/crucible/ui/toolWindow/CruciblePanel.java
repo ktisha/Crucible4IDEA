@@ -23,13 +23,11 @@ import com.intellij.ui.table.JBTable;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.connection.CrucibleManager;
-import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.ReviewItem;
 import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -74,19 +72,11 @@ public class CruciblePanel extends SimpleToolWindowPanel {
             ApplicationManager.getApplication().invokeLater(new Runnable() {
               @Override
               public void run() {
-                try {
-                  final Review review =
-                    CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
-                  if (review != null) {
-                    openDetailsToolWindow(review);
-                    myReviewTable.clearSelection();
-                  }
-                }
-                catch (CrucibleApiException e1) {
-                  LOG.warn(e1.getMessage());
-                }
-                catch (JDOMException e1) {
-                  LOG.warn(e1.getMessage());
+                final Review review =
+                  CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
+                if (review != null) {
+                  openDetailsToolWindow(review);
+                  myReviewTable.clearSelection();
                 }
               }
             }, ModalityState.stateForComponent(myReviewTable));
