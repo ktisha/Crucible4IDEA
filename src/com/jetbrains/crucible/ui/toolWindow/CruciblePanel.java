@@ -28,6 +28,7 @@ import com.jetbrains.crucible.model.ReviewItem;
 import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
+import com.jetbrains.crucible.vcs.VcsUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -133,7 +134,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     ApplicationManager.getApplication().invokeLater(new Runnable() {
       @Override
       public void run() {
-        List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
+        final List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
         final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
         final VirtualFile virtualFile = myProject.getBaseDir();
         final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
@@ -152,7 +153,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
               try {
                 final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
                 if (revisionNumber != null && root != null) {
-                  final CommittedChangeList changeList = vcsFor.loadRevisions(root, revisionNumber);
+                  final CommittedChangeList changeList = VcsUtils.loadRevisionsFromGit(myProject, root, revisionNumber);
                   if (changeList != null) list.add(changeList);
                 }
 
