@@ -43,6 +43,7 @@ public class CommentsTreeTable extends TreeTable {
     ListTreeTableModel commentsModel = new ListTreeTableModel(root, new ColumnInfo[]{COMMENT_COLUMN, AUTHOR_COLUMN, DATE_COLUMN });
     setModel(commentsModel);
     updateView();
+    DetailsPanel.setUpColumnWidths(this);
   }
 
 
@@ -79,6 +80,7 @@ public class CommentsTreeTable extends TreeTable {
         final CommentTreeNode node = (CommentTreeNode)value;
         final Comment comment = node.getComment();
         setText(comment.getMessage());
+        setToolTipText(comment.getMessage());
         setOpaque(true);
         Color background = tree.getBackground();
         setBackground(background);

@@ -25,6 +25,7 @@ import com.intellij.ui.treeStructure.SimpleTreeStructure;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.ReviewItem;
+import com.jetbrains.crucible.ui.DescriptionCellRenderer;
 import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
@@ -32,6 +33,7 @@ import com.jetbrains.crucible.vcs.VcsUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultTreeModel;
@@ -62,8 +64,11 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     myReviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     myReviewTable.setStriped(true);
 
-    myReviewTable.getColumnModel().getColumn(0).setMinWidth(400);          //message
-    myReviewTable.getColumnModel().getColumn(0).setMinWidth(400);          //message
+    final TableColumnModel columnModel = myReviewTable.getColumnModel();
+    columnModel.getColumn(0).setMinWidth(400);          //message
+    columnModel.getColumn(0).setMinWidth(400);          //message
+    columnModel.getColumn(0).setCellRenderer(new DescriptionCellRenderer());
+
     setUpColumnWidths(myReviewTable);
     myReviewTable.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
