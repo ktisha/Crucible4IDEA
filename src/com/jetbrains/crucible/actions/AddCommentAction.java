@@ -1,6 +1,7 @@
 package com.jetbrains.crucible.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.markup.HighlighterLayer;
@@ -8,14 +9,13 @@ import com.intellij.openapi.editor.markup.MarkupModel;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupAdapter;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
-import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.table.JBTable;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
@@ -30,7 +30,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
 
 /**
  * User: ktisha
@@ -57,18 +56,19 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   }
 
   public void actionPerformed(AnActionEvent e) {
+    final DataContext dataContext = e.getDataContext();
     final Project project = e.getData(PlatformDataKeys.PROJECT);
     if (project == null) return;
     final ToolWindow toolWindow = e.getData(PlatformDataKeys.TOOL_WINDOW);
     if (toolWindow != null) {
-      addGeneralComment(project, toolWindow);
+      addGeneralComment(project, dataContext);
     }
     else {
       addVersionedComment(project);
     }
   }
 
-  private void addGeneralComment(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
+  private void addGeneralComment(@NotNull final Project project, DataContext dataContext) {
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, true, myIsReply);
     commentForm.setReview(myReview);
@@ -85,8 +85,10 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       else return;
     }
 
-    final Balloon balloon = builder.getNewCommentBalloon(commentForm, myIsReply ? CrucibleBundle.message("crucible.new.reply.$0", commentForm.getParentComment().getPermId()) :
-                                                                                  CrucibleBundle.message("crucible.new.comment.$0", myReview.getPermaId()));
+    final JBPopup balloon = builder.getNewCommentBalloon(commentForm, myIsReply ? CrucibleBundle
+      .message("crucible.new.reply.$0", commentForm.getParentComment().getPermId()) :
+                                                                      CrucibleBundle
+                                                                        .message("crucible.new.comment.$0", myReview.getPermaId()));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -97,7 +99,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       }
     });
     commentForm.setBalloon(balloon);
-    balloon.showInCenterOf(toolWindow.getComponent());
+    balloon.showInBestPositionFor(dataContext);
     commentForm.requestFocus();
   }
 
@@ -120,9 +122,10 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     }
     commentForm.setEditor(myEditor);
     commentForm.setVirtualFile(myVirtualFile);
-    final Balloon balloon = builder.getNewCommentBalloon(commentForm, myIsReply ?
-                                                          CrucibleBundle.message("crucible.new.reply.$0", "Comment") :
-                                                          CrucibleBundle.message("crucible.new.comment.$0", myVirtualFile.getName()));
+    final JBPopup balloon = builder.getNewCommentBalloon(commentForm, myIsReply ?
+                                                                      CrucibleBundle.message("crucible.new.reply.$0", "Comment") :
+                                                                      CrucibleBundle
+                                                                        .message("crucible.new.comment.$0", myVirtualFile.getName()));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -156,11 +159,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     });
     commentForm.setBalloon(balloon);
 
-    final Rectangle rect = contextComponent.getVisibleRect();
-    final Point p = new Point(rect.x + rect.width - 10, rect.y + 10);
-    final RelativePoint point = new RelativePoint(contextComponent, p);
-
-    balloon.show(point, Balloon.Position.below);
+    balloon.showInBestPositionFor(myEditor);
     commentForm.requestFocus();
   }
 
