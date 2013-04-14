@@ -34,14 +34,14 @@ public class CommentBalloonBuilder {
   }
 
 
-  public Balloon getNewCommentBalloon(final CommentForm balloonContent, @NotNull final String title) {
-    final BalloonBuilder balloonBuilder =
-      JBPopupFactory.getInstance().
-        createDialogBalloonBuilder(balloonContent, title);
-    balloonBuilder.setHideOnClickOutside(true);
-    balloonBuilder.setHideOnKeyOutside(true);
-
-    return balloonBuilder.createBalloon();
+  public JBPopup getNewCommentBalloon(final CommentForm balloonContent, @NotNull final String title) {
+    final ComponentPopupBuilder builder = JBPopupFactory.getInstance().
+      createComponentPopupBuilder(balloonContent, balloonContent);
+    builder.setAdText("Hit Ctrl+Enter to save comment.");
+    builder.setTitle(title);
+    builder.setResizable(true);
+    builder.setMovable(true);
+    return builder.createPopup();
   }
 
 }

@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
@@ -34,7 +34,7 @@ public class CommentForm extends JPanel {
   private static final int ourBalloonHeight = 200;
 
   private final EditorTextField myReviewTextField;
-  private Balloon myBalloon;
+  private JBPopup myBalloon;
 
   private VirtualFile myVirtualFile;
   private Editor myEditor;
@@ -111,7 +111,7 @@ public class CommentForm extends JPanel {
     return myReviewTextField.getText();
   }
 
-  public void setBalloon(@NotNull final Balloon balloon) {
+  public void setBalloon(@NotNull final JBPopup balloon) {
     myBalloon = balloon;
   }
 
