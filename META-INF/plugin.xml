@@ -1,11 +1,39 @@
 <idea-plugin version="2">
-  <id>crucible4idea</id>
+  <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
   <version>0.1</version>
-  <vendor email="kt@jetbrains.com">Ekaterina Tuzova</vendor>
-
-  <description>Plugin provides IDEA integration with Code Review Tools (such as Crucible from Atlassian)</description>
-
+  <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
+  <category>Tools Integration</category>
+  <description><![CDATA[
+<html>
+  Plugin provides IDEA integration with Code Review Tools (such as Crucible from Atlassian)
+  <br/>
+  Main features:
+  <ul>
+    <li> Dashboard toolwindow
+    <li> View separated commits in one review item
+    <li> Show diff for commit
+    <li> Add general comments
+    <li> Add reply to general comments
+    <li> Add versioned comment (right-click)
+    <li> Add reply to versioned comment (right-click on comments list)
+  </ul>
+</html>
+    ]]></description>
+  <change-notes><![CDATA[
+<html>
+  <p>0.1 - Initial revision: </p>
+  <ul>
+    <li> Dashboard toolwindow
+    <li> View separated commits in one review item
+    <li> Show diff for commit
+    <li> Add general comments
+    <li> Add reply to general comments
+    <li> Add versioned comment (right-click)
+    <li> Add reply to versioned comment (right-click on comments list)
+  </ul>
+</html>
+]]></change-notes>
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="129.60"/>
 
