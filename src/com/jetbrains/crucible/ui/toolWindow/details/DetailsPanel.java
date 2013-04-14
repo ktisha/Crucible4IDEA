@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -84,6 +85,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   @NotNull
   private JPanel createCommentsPane() {
     myGeneralComments = new CommentsTreeTable();
+    myGeneralComments.setExpandableItemsEnabled(false);
     myGeneralComments.updateModel(myReview);
     setUpColumnWidths(myGeneralComments);
     return installActions();
@@ -155,19 +157,20 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     };
     myCommitsTable.setStriped(true);
     myCommitsTable.setAutoCreateRowSorter(true);
-
+    myCommitsTable.setExpandableItemsEnabled(false);
     setUpColumnWidths(myCommitsTable);
 
     return ScrollPaneFactory.createScrollPane(myCommitsTable);
   }
 
-  private static void setUpColumnWidths(@NotNull final JBTable table) {
-    table.getColumnModel().getColumn(0).setMinWidth(400);          //message
-    table.getColumnModel().getColumn(0).setPreferredWidth(400);    //message
-    table.getColumnModel().getColumn(1).setMinWidth(200);     //Author
-    table.getColumnModel().getColumn(1).setMaxWidth(200);     //Author
-    table.getColumnModel().getColumn(2).setMinWidth(130);     //Date
-    table.getColumnModel().getColumn(2).setMaxWidth(130);     //Date
+  public static void setUpColumnWidths(@NotNull final JBTable table) {
+    final TableColumnModel columnModel = table.getColumnModel();
+    columnModel.getColumn(0).setMinWidth(400);          //message
+    columnModel.getColumn(0).setPreferredWidth(400);    //message
+    columnModel.getColumn(1).setMinWidth(200);     //Author
+    columnModel.getColumn(1).setMaxWidth(200);     //Author
+    columnModel.getColumn(2).setMinWidth(130);     //Date
+    columnModel.getColumn(2).setMaxWidth(130);     //Date
   }
 
   @NotNull
@@ -199,7 +202,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       final Component orig = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
       final Color bg = orig.getBackground();
       if (value instanceof CommittedChangeList) {
-        setText(((CommittedChangeList)value).getName());
+        final String text = ((CommittedChangeList)value).getName();
+
+        setText("<html>" + text + "</html>");
+        setToolTipText(text);
       }
       setBackground(bg);
       setBorder(BorderFactory.createLineBorder(bg));

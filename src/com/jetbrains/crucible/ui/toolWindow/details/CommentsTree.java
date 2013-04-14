@@ -15,6 +15,8 @@ import com.jetbrains.crucible.ui.toolWindow.CrucibleTreeStructure;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 
 /**
@@ -28,6 +30,22 @@ public class CommentsTree extends SimpleTree {
   public CommentsTree(@NotNull final Review review, @NotNull final Comment comment,
                       @NotNull final Editor editor, @NotNull final VirtualFile vFile) {
     final CommentNode root = new CommentNode(comment);
+    setExpandableItemsEnabled(false);
+    setCellRenderer(new DefaultTreeCellRenderer() {
+      @Override
+      public Component getTreeCellRendererComponent(JTree tree,
+                                                    Object value,
+                                                    boolean sel,
+                                                    boolean expanded,
+                                                    boolean leaf,
+                                                    int row,
+                                                    boolean hasFocus) {
+        final JLabel label = (JLabel)super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        label.setToolTipText(label.getText());
+        setIcon(null);
+        return label;
+      }
+    });
     final SimpleTreeStructure structure = new CrucibleTreeStructure(root);
 
     new AbstractTreeBuilder(this, getBuilderModel(), structure, null);

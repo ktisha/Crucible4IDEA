@@ -61,8 +61,9 @@ public class CrucibleReviewModel extends DefaultTableModel {
     reviews = manager.getReviewsForFilter(filter);
     if (reviews != null) {
       for (BasicReview review : reviews) {
-        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(), review.getAuthor().getUserName(),
-        review.getCreateDate()});
+        addRow(new Object[]{review.getPermaId(), review.getDescription(), review.getState(),
+          review.getAuthor().getUserName(), review.getCreateDate()});
+
       }
     }
   }
