@@ -29,6 +29,7 @@ import com.jetbrains.crucible.ui.DescriptionCellRenderer;
 import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import com.jetbrains.crucible.vcs.VcsUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -120,7 +121,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   }
 
   public void openDetailsToolWindow(@NotNull final Review review) {
-    final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow("Crucible connector");
+    final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow(CrucibleBundle.message("crucible.toolwindow.id"));
     final ContentManager contentManager = toolWindow.getContentManager();
     final Content foundContent = contentManager.findContent("Details for " + review.getPermaId());
     if (foundContent != null) {
