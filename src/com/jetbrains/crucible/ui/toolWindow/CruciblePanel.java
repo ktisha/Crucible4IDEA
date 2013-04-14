@@ -63,11 +63,10 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     myReviewTable = new JBTable(myReviewModel);
     myReviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     myReviewTable.setStriped(true);
+    myReviewTable.setExpandableItemsEnabled(false);
 
     final TableColumnModel columnModel = myReviewTable.getColumnModel();
-    columnModel.getColumn(0).setMinWidth(400);          //message
-    columnModel.getColumn(0).setMinWidth(400);          //message
-    columnModel.getColumn(0).setCellRenderer(new DescriptionCellRenderer());
+    columnModel.getColumn(1).setCellRenderer(new DescriptionCellRenderer());
 
     setUpColumnWidths(myReviewTable);
     myReviewTable.addMouseListener(new MouseAdapter() {
