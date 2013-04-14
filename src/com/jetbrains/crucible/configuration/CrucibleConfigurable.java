@@ -85,7 +85,7 @@ public class CrucibleConfigurable implements SearchableConfigurable {
   @Nls
   @Override
   public String getDisplayName() {
-    return "Crucible Connector";
+    return "Code Review";
   }
 
   @Nullable

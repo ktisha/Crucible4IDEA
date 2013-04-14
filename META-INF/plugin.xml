@@ -1,10 +1,10 @@
 <idea-plugin version="2">
   <id>crucible4idea</id>
-  <name>Crucible connector for IntelliJ IDEA</name>
+  <name>Code Review for IntelliJ IDEA</name>
   <version>0.1</version>
   <vendor email="kt@jetbrains.com">Ekaterina Tuzova</vendor>
 
-  <description>Plugin provides IDEA integration with Crucible from Attlassian</description>
+  <description>Plugin provides IDEA integration with Code Review Tools (such as Crucible from Atlassian)</description>
 
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="129.60"/>
@@ -33,7 +33,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable instance="com.jetbrains.crucible.configuration.CrucibleConfigurable"
-                             id="com.jetbrains.crucible.configuration.CrucibleConfigurable" displayName="Crucible Connector"/>
+                             id="com.jetbrains.crucible.configuration.CrucibleConfigurable" displayName="Code Review"/>
     <applicationService serviceInterface="com.jetbrains.crucible.configuration.CrucibleSettings"
                         serviceImplementation="com.jetbrains.crucible.configuration.CrucibleSettings"/>
     <projectService serviceInterface="com.jetbrains.crucible.connection.CrucibleManager"
