@@ -11,12 +11,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupAdapter;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
+import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.PlatformIcons;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.details.*;
@@ -25,7 +25,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 
 /**
@@ -45,7 +48,8 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   public AddCommentAction(@NotNull final Review review, @Nullable final Editor editor,
                           @Nullable final VirtualFile vFile, @NotNull final String description,
                           @NotNull final String name, boolean isReply) {
-    super(description, description, PlatformIcons.EDIT_IN_SECTION_ICON);
+    super(description, description, isReply ? IconLoader.getIcon("/images/comment_reply.png") :
+                                              IconLoader.getIcon("/images/comment_add.png"));
     myIsReply = isReply;
     myReview = review;
     myEditor = editor;
