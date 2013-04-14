@@ -44,7 +44,7 @@ public class CrucibleReviewModel extends DefaultTableModel {
       case 3:
         return CrucibleBundle.message("crucible.author");
       case 4:
-        return CrucibleBundle.message("crucible.author");
+        return CrucibleBundle.message("crucible.date");
     }
     return super.getColumnName(column);
   }

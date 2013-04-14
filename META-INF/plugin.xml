@@ -39,6 +39,6 @@
     <projectService serviceInterface="com.jetbrains.crucible.connection.CrucibleManager"
                     serviceImplementation="com.jetbrains.crucible.connection.CrucibleManager" />
 
-    <toolWindow id="Crucible connector" anchor="bottom" canCloseContents="true" factoryClass="com.jetbrains.crucible.ui.toolWindow.CrucibleToolWindowFactory"/>
+    <toolWindow id="Code Review" anchor="bottom" canCloseContents="true" factoryClass="com.jetbrains.crucible.ui.toolWindow.CrucibleToolWindowFactory"/>
   </extensions>
 </idea-plugin>
