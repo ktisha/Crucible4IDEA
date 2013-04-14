@@ -22,7 +22,7 @@ public class CommentBalloonBuilder {
                           @NotNull final CommentsTree balloonContent, @NotNull final String title) {
 
     final Document document = editor.getDocument();
-    final int endOffset = document.getLineEndOffset(Integer.parseInt(comment.getLine()));
+    final int startOffset = document.getLineStartOffset(Integer.parseInt(comment.getLine()));
 
     final ComponentPopupBuilder builder = JBPopupFactory.getInstance().
       createComponentPopupBuilder(balloonContent, balloonContent);
@@ -30,8 +30,8 @@ public class CommentBalloonBuilder {
     builder.setTitle(title);
     builder.setMovable(true);
     final JBPopup popup = builder.createPopup();
-    final Point targetPoint = editor.visualPositionToXY(editor.offsetToVisualPosition(endOffset));
-    popup.show(new RelativePoint(editor.getContentComponent(), targetPoint));
+    final Point targetPoint = editor.visualPositionToXY(editor.offsetToVisualPosition(startOffset));
+    popup.show(new RelativePoint(editor.getComponent(), targetPoint));
   }
 
 

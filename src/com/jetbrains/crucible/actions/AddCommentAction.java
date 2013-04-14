@@ -14,6 +14,7 @@ import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
+import com.intellij.ui.awt.RelativePoint;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.PlatformIcons;
 import com.jetbrains.crucible.model.Comment;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.*;
+import java.awt.*;
 
 /**
  * User: ktisha
@@ -130,9 +132,9 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
           }
         }
         else {
-          final JComponent contextComponent = getContextComponent();
           if (contextComponent instanceof CommentsTree) {
             final TreePath selectionPath = ((JTree)contextComponent).getSelectionPath();
+            if (selectionPath == null) return;
             final Object component = selectionPath.getLastPathComponent();
             if (component instanceof DefaultMutableTreeNode && comment != null) {
               ((DefaultMutableTreeNode)component).add(new DefaultMutableTreeNode(new CommentNode(comment)));
@@ -147,7 +149,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     });
     commentForm.setBalloon(balloon);
 
-    balloon.showInCenterOf(contextComponent);
+    final Rectangle rect = contextComponent.getVisibleRect();
+    final Point p = new Point(rect.x + rect.width - 10, rect.y + 10);
+    final RelativePoint point = new RelativePoint(contextComponent, p);
+
+    balloon.show(point, Balloon.Position.below);
     commentForm.requestFocus();
   }
 }

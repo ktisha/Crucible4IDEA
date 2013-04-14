@@ -24,7 +24,7 @@ import java.awt.*;
  */
 public class CommentsTree extends SimpleTree {
 
-  private static final int ourBalloonWidth = 400;
+  private static final int ourBalloonWidth = 450;
   private static final int ourBalloonHeight = 400;
 
   public CommentsTree(@NotNull final Review review, @NotNull final Comment comment,

@@ -30,8 +30,8 @@ import java.util.Set;
  * User: ktisha
  */
 public class CommentForm extends JPanel {
-  private static final int ourBalloonWidth = 400;
-  private static final int ourBalloonHeight = 400;
+  private static final int ourBalloonWidth = 350;
+  private static final int ourBalloonHeight = 200;
 
   private final String myContentName;
 
