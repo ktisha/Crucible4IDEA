@@ -62,8 +62,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     final VirtualFile vFile = PlatformDataKeys.VIRTUAL_FILE.getData(context);
     final Editor editor2 = diffPanel.getEditor2();
 
-    final String name = vFile == null ? "file" : vFile.getName();
-    addCommentAction(editor2, vFile, review, name);
+    addCommentAction(editor2, vFile, review);
 
     builder.removeAllActions();
     builder.setCenterPanel(diffPanel.getComponent());
@@ -87,11 +86,10 @@ public class CommentsDiffTool extends FrameDiffTool {
 
   private static void addCommentAction(@Nullable final Editor editor2,
                                        @Nullable final VirtualFile vFile,
-                                       @Nullable final Review review, @NotNull final String name) {
+                                       @Nullable final Review review) {
     if (editor2 != null && review != null) {
       DefaultActionGroup group = new DefaultActionGroup();
-      final AddCommentAction addCommentAction = new AddCommentAction(review, editor2, vFile, CrucibleBundle.message("crucible.add.comment"),
-                                                                             name, false);
+      final AddCommentAction addCommentAction = new AddCommentAction(review, editor2, vFile, CrucibleBundle.message("crucible.add.comment"), false);
       addCommentAction.setContextComponent(editor2.getComponent());
       group.add(addCommentAction);
       PopupHandler.installUnknownPopupHandler(editor2.getContentComponent(), group, ActionManager.getInstance());

@@ -42,20 +42,18 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private final Editor myEditor;
   private final VirtualFile myVirtualFile;
-  private final String myName;
   private final Review myReview;
   private final boolean myIsReply;
 
   public AddCommentAction(@NotNull final Review review, @Nullable final Editor editor,
                           @Nullable final VirtualFile vFile, @NotNull final String description,
-                          @NotNull final String name, boolean isReply) {
+                          boolean isReply) {
     super(description, description, isReply ? IconLoader.getIcon("/images/comment_reply.png") :
                                               IconLoader.getIcon("/images/comment_add.png"));
     myIsReply = isReply;
     myReview = review;
     myEditor = editor;
     myVirtualFile = vFile;
-    myName = name;
   }
 
   public void actionPerformed(AnActionEvent e) {
@@ -122,7 +120,9 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     }
     commentForm.setEditor(myEditor);
     commentForm.setVirtualFile(myVirtualFile);
-    final Balloon balloon = builder.getNewCommentBalloon(commentForm, "");
+    final Balloon balloon = builder.getNewCommentBalloon(commentForm, myIsReply ?
+                                                          CrucibleBundle.message("crucible.new.reply.$0", "Comment") :
+                                                          CrucibleBundle.message("crucible.new.comment.$0", myVirtualFile.getName()));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {

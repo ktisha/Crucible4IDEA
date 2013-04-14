@@ -54,8 +54,7 @@ public class CommentsTree extends SimpleTree {
 
     final DefaultActionGroup group = new DefaultActionGroup();
     final AddCommentAction replyToComment =
-      new AddCommentAction(review, editor, vFile, CrucibleBundle.message("crucible.add.reply"),
-                               CrucibleBundle.message("crucible.comment"), true);
+      new AddCommentAction(review, editor, vFile, CrucibleBundle.message("crucible.add.reply"),true);
     replyToComment.setContextComponent(this);
     group.add(replyToComment);
     PopupHandler.installUnknownPopupHandler(this, group, ActionManager.getInstance());

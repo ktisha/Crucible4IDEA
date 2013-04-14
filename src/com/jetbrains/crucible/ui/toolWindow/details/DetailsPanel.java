@@ -96,13 +96,12 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   @NotNull
   private JPanel installActions() {
     final DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.add.comment"),
-                                                                   myReview.getPermaId(), false);
+    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.add.comment"), false);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
     final AddCommentAction replyToCommentAction =
-      new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), myReview.getPermaId(), true);
+      new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), true);
 
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
