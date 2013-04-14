@@ -21,6 +21,7 @@ import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.details.*;
 import com.jetbrains.crucible.ui.toolWindow.diff.ReviewGutterIconRenderer;
+import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,7 +72,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private void addGeneralComment(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, myName, true, myIsReply);
+    final CommentForm commentForm = new CommentForm(project, true, myIsReply);
     commentForm.setReview(myReview);
 
     if (myIsReply) {
@@ -83,9 +84,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
           commentForm.setParentComment(((Comment)parentComment));
         }
       }
+      else return;
     }
 
-    final Balloon balloon = builder.getNewCommentBalloon(commentForm);
+    final Balloon balloon = builder.getNewCommentBalloon(commentForm, myIsReply ? CrucibleBundle.message("crucible.new.reply.$0", commentForm.getParentComment().getPermId()) :
+                                                                                  CrucibleBundle.message("crucible.new.comment.$0", myReview.getPermaId()));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -103,7 +106,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   private void addVersionedComment(@NotNull final Project project) {
     if (myEditor == null || myVirtualFile == null) return;
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, myName, false, myIsReply);
+    final CommentForm commentForm = new CommentForm(project, false, myIsReply);
     commentForm.setReview(myReview);
 
     final JComponent contextComponent = getContextComponent();
@@ -119,7 +122,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     }
     commentForm.setEditor(myEditor);
     commentForm.setVirtualFile(myVirtualFile);
-    final Balloon balloon = builder.getNewCommentBalloon(commentForm);
+    final Balloon balloon = builder.getNewCommentBalloon(commentForm, "");
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -159,5 +162,17 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
     balloon.show(point, Balloon.Position.below);
     commentForm.requestFocus();
+  }
+
+  @Override
+  public boolean isEnabled() {
+    if (myIsReply && myEditor == null) {
+      final JBTable contextComponent = (JBTable)getContextComponent();
+      final int selectedRow = contextComponent.getSelectedRow();
+      if (selectedRow < 0) {
+        return false;
+      }
+    }
+    return true;
   }
 }

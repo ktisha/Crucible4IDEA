@@ -5,7 +5,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.*;
 import com.intellij.ui.awt.RelativePoint;
 import com.jetbrains.crucible.model.Comment;
-import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -35,11 +34,10 @@ public class CommentBalloonBuilder {
   }
 
 
-  public Balloon getNewCommentBalloon(final CommentForm balloonContent) {
+  public Balloon getNewCommentBalloon(final CommentForm balloonContent, @NotNull final String title) {
     final BalloonBuilder balloonBuilder =
       JBPopupFactory.getInstance().
-        createDialogBalloonBuilder(balloonContent,
-                                   CrucibleBundle.message("crucible.new.comment.$0", balloonContent.getContentName()));
+        createDialogBalloonBuilder(balloonContent, title);
     balloonBuilder.setHideOnClickOutside(true);
     balloonBuilder.setHideOnKeyOutside(true);
 

@@ -33,8 +33,6 @@ public class CommentForm extends JPanel {
   private static final int ourBalloonWidth = 350;
   private static final int ourBalloonHeight = 200;
 
-  private final String myContentName;
-
   private final EditorTextField myReviewTextField;
   private Balloon myBalloon;
 
@@ -49,9 +47,7 @@ public class CommentForm extends JPanel {
   private Review myReview;
   private Comment myParentComment;
 
-  public CommentForm(@NotNull final Project project, @NotNull final String contentName,
-                     final boolean isGeneral, final boolean isReply) {
-    myContentName = contentName;
+  public CommentForm(@NotNull final Project project, final boolean isGeneral, final boolean isReply) {
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
     editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
@@ -117,11 +113,6 @@ public class CommentForm extends JPanel {
 
   public void setBalloon(@NotNull final Balloon balloon) {
     myBalloon = balloon;
-  }
-
-  @NotNull
-  public String getContentName() {
-    return myContentName;
   }
 
   public void setEditor(@NotNull final Editor editor) {
