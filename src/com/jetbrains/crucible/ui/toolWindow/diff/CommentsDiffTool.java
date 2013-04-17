@@ -39,6 +39,7 @@ public class CommentsDiffTool extends FrameDiffTool {
     final boolean superCanShow = super.canShow(request);
     final AsyncResult<DataContext> dataContextFromFocus = DataManager.getInstance().getDataContextFromFocus();
     final DataContext context = dataContextFromFocus.getResult();
+    if (context == null) return false;
     final Review review = CrucibleDataKeys.REVIEW.getData(context);
     return superCanShow && review != null;
   }
@@ -57,6 +58,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
     final AsyncResult<DataContext> dataContextFromFocus = DataManager.getInstance().getDataContextFromFocus();
     final DataContext context = dataContextFromFocus.getResult();
+    if (context == null) return;
     final Review review = CrucibleDataKeys.REVIEW.getData(context);
     final Change[] changes = VcsDataKeys.CHANGE_LEAD_SELECTION.getData(context);
     final VirtualFile vFile = PlatformDataKeys.VIRTUAL_FILE.getData(context);
