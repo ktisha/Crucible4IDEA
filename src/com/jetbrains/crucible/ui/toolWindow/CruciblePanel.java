@@ -91,7 +91,11 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         }
     }});
 
-    myReviewTable.setRowSorter(new TableRowSorter<TableModel>(myReviewModel));
+    final TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(myReviewModel);
+    rowSorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(4, SortOrder.DESCENDING)));
+    rowSorter.sort();
+    myReviewTable.setRowSorter(rowSorter);
+
     final JScrollPane detailsScrollPane = ScrollPaneFactory.createScrollPane(myReviewTable);
 
     final SimpleTreeStructure reviewTreeStructure = createTreeStructure();
