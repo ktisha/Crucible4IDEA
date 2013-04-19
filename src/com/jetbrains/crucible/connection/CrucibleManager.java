@@ -93,7 +93,7 @@ public class CrucibleManager {
   }
 
   @Nullable
-  public String postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
+  public Comment postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId) {
     try {
       final CrucibleSession session = getSession();
       if (session != null) {

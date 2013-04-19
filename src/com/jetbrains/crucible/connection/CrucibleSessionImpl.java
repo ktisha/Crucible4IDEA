@@ -24,6 +24,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -247,7 +248,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  public String postComment(@NotNull final Comment comment, boolean isGeneral,
+  public Comment postComment(@NotNull final Comment comment, boolean isGeneral,
                              @NotNull final String reviewId) {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
@@ -273,11 +274,13 @@ public class CrucibleSessionImpl implements CrucibleSession {
         UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + message, MessageType.ERROR);
         return null;
       }
-      XPath commentId = XPath.newInstance(isGeneral || parentCommentId != null ? "/generalCommentData/permaId/id" :
-                                          "/versionedLineCommentData/permaId/id");
+
+      XPath commentPath = XPath.newInstance(isGeneral || parentCommentId != null ? "/generalCommentData" :
+                                          "/versionedLineCommentData");
+
       @SuppressWarnings("unchecked")
-      Element id = (Element)commentId.selectSingleNode(document);
-      return id == null ? null : id.getText();
+      final Element commentNode = (Element)commentPath.selectSingleNode(document);
+      return parseComment(commentNode, !isGeneral);
     }
     catch (IOException e) {
       LOG.warn(e.getMessage());
@@ -413,19 +416,51 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
     if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
       for (Element generalCommentNode : generalCommentNodes) {
-        final String message = CrucibleXmlParser.getChildText(generalCommentNode, "message");
-        final User commentAuthor = CrucibleXmlParser.parseUserNode(generalCommentNode.getChild("user"));
-        final Date createDate = CrucibleXmlParser.parseDate(generalCommentNode);
-        final Comment comment = new Comment(commentAuthor, message);
-
-        final Element permId = generalCommentNode.getChild("permId");
-        final String id = CrucibleXmlParser.getChildText(permId, "id");
-        comment.setPermId(id);
-        if (createDate != null) comment.setCreateDate(createDate);
-        getReplies(generalCommentNode, comment);
+        final Comment comment = parseComment(generalCommentNode, false);
         review.addGeneralComment(comment);
       }
     }
+  }
+
+  private static Comment parseComment(@NotNull final Element commentNode, boolean isVersioned) {
+    final String message = CrucibleXmlParser.getChildText(commentNode, "message");
+    final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
+    final Date createDate = CrucibleXmlParser.parseDate(commentNode);
+    final Comment comment = new Comment(commentAuthor, message);
+
+    final Element permId = commentNode.getChild("permaId");
+    final String id = CrucibleXmlParser.getChildText(permId, "id");
+    comment.setPermId(id);
+    if (createDate != null) comment.setCreateDate(createDate);
+    getReplies(commentNode, comment);
+
+    if (isVersioned) {
+      final String toLineRange = CrucibleXmlParser.getChildText(commentNode, "toLineRange");
+      comment.setLine(toLineRange);
+      final Element ranges = commentNode.getChild("lineRanges");
+      if (ranges != null) {
+        final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
+        comment.setRevision(revision);
+      }
+
+      Element lineRanges = commentNode.getChild("lineRanges");
+      if (lineRanges != null) {
+        Element lineRange = lineRanges.getChild("lineRange");
+        if (lineRange != null) {
+          final Attribute revision = lineRange.getAttribute("revision");
+          if (revision != null) {
+            comment.setRevision(revision.getValue());
+          }
+        }
+      }
+
+      final Element reviewItemNode = commentNode.getChild("reviewItemId");
+      if (reviewItemNode != null) {
+        final String reviewItemId = CrucibleXmlParser.getChildText(reviewItemNode, "id");
+        comment.setReviewItemId(reviewItemId);
+      }
+    }
+    return comment;
   }
 
   private static void addVersionedComments(@NotNull final Document doc,
@@ -435,26 +470,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
       selectNodes(doc);
     if (commentNodes != null && !commentNodes.isEmpty()) {
       for (Element commentNode : commentNodes) {
-        final String message = CrucibleXmlParser.getChildText(commentNode, "message");
-        final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
-        final Date createDate = CrucibleXmlParser.parseDate(commentNode);
-        final Comment comment = new Comment(commentAuthor, message);
-        if (createDate != null) comment.setCreateDate(createDate);
-        final String toLineRange = CrucibleXmlParser.getChildText(commentNode, "toLineRange");
-        comment.setLine(toLineRange);
-        final Element ranges = commentNode.getChild("lineRanges");
-        if (ranges != null) {
-          final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
-          comment.setRevision(revision);
-        }
-        final Element permId = commentNode.getChild("permaId");
-        final String commentId = CrucibleXmlParser.getChildText(permId, "id");
-        comment.setPermId(commentId);
-        final Element reviewItemId = commentNode.getChild("reviewItemId");
-        final String id = CrucibleXmlParser.getChildText(reviewItemId, "id");
-        comment.setReviewItemId(id);
-
-        getReplies(commentNode, comment);
+        Comment comment = parseComment(commentNode, true);
         review.addComment(comment);
       }
     }
@@ -468,16 +484,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
       final List<Element> commentData = replyNode.getChildren("generalCommentData");
       if (!commentData.isEmpty()) {
         for (Element commentNode : commentData) {
-          final String message = CrucibleXmlParser.getChildText(commentNode, "message");
-          final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
-          final Date createDate = CrucibleXmlParser.parseDate(commentNode);
-          final Comment replyComment = new Comment(commentAuthor, message);
-          final Element permId = commentNode.getChild("permId");
-          final String id = CrucibleXmlParser.getChildText(permId, "id");
-          replyComment.setPermId(id);
-
-          if (createDate != null) replyComment.setCreateDate(createDate);
-          getReplies(commentNode, replyComment);
+          final Comment replyComment = parseComment(commentNode, false);
           comment.addReply(replyComment);
         }
       }
