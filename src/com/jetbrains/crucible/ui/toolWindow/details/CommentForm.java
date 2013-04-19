@@ -81,19 +81,21 @@ public class CommentForm extends JPanel {
           comment.setReviewItemId(id);
         }
 
-        final String id = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
-        if (id != null && myBalloon != null) {
-          comment.setPermId(id);
-          myComment = comment;
+        final Comment addedComment = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
+
+        if (addedComment != null && myBalloon != null) {
+          addedComment.setLine(comment.getLine());
+          addedComment.setReviewItemId(comment.getReviewItemId());
+          myComment = addedComment;
           if (isReply) {
-            myParentComment.addReply(comment);
+            myParentComment.addReply(addedComment);
           }
           else {
             if (isGeneral) {
-              myReview.addGeneralComment(comment);
+              myReview.addGeneralComment(addedComment);
             }
             else {
-              myReview.addComment(comment);
+              myReview.addComment(addedComment);
             }
           }
           myBalloon.dispose();

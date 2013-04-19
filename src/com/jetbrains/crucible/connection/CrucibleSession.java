@@ -34,7 +34,7 @@ public interface CrucibleSession {
   Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
 
   @Nullable
-  String postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
+  Comment postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
 
   void fillRepoHash() throws IOException, JDOMException;
   Map<String,VirtualFile> getRepoHash();
