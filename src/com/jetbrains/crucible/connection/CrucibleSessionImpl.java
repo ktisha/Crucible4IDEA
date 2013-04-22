@@ -19,10 +19,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -51,8 +53,10 @@ import java.util.regex.Pattern;
 public class CrucibleSessionImpl implements CrucibleSession {
   private final Project myProject;
   private static final Logger LOG = Logger.getInstance(CrucibleSessionImpl.class.getName());
+  private static final int CONNECTION_TIMEOUT = 5000;
 
   private final Map<String, VirtualFile> myRepoHash = new HashMap<String, VirtualFile>();
+
 
   CrucibleSessionImpl(@NotNull final Project project) {
     myProject = project;
@@ -144,11 +148,18 @@ public class CrucibleSessionImpl implements CrucibleSession {
   protected Document buildSaxResponse(@NotNull final String urlString) throws IOException, JDOMException {
     final SAXBuilder builder = new SAXBuilder();
     final GetMethod method = new GetMethod(urlString);
-    adjustHttpHeader(method);
-    final HttpClient client = new HttpClient();
-    client.executeMethod(method);
-
+    executeHttpMethod(method);
     return builder.build(method.getResponseBodyAsStream());
+  }
+
+  private void executeHttpMethod(@NotNull HttpMethodBase method) throws IOException {
+    adjustHttpHeader(method);
+
+    final HttpClient client = new HttpClient();
+    HttpConnectionManagerParams params = client.getHttpConnectionManager().getParams();
+    params.setConnectionTimeout(CONNECTION_TIMEOUT); //set connection timeout (how long it takes to connect to remote host)
+    params.setSoTimeout(CONNECTION_TIMEOUT); //set socket timeout (how long it takes to retrieve data from remote host)
+    client.executeMethod(method);
   }
 
   protected Document buildSaxResponseForPost(@NotNull final String urlString,
@@ -156,9 +167,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final SAXBuilder builder = new SAXBuilder();
     final PostMethod method = new PostMethod(urlString);
     method.setRequestEntity(requestEntity);
-    adjustHttpHeader(method);
-    final HttpClient client = new HttpClient();
-    client.executeMethod(method);
+    executeHttpMethod(method);
 
     return builder.build(method.getResponseBodyAsStream());
   }
