@@ -123,7 +123,10 @@ public class CommentsDiffTool extends FrameDiffTool {
           addCommentAction(editor2, file, myReview);
 
           if (myChanges != null && myChanges.length == 1 && myReview != null && file != null) {
-            final ContentRevision revision = myChanges[0].getAfterRevision();
+            ContentRevision revision = myChanges[0].getAfterRevision();
+            if (revision == null) {
+              revision = myChanges[0].getBeforeRevision();
+            }
             addGutter(myReview, revision, file, editor2);
           }
         }
