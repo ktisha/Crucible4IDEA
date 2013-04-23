@@ -14,7 +14,6 @@ import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.UiUtils;
 import com.jetbrains.crucible.utils.CrucibleBundle;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,10 +60,6 @@ public class CrucibleManager {
       LOG.warn(e.getMessage());
       UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
-    catch (JDOMException e) {
-      LOG.warn(e.getMessage());
-      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
-    }
     return null;
   }
 
@@ -82,10 +77,6 @@ public class CrucibleManager {
 
     }
     catch (IOException e) {
-      LOG.warn(e.getMessage());
-      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
-    }
-    catch (JDOMException e) {
       LOG.warn(e.getMessage());
       UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
     }
@@ -133,9 +124,6 @@ public class CrucibleManager {
         session.fillRepoHash();
       }
       catch (IOException e) {
-        LOG.warn(e.getMessage());
-      }
-      catch (JDOMException e) {
         LOG.warn(e.getMessage());
       }
     }
