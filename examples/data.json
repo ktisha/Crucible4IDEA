@@ -1,0 +1,133 @@
+{"reviewData": [
+  {
+    "projectKey": "CR-PY",
+    "name": "Fixed generation of type in docstring in case of it already presents as @param (PY-8930).",
+    "description": "{cs:id=907e8d1015ddb37b47796660e5fe8ce09599a4dc|rep=IDEA-ultimate}: Fixed generation of type in docstring in case of it already presents as @param (PY-8930).",
+    "author": {
+      "userName": "traff",
+      "displayName": "Dmitry Trofimov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/traff?s=48",
+      "url": "/user/traff"
+    },
+    "moderator": {
+      "userName": "yole",
+      "displayName": "Dmitry Jemerov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/yole?s=48",
+      "url": "/user/yole"
+    },
+    "creator": {
+      "userName": "yole",
+      "displayName": "Dmitry Jemerov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/yole?s=48",
+      "url": "/user/yole"
+    },
+    "permaId": {
+      "id": "CR-PY-5866"
+    },
+    "permaIdHistory": ["CR-PY-5866"],
+    "state": "Review",
+    "type": "REVIEW",
+    "allowReviewersToJoin": true,
+    "metricsVersion": 8,
+    "createDate": "2013-02-22T13:08:48.609+0300"
+  },
+  {
+    "projectKey": "CR-IC",
+    "name": "[diff] Extract creating of DiffPanel into a protected method. To provide API, especially for the code...",
+    "description": "{cs:id=b24da29bc9714173013d4f6c26d499a4c3b93623|rep=IDEA-community}: \r\n[diff] Extract creating of DiffPanel into a protected method.\r\nTo provide API, especially for the code review plugin.",
+    "author": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "moderator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "creator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "permaId": {
+      "id": "CR-IC-773"
+    },
+    "permaIdHistory": ["CR-IC-773"],
+    "state": "Review",
+    "type": "REVIEW",
+    "allowReviewersToJoin": true,
+    "metricsVersion": 8,
+    "createDate": "2013-04-22T13:38:55.478+0400",
+    "dueDate": "2013-04-29T13:30:00.000+0400"
+  },
+  {
+    "projectKey": "CR-IC",
+    "name": "[diff] Introduce API to get current diff request from the chain Requested by the code review plugin...",
+    "description": "{cs:id=7a0c5be88235929663613178eebc9e69316c6a83|rep=IDEA-community}: \r\n[diff] Introduce API to get current diff request from the chain\r\nRequested by the code review plugin author.",
+    "author": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "moderator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "creator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "permaId": {
+      "id": "CR-IC-774"
+    },
+    "permaIdHistory": ["CR-IC-774"],
+    "state": "Review",
+    "type": "REVIEW",
+    "allowReviewersToJoin": true,
+    "metricsVersion": 8,
+    "createDate": "2013-04-22T13:39:23.421+0400",
+    "dueDate": "2013-04-29T13:30:00.000+0400"
+  },
+  {
+    "projectKey": "CR-IC",
+    "name": "It is a test review",
+    "description": "{cs:id=b23bf34539d7595daa8a601963e97c18c142cadb|rep=IDEA-community}: [git tests] Better assertion text",
+    "author": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "moderator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "creator": {
+      "userName": "Kirill.Likhodedov@jetbrains.com",
+      "displayName": "Kirill Likhodedov",
+      "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+      "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+    },
+    "permaId": {
+      "id": "CR-IC-767"
+    },
+    "permaIdHistory": ["CR-IC-767"],
+    "state": "Review",
+    "type": "REVIEW",
+    "allowReviewersToJoin": true,
+    "metricsVersion": 8,
+    "createDate": "2013-04-19T18:03:14.715+0400",
+    "dueDate": "2013-04-26T18:00:00.000+0400"
+  }
+]}

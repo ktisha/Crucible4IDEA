@@ -3,7 +3,6 @@ package com.jetbrains.crucible.connection;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,12 +29,12 @@ public interface CrucibleSession {
   @Nullable
   CrucibleVersionInfo getServerVersion();
 
-  List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws JDOMException, IOException;
-  Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException;
+  List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws IOException;
+  Review getDetailsForReview(@NotNull final String permId) throws IOException;
 
   @Nullable
   Comment postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
 
-  void fillRepoHash() throws IOException, JDOMException;
+  void fillRepoHash() throws IOException;
   Map<String,VirtualFile> getRepoHash();
 }

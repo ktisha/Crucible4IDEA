@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.connection;
 
+import com.google.gson.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -23,21 +24,13 @@ import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import org.jdom.xpath.XPath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -81,26 +74,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
         throw new RuntimeException("URLEncoding problem: " + e.getMessage());
       }
 
-      final Document doc = buildSaxResponse(loginUrl);
-      final String exception = getExceptionMessages(doc);
-      if (exception != null) {
-        throw new CrucibleApiLoginException(exception);
-      }
-      final XPath xpath = XPath.newInstance("/loginResult/token");
-      List<?> elements = xpath.selectNodes(doc);
-      if (elements == null) {
-        throw new CrucibleApiLoginException("Server did not return any authentication token");
-      }
-      if (elements.size() != 1) {
-        throw new CrucibleApiLoginException("Server returned unexpected number of authentication tokens ("
-                                          + elements.size() + ")");
+      final JsonObject jsonObject = buildJsonResponse(loginUrl);
+      final JsonElement authToken = jsonObject.get("token");
+      final String errorMessage = getExceptionMessages(jsonObject);
+      if (authToken == null || errorMessage != null) {
+        throw new CrucibleApiLoginException(errorMessage != null ? errorMessage : "Unknown error");
       }
     }
     catch (IOException e) {
       throw new CrucibleApiLoginException(getHostUrl() + ":" + e.getMessage(), e);
-    }
-    catch (JDOMException e) {
-      throw new CrucibleApiLoginException("Server:" + getHostUrl() + " returned malformed response", e);
     }
     catch (CrucibleApiException e) {
       throw new CrucibleApiLoginException(e.getMessage(), e);
@@ -112,18 +94,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
   public CrucibleVersionInfo getServerVersion() {
     final String requestUrl = getHostUrl() + REVIEW_SERVICE + VERSION;
     try {
-      final Document doc = buildSaxResponse(requestUrl);
-      final XPath xpath = XPath.newInstance("versionInfo");
-
-      @SuppressWarnings("unchecked")
-      final List<Element> elements = xpath.selectNodes(doc);
-
-      if (elements != null && !elements.isEmpty()) {
-        return CrucibleXmlParser.parseVersionNode(elements.get(0));
-      }
-    }
-    catch (JDOMException e) {
-      LOG.warn(e);
+      final JsonObject jsonObject = buildJsonResponse(requestUrl);
+      return CrucibleJsonUtils.parseVersionNode(jsonObject);
     }
     catch (IOException e) {
       LOG.warn(e);
@@ -145,11 +117,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
   }
 
-  protected Document buildSaxResponse(@NotNull final String urlString) throws IOException, JDOMException {
-    final SAXBuilder builder = new SAXBuilder();
+  protected JsonObject buildJsonResponse(@NotNull final String urlString) throws IOException {
     final GetMethod method = new GetMethod(urlString);
     executeHttpMethod(method);
-    return builder.build(method.getResponseBodyAsStream());
+
+    JsonParser parser = new JsonParser();
+    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream())).getAsJsonObject();
   }
 
   private void executeHttpMethod(@NotNull HttpMethodBase method) throws IOException {
@@ -162,69 +135,18 @@ public class CrucibleSessionImpl implements CrucibleSession {
     client.executeMethod(method);
   }
 
-  protected Document buildSaxResponseForPost(@NotNull final String urlString,
-                                             @NotNull final RequestEntity requestEntity) throws IOException, JDOMException {
-    final SAXBuilder builder = new SAXBuilder();
+  protected JsonObject buildJsonResponseForPost(@NotNull final String urlString,
+                                             @NotNull final RequestEntity requestEntity) throws IOException {
     final PostMethod method = new PostMethod(urlString);
     method.setRequestEntity(requestEntity);
     executeHttpMethod(method);
-
-    return builder.build(method.getResponseBodyAsStream());
-  }
-
-  @SuppressWarnings("unchecked")
-  private static RequestEntity createCommentRequest(Comment comment, boolean isGeneral) throws UnsupportedEncodingException {
-    Document doc = new Document();
-    Element root = new Element(isGeneral ? "generalCommentData" : "versionedLineCommentData");
-
-    final Element defectApproved = new Element("defectApproved");
-    final Element defectRaised = new Element("defectRaised");
-    final Element deleted = new Element("deleted");
-    final Element draft = new Element("draft");
-    final Element message = new Element("message");
-    message.addContent(comment.getMessage());
-
-    final Element parentCommentId = new Element("parentCommentId");
-    final String parentId = comment.getParentCommentId();
-    if (parentId != null) {
-      final Element id = new Element("id");
-      id.addContent(parentId);
-      parentCommentId.addContent(id);
-    }
-
-    final Element permId = new Element("permId");
-    final Element permaId = new Element("permaId");
-
-    root.addContent(defectApproved);
-    root.addContent(defectRaised);
-    root.addContent(deleted);
-    root.addContent(draft);
-    root.addContent(message);
-    root.addContent(parentCommentId);
-    root.addContent(permId);
-    root.addContent(permaId);
-
-    if (!isGeneral) {
-      final Element reviewItemId = new Element("reviewItemId");
-      final Element id = new Element("id");
-      id.addContent(comment.getReviewItemId());
-
-      final Element toLineRange = new Element("toLineRange");
-      toLineRange.addContent(comment.getLine());
-
-      root.addContent(reviewItemId);
-      root.addContent(toLineRange);
-    }
-
-    doc.setRootElement(root);
-
-    XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
-    String requestString = serializer.outputString(doc);
-    return new StringRequestEntity(requestString, "application/xml", "UTF-8");
+    JsonParser parser = new JsonParser();
+    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream())).getAsJsonObject();
   }
 
   protected void adjustHttpHeader(@NotNull final HttpMethod method) {
     method.addRequestHeader(new Header("Authorization", getAuthHeaderValue()));
+    method.addRequestHeader(new Header("accept", "application/json"));
   }
 
   private String getUsername() {
@@ -240,18 +162,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private static String getExceptionMessages(@NotNull final Document doc) throws JDOMException {
-    XPath xpath = XPath.newInstance("/loginResult/error");
-    @SuppressWarnings("unchecked")
-    List<Element> elements = xpath.selectNodes(doc);
-
-    if (elements != null && elements.size() > 0) {
-      StringBuilder exceptionMsg = new StringBuilder();
-      for (Element e : elements) {
-        exceptionMsg.append(e.getText());
-        exceptionMsg.append("\n");
-      }
-      return exceptionMsg.toString();
+  private static String getExceptionMessages(@NotNull final JsonObject jsonObject) {
+    final JsonElement error = jsonObject.get("error");
+    final JsonElement statusCode = jsonObject.get("status-code");
+    if (error != null) {
+      return error.getAsString();
+    }
+    else if (statusCode != null && "500".equals(statusCode.getAsString())) {
+      final JsonPrimitive message = jsonObject.getAsJsonPrimitive("message");
+      return message.getAsString();
     }
     return null;
   }
@@ -262,7 +181,8 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
     final String parentCommentId = comment.getParentCommentId();
-    if (!isGeneral && parentCommentId == null)
+    final boolean isVersioned = !isGeneral && parentCommentId == null;
+    if (isVersioned)
       url += REVIEW_ITEMS + "/" + comment.getReviewItemId();
 
     url += COMMENTS;
@@ -273,47 +193,38 @@ public class CrucibleSessionImpl implements CrucibleSession {
     }
 
     try {
-      final RequestEntity request = createCommentRequest(comment, isGeneral || parentCommentId != null);
-      final Document document = buildSaxResponseForPost(url, request);
-      XPath xpath = XPath.newInstance("/error");
-      @SuppressWarnings("unchecked")
-      Element element = (Element)xpath.selectSingleNode(document);
-      if (element != null) {
-        final String message = CrucibleXmlParser.getChildText(element, "message");
-        UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + message, MessageType.ERROR);
+      final RequestEntity request = CrucibleJsonUtils.createCommentRequest(comment, !isVersioned);
+
+      final JsonObject jsonObject = buildJsonResponseForPost(url, request);
+      final String errorMessage = getExceptionMessages(jsonObject);
+      if (errorMessage != null) {
+        UiUtils.showBalloon(myProject, "Sorry, comment wasn't added:\n" + errorMessage, MessageType.ERROR);
         return null;
       }
 
-      XPath commentPath = XPath.newInstance(isGeneral || parentCommentId != null ? "/generalCommentData" :
-                                          "/versionedLineCommentData");
-
-      @SuppressWarnings("unchecked")
-      final Element commentNode = (Element)commentPath.selectSingleNode(document);
-      return parseComment(commentNode, !isGeneral);
+      return CrucibleJsonUtils.parseComment(jsonObject, isVersioned);
     }
     catch (IOException e) {
-      LOG.warn(e.getMessage());
-    }
-    catch (JDOMException e) {
       LOG.warn(e.getMessage());
     }
     return null;
   }
 
   @Override
-  public void fillRepoHash() throws IOException, JDOMException {
+  public void fillRepoHash() throws IOException {
     String url = getHostUrl() + REPOSITORIES;
-    final Document doc = buildSaxResponse(url);
-    XPath xpath = XPath.newInstance("/repositories/repoData");
-    @SuppressWarnings("unchecked")
-    List<Element> elements = xpath.selectNodes(doc);
 
-    if (elements != null && !elements.isEmpty()) {
-      for (Element element : elements) {
-        final String enabled = CrucibleXmlParser.getChildText(element, "enabled");
+    final JsonObject jsonObject = buildJsonResponse(url);
+    final JsonArray elements = jsonObject.getAsJsonArray("repoData");
+
+    if (elements != null && elements.size() > 0) {
+      for (int i = 0; i != elements.size(); ++i) {
+        final JsonObject element = elements.get(i).getAsJsonObject();
+
+        final String enabled = CrucibleJsonUtils.getChildText(element, "enabled");
         if (Boolean.parseBoolean(enabled)) {
-          final String name = CrucibleXmlParser.getChildText(element, "name");
-          final String type = CrucibleXmlParser.getChildText(element, "type");
+          final String name = CrucibleJsonUtils.getChildText(element, "name");
+          final String type = CrucibleJsonUtils.getChildText(element, "type");
           if ("git".equals(type)) {
             final VirtualFile localPath = getLocalPath(name);
             if (localPath != null)
@@ -325,14 +236,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private VirtualFile getLocalPath(@NotNull final String name) throws IOException, JDOMException {
+  private VirtualFile getLocalPath(@NotNull final String name) throws IOException {
     String url = getHostUrl() + REPOSITORIES + "/" + name;
-    final Document doc = buildSaxResponse(url);
-    XPath xpath = XPath.newInstance("/gitRepositoryData");
-    @SuppressWarnings("unchecked")
-    Element element = (Element)xpath.selectSingleNode(doc);
-    if (element == null) return null;
-    String location = CrucibleXmlParser.getChildText(element, "location");
+    final JsonObject jsonObject = buildJsonResponse(url);
+    String location = CrucibleJsonUtils.getChildText(jsonObject, "location");
     final GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
     final List<GitRepository> repositories = manager.getRepositories();
     location = unifyLocation(location);
@@ -373,165 +280,46 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
 
-  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws JDOMException, IOException {
+  public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws IOException {
     String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;
     final String urlFilter = filter.getFilterUrl();
     if (!StringUtils.isEmpty(urlFilter)) {
       url += "/" + urlFilter;
     }
-    final Document doc = buildSaxResponse(url);
-    final XPath xpath = XPath.newInstance("/reviews/reviewData");
-
-    @SuppressWarnings("unchecked")
-    List<Element> elements = xpath.selectNodes(doc);
     List<BasicReview> reviews = new ArrayList<BasicReview>();
 
-    if (elements != null && !elements.isEmpty()) {
-      for (Element element : elements) {
-        reviews.add(parseBasicReview(element));
+    final JsonObject jsonElement = buildJsonResponse(url);
+    final JsonArray reviewData = jsonElement.getAsJsonArray("reviewData");
+    if (reviewData != null) {
+      for (int i = 0; i != reviewData.size(); ++i) {
+        reviews.add(CrucibleJsonUtils.parseBasicReview(reviewData.get(i)));
       }
     }
     return reviews;
   }
 
-  public Review getDetailsForReview(@NotNull final String permId) throws JDOMException, IOException {
+  public Review getDetailsForReview(@NotNull final String permId) throws IOException {
     String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
-    final Document doc = buildSaxResponse(url);
-    XPath xpath = XPath.newInstance("/detailedReviewData/reviewItems");
 
-    @SuppressWarnings("unchecked")
-    List<Element> reviewItems = xpath.selectNodes(doc);
-    final Element node = (Element)XPath.newInstance("/detailedReviewData").selectSingleNode(doc);
-    final User author = CrucibleXmlParser.parseUserNode(node);
+    final JsonObject jsonObject = buildJsonResponse(url);
+    final User author = CrucibleJsonUtils.parseUserNode(jsonObject.getAsJsonObject("author"));
 
-    final User moderator = (node.getChild("moderator") != null)
-                           ? CrucibleXmlParser.parseUserNode(node.getChild("moderator")) : null;
+    final User moderator = (jsonObject.get("moderator") != null) ?
+                           CrucibleJsonUtils.parseUserNode(jsonObject.getAsJsonObject("moderator")) : null;
+
 
     final Review review = new Review(permId, author, moderator);
-
-    if (reviewItems != null && !reviewItems.isEmpty()) {
-      addReviewItems(reviewItems, review);
+    final JsonObject reviewItems = jsonObject.getAsJsonObject("reviewItems");
+    if (reviewItems != null) {
+      CrucibleJsonUtils.addReviewItems(reviewItems.getAsJsonArray("reviewItem"), review);
     }
 
-    addGeneralComments(doc, review);
-    addVersionedComments(doc, review);
+    CrucibleJsonUtils.addGeneralComments(jsonObject, review);
+    CrucibleJsonUtils.addVersionedComments(jsonObject, review);
 
     return review;
   }
 
-  private static void addGeneralComments(@NotNull final Document doc,
-                                         @NotNull final Review review) throws JDOMException {
-    @SuppressWarnings("unchecked")
-    final List<Element> generalCommentNodes = XPath.newInstance("/detailedReviewData/generalComments/generalCommentData").selectNodes(doc);
-    if (generalCommentNodes != null && !generalCommentNodes.isEmpty()) {
-      for (Element generalCommentNode : generalCommentNodes) {
-        final Comment comment = parseComment(generalCommentNode, false);
-        review.addGeneralComment(comment);
-      }
-    }
-  }
-
-  private static Comment parseComment(@NotNull final Element commentNode, boolean isVersioned) {
-    final String message = CrucibleXmlParser.getChildText(commentNode, "message");
-    final User commentAuthor = CrucibleXmlParser.parseUserNode(commentNode.getChild("user"));
-    final Date createDate = CrucibleXmlParser.parseDate(commentNode);
-    final Comment comment = new Comment(commentAuthor, message);
-
-    final Element permId = commentNode.getChild("permaId");
-    final String id = CrucibleXmlParser.getChildText(permId, "id");
-    comment.setPermId(id);
-    if (createDate != null) comment.setCreateDate(createDate);
-    getReplies(commentNode, comment);
-
-    if (isVersioned) {
-      final String toLineRange = CrucibleXmlParser.getChildText(commentNode, "toLineRange");
-      comment.setLine(toLineRange);
-      final Element ranges = commentNode.getChild("lineRanges");
-      if (ranges != null) {
-        final String revision = CrucibleXmlParser.getChildAttribute(ranges, "lineRange", "revision");
-        comment.setRevision(revision);
-      }
-
-      Element lineRanges = commentNode.getChild("lineRanges");
-      if (lineRanges != null) {
-        Element lineRange = lineRanges.getChild("lineRange");
-        if (lineRange != null) {
-          final Attribute revision = lineRange.getAttribute("revision");
-          if (revision != null) {
-            comment.setRevision(revision.getValue());
-          }
-        }
-      }
-
-      final Element reviewItemNode = commentNode.getChild("reviewItemId");
-      if (reviewItemNode != null) {
-        final String reviewItemId = CrucibleXmlParser.getChildText(reviewItemNode, "id");
-        comment.setReviewItemId(reviewItemId);
-      }
-    }
-    return comment;
-  }
-
-  private static void addVersionedComments(@NotNull final Document doc,
-                                           @NotNull final Review review) throws JDOMException {
-    @SuppressWarnings("unchecked")
-    final List<Element> commentNodes = XPath.newInstance("/detailedReviewData/versionedComments/versionedLineCommentData").
-      selectNodes(doc);
-    if (commentNodes != null && !commentNodes.isEmpty()) {
-      for (Element commentNode : commentNodes) {
-        Comment comment = parseComment(commentNode, true);
-        review.addComment(comment);
-      }
-    }
-  }
-
-  private static void getReplies(@NotNull final Element node, @NotNull final Comment comment) {
-    @SuppressWarnings("unchecked")
-    final List<Element> replies = node.getChildren("replies");
-    for (Element replyNode : replies) {
-      @SuppressWarnings("unchecked")
-      final List<Element> commentData = replyNode.getChildren("generalCommentData");
-      if (!commentData.isEmpty()) {
-        for (Element commentNode : commentData) {
-          final Comment replyComment = parseComment(commentNode, false);
-          comment.addReply(replyComment);
-        }
-      }
-    }
-  }
-
-  private static void addReviewItems(@NotNull final List<Element> reviewItems,
-                                     @NotNull final Review review) {
-    for (Element element : reviewItems) {
-      @SuppressWarnings("unchecked")
-      final List<Element> items = element.getChildren("reviewItem");
-      for (Element item : items) {
-        @SuppressWarnings("unchecked")
-        final List<Element> expandedRevisions = item.getChildren("expandedRevisions");
-
-        final Element permId = item.getChild("permId");
-        final String id = CrucibleXmlParser.getChildText(permId, "id");
-        final String toPath = CrucibleXmlParser.getChildText(item, "toPath");
-        final String repoName = CrucibleXmlParser.getChildText(item, "repositoryName");
-        final String fromRevision = CrucibleXmlParser.getChildText(item, "fromRevision");
-
-        final ReviewItem reviewItem = new ReviewItem(id, toPath, repoName);
-
-        for (Element expandedRevision : expandedRevisions) {
-          final String revision = CrucibleXmlParser.getChildText(expandedRevision, "revision");
-          final String type = CrucibleXmlParser.getChildText(item, "commitType");
-          if (!fromRevision.equals(revision) || "Added".equals(type)) {
-            reviewItem.addRevision(revision);
-          }
-        }
-        review.addReviewItem(reviewItem);
-      }
-    }
-  }
-
-  private BasicReview parseBasicReview(@NotNull final Element element) {
-    return CrucibleXmlParser.parseBasicReview(element);
-  }
 
   public Map<String, VirtualFile> getRepoHash() {
     return myRepoHash;
