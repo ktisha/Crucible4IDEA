@@ -1,0 +1,19 @@
+{
+  "repoData" : [ {
+    "name" : "IDEA-android",
+    "type" : "git",
+    "enabled" : true
+  }, {
+    "name" : "IDEA-community",
+    "type" : "git",
+    "enabled" : true
+  }, {
+    "name" : "IDEA-ultimate",
+    "type" : "git",
+    "enabled" : true
+  }, {
+    "name" : "Kotlin-contrib",
+    "type" : "git",
+    "enabled" : true
+  } ]
+}

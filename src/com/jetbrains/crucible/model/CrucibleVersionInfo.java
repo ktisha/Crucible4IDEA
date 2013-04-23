@@ -11,4 +11,12 @@ public class CrucibleVersionInfo {
     myBuildDate = buildDate;
     myReleaseNumber = releaseNumber;
   }
+
+  public String getBuildDate() {
+    return myBuildDate;
+  }
+
+  public String getReleaseNumber() {
+    return myReleaseNumber;
+  }
 }

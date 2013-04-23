@@ -1,0 +1,4885 @@
+{
+  "projectKey": "CR-IC",
+  "name": "Subversion: commit with command line + test Subversion command line invocation taken into separate...",
+  "description": "{cs:id=6987d65f35560be344d21771776db6e614fa1377|rep=IDEA-community}: Subversion: commit with command line + test Subversion command line invocation taken into separate module bindSvn authenticator works [still] through svnkit; written for http, https - should be also written for ssh",
+  "author": {
+    "userName": "irengrig",
+    "displayName": "Irina Chernushina",
+    "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+    "url": "/user/irengrig"
+  },
+  "moderator": {
+    "userName": "irengrig",
+    "displayName": "Irina Chernushina",
+    "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+    "url": "/user/irengrig"
+  },
+  "creator": {
+    "userName": "irengrig",
+    "displayName": "Irina Chernushina",
+    "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+    "url": "/user/irengrig"
+  },
+  "permaId": {
+    "id": "CR-IC-307"
+  },
+  "permaIdHistory": ["CR-IC-307"],
+  "state": "Closed",
+  "type": "REVIEW",
+  "allowReviewersToJoin": true,
+  "metricsVersion": 8,
+  "createDate": "2013-03-07T16:47:30.192+0300",
+  "closeDate": "2013-03-22T18:37:54.805+0300",
+  "dueDate": "2013-03-29T15:37:28.916+0300",
+  "reviewers": {
+    "reviewer": [
+      {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "completed": true,
+        "completionStatusChangeDate": 1364130958463,
+        "timeSpent": 6995407
+      }
+    ]
+  }, "reviewItems": {
+    "reviewItem": [
+      {
+      "permId": {
+        "id": "CFR-32524"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "build/scripts/layouts.gant",
+      "fromRevision": "387e7070ff0f727e2733e1f1f3c08dd1f0f1f8b3",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44295/build/scripts/layouts.gant",
+      "toPath": "build/scripts/layouts.gant",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44284/build/scripts/layouts.gant",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050385,
+          "revision": "387e7070ff0f727e2733e1f1f3c08dd1f0f1f8b3",
+          "path": "build/scripts/layouts.gant",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44295/build/scripts/layouts.gant",
+          "source": "IDEA-community",
+          "changedLines": 12,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050381,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "build/scripts/layouts.gant",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44284/build/scripts/layouts.gant",
+          "source": "IDEA-community",
+          "changedLines": 3,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32525"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "platform/vcs-api/src/com/intellij/openapi/vcs/LineProcessEventListenerAdapter.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44268/platform/vcs-api/src/com/intellij/openapi/vcs/LineProcessEventListenerAdapter.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050388,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "platform/vcs-api/src/com/intellij/openapi/vcs/LineProcessEventListenerAdapter.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44268/platform/vcs-api/src/com/intellij/openapi/vcs/LineProcessEventListenerAdapter.java",
+          "source": "IDEA-community",
+          "changedLines": 38,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32526"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+      "fromRevision": "69cfa18d62fe235069c98ca1dad0257c5ee3d0d9",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44297/plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+      "toPath": "plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44267/plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050391,
+          "revision": "69cfa18d62fe235069c98ca1dad0257c5ee3d0d9",
+          "path": "plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44297/plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+          "source": "IDEA-community",
+          "changedLines": 15,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050390,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44267/plugins/InspectionGadgets/test/com/siyeh/igfixes/errorhandling/throws_runtime_exception/MoveThrows.java",
+          "source": "IDEA-community",
+          "changedLines": 3,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32527"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/lib/javahl.jar",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44260/plugins/bindSvn/lib/javahl.jar",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050394,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/lib/javahl.jar",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44260/plugins/bindSvn/lib/javahl.jar",
+          "source": "IDEA-community",
+          "changedLines": 0,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32528"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/lib/javahlsrc.zip",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44256/plugins/bindSvn/lib/javahlsrc.zip",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050395,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/lib/javahlsrc.zip",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44256/plugins/bindSvn/lib/javahlsrc.zip",
+          "source": "IDEA-community",
+          "changedLines": 0,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32529"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44243/plugins/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050397,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44243/plugins/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "source": "IDEA-community",
+          "changedLines": 39,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32530"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44277/plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050398,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44277/plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "source": "IDEA-community",
+          "changedLines": 28,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32531"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44250/plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050399,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44250/plugins/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "source": "IDEA-community",
+          "changedLines": 49,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32532"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/SvnBindClient.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44253/plugins/bindSvn/src/org/jetbrains/idea/svn/SvnBindClient.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050401,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/SvnBindClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44253/plugins/bindSvn/src/org/jetbrains/idea/svn/SvnBindClient.java",
+          "source": "IDEA-community",
+          "changedLines": 925,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32533"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44261/plugins/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050402,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44261/plugins/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "source": "IDEA-community",
+          "changedLines": 202,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32534"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44286/plugins/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050404,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44286/plugins/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "source": "IDEA-community",
+          "changedLines": 107,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32535"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/LineCommandListener.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44283/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/LineCommandListener.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050405,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/LineCommandListener.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44283/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/LineCommandListener.java",
+          "source": "IDEA-community",
+          "changedLines": 40,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32536"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44276/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050407,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44276/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 221,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32537"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44272/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050408,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44272/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "source": "IDEA-community",
+          "changedLines": 47,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32538"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44279/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050410,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44279/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 260,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32539"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44266/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050411,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44266/plugins/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 110,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32540"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/config/SvnBindException.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44270/plugins/bindSvn/src/org/jetbrains/idea/svn/config/SvnBindException.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050412,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/config/SvnBindException.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44270/plugins/bindSvn/src/org/jetbrains/idea/svn/config/SvnBindException.java",
+          "source": "IDEA-community",
+          "changedLines": 54,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32541"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/jetbrains/idea/svn/status/LockWrapper.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44255/plugins/bindSvn/src/org/jetbrains/idea/svn/status/LockWrapper.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050414,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/jetbrains/idea/svn/status/LockWrapper.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44255/plugins/bindSvn/src/org/jetbrains/idea/svn/status/LockWrapper.java",
+          "source": "IDEA-community",
+          "changedLines": 121,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32542"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": true
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/bindSvn/src/org/tigris/subversion/javahl/BindClientException.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44274/plugins/bindSvn/src/org/tigris/subversion/javahl/BindClientException.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050415,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/bindSvn/src/org/tigris/subversion/javahl/BindClientException.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44274/plugins/bindSvn/src/org/tigris/subversion/javahl/BindClientException.java",
+          "source": "IDEA-community",
+          "changedLines": 47,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32543"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/AuthManagerType.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44247/plugins/svn4idea/src/org/jetbrains/idea/svn/AuthManagerType.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050417,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/AuthManagerType.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44247/plugins/svn4idea/src/org/jetbrains/idea/svn/AuthManagerType.java",
+          "source": "IDEA-community",
+          "changedLines": 26,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32544"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+      "fromRevision": "9a4e0290a73488153cf42e3ad061f7d6931dfe3d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41386/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44281/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050420,
+          "revision": "9a4e0290a73488153cf42e3ad061f7d6931dfe3d",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41386/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+          "source": "IDEA-community",
+          "changedLines": 11,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050419,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44281/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnAuthenticationManager.java",
+          "source": "IDEA-community",
+          "changedLines": 29,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32545"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+      "fromRevision": "7ebb457c3d99ed0d71d57ea43406f3cd0342dab2",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44291/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44254/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050437,
+          "revision": "7ebb457c3d99ed0d71d57ea43406f3cd0342dab2",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44291/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+          "source": "IDEA-community",
+          "changedLines": 15,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050435,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44254/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnConfiguration.java",
+          "source": "IDEA-community",
+          "changedLines": 22,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32546"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+      "fromRevision": "34adfcf080bba2638e09865fa10c7fb417856fd4",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/39438/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44257/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050442,
+          "revision": "34adfcf080bba2638e09865fa10c7fb417856fd4",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/39438/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050440,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44257/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnUtil.java",
+          "source": "IDEA-community",
+          "changedLines": 40,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32547"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+      "fromRevision": "9a4e0290a73488153cf42e3ad061f7d6931dfe3d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41384/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44262/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050452,
+          "revision": "9a4e0290a73488153cf42e3ad061f7d6931dfe3d",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41384/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+          "source": "IDEA-community",
+          "changedLines": 8,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050450,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44262/plugins/svn4idea/src/org/jetbrains/idea/svn/SvnVcs.java",
+          "source": "IDEA-community",
+          "changedLines": 35,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32548"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+      "fromRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44285/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47406/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050454,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44285/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+          "source": "IDEA-community",
+          "changedLines": 55,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648953,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47406/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaCommitHandler.java",
+          "source": "IDEA-community",
+          "changedLines": 7,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32549"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+      "fromRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44252/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47371/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050456,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44252/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+          "source": "IDEA-community",
+          "changedLines": 438,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648959,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47371/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/IdeaSvnkitBasedAuthenticationCallback.java",
+          "source": "IDEA-community",
+          "changedLines": 42,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32550"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+      "fromRevision": "d95728d5cf08de22b88ac985d9406705ae848909",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44296/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44273/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050460,
+          "revision": "d95728d5cf08de22b88ac985d9406705ae848909",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44296/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+          "source": "IDEA-community",
+          "changedLines": 51,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050457,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44273/plugins/svn4idea/src/org/jetbrains/idea/svn/checkin/SvnCheckinEnvironment.java",
+          "source": "IDEA-community",
+          "changedLines": 164,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32551"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/AddLineConverter.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44278/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/AddLineConverter.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050461,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/AddLineConverter.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44278/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/AddLineConverter.java",
+          "source": "IDEA-community",
+          "changedLines": 38,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32552"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "fromRevision": "7979d9661abb240cf9cbee8e5d2699b21d2ec508",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41406/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44264/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050464,
+          "revision": "7979d9661abb240cf9cbee8e5d2699b21d2ec508",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41406/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050463,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44264/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 213,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32553"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandFactory.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44288/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandFactory.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050467,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandFactory.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44288/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandFactory.java",
+          "source": "IDEA-community",
+          "changedLines": 59,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32554"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+      "fromRevision": "65f0026a16958ad094aae65131170babf66becc1",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41400/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47407/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050470,
+          "revision": "65f0026a16958ad094aae65131170babf66becc1",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41400/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "source": "IDEA-community",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050469,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44282/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "source": "IDEA-community",
+          "changedLines": 13,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1364128648966,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47407/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineInfoClient.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32555"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+      "fromRevision": "1d1ade587372070b122c5e8e34114317c9067f38",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41438/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47408/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050482,
+          "revision": "1d1ade587372070b122c5e8e34114317c9067f38",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41438/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "source": "IDEA-community",
+          "changedLines": 5,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050481,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44275/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "source": "IDEA-community",
+          "changedLines": 7,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1364128648973,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47408/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineStatusClient.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32556"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+      "fromRevision": "64c6ad957eaaa81eee64b443a31fc6bb514f7e38",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44298/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47379/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050494,
+          "revision": "64c6ad957eaaa81eee64b443a31fc6bb514f7e38",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44298/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "source": "IDEA-community",
+          "changedLines": 3,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050493,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44280/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "source": "IDEA-community",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1364128648979,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47379/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandLineUpdateClient.java",
+          "source": "IDEA-community",
+          "changedLines": 7,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32557"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "fromRevision": "a76b1a7515b9cf5d6fbed1e4c764a0a576418e6c",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44293/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44249/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050497,
+          "revision": "a76b1a7515b9cf5d6fbed1e4c764a0a576418e6c",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44293/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "source": "IDEA-community",
+          "changedLines": 39,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1362664050496,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44249/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnCommandName.java",
+          "source": "IDEA-community",
+          "changedLines": 39,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32558"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "fromRevision": "12150e1dfd5fcad66e48408a565eb4811a1475f1",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41432/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44244/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050500,
+          "revision": "12150e1dfd5fcad66e48408a565eb4811a1475f1",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41432/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050499,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44244/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 113,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32559"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "fromRevision": "037e51810a9bfc4a2321bd46e6cd58da8ff36905",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41414/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44287/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050504,
+          "revision": "037e51810a9bfc4a2321bd46e6cd58da8ff36905",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41414/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050503,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44287/plugins/svn4idea/src/org/jetbrains/idea/svn/commandLine/SvnSimpleCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 110,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32560"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+      "fromRevision": "a76b1a7515b9cf5d6fbed1e4c764a0a576418e6c",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44289/plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44271/plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050507,
+          "revision": "a76b1a7515b9cf5d6fbed1e4c764a0a576418e6c",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44289/plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+          "source": "IDEA-community",
+          "changedLines": 249,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1362664050506,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44271/plugins/svn4idea/src/org/jetbrains/idea/svn/dialogs/SvnInteractiveAuthenticationProvider.java",
+          "source": "IDEA-community",
+          "changedLines": 10,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32561"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/src/org/jetbrains/idea/svn/lowLevel/PrimitivePool.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44258/plugins/svn4idea/src/org/jetbrains/idea/svn/lowLevel/PrimitivePool.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050509,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/src/org/jetbrains/idea/svn/lowLevel/PrimitivePool.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44258/plugins/svn4idea/src/org/jetbrains/idea/svn/lowLevel/PrimitivePool.java",
+          "source": "IDEA-community",
+          "changedLines": 113,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32562"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/svn4idea-tests.iml",
+      "fromRevision": "d2fc83f245035423abb9e0d3fa72b8d72735fd3d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44290/plugins/svn4idea/svn4idea-tests.iml",
+      "toPath": "plugins/svn4idea/svn4idea-tests.iml",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44259/plugins/svn4idea/svn4idea-tests.iml",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050512,
+          "revision": "d2fc83f245035423abb9e0d3fa72b8d72735fd3d",
+          "path": "plugins/svn4idea/svn4idea-tests.iml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44290/plugins/svn4idea/svn4idea-tests.iml",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050510,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/svn4idea-tests.iml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44259/plugins/svn4idea/svn4idea-tests.iml",
+          "source": "IDEA-community",
+          "changedLines": 1,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32563"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/svn4idea.iml",
+      "fromRevision": "d2fc83f245035423abb9e0d3fa72b8d72735fd3d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44294/plugins/svn4idea/svn4idea.iml",
+      "toPath": "plugins/svn4idea/svn4idea.iml",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44269/plugins/svn4idea/svn4idea.iml",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050514,
+          "revision": "d2fc83f245035423abb9e0d3fa72b8d72735fd3d",
+          "path": "plugins/svn4idea/svn4idea.iml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44294/plugins/svn4idea/svn4idea.iml",
+          "source": "IDEA-community",
+          "changedLines": 6,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050513,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/svn4idea.iml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44269/plugins/svn4idea/svn4idea.iml",
+          "source": "IDEA-community",
+          "changedLines": 1,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32564"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+      "fromRevision": "31a60937dcdcc5cba2a5edf5e1bd9a5ae2c9885f",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41723/plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44251/plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050517,
+          "revision": "31a60937dcdcc5cba2a5edf5e1bd9a5ae2c9885f",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41723/plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+          "source": "IDEA-community",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050516,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44251/plugins/svn4idea/testSource/org/jetbrains/idea/SvnTestCase.java",
+          "source": "IDEA-community",
+          "changedLines": 46,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32565"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+      "fromRevision": "12150e1dfd5fcad66e48408a565eb4811a1475f1",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41431/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44248/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050537,
+          "revision": "12150e1dfd5fcad66e48408a565eb4811a1475f1",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41431/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+          "source": "IDEA-community",
+          "changedLines": 33,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1362664050536,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44248/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommandLineStabilityTest.java",
+          "source": "IDEA-community",
+          "changedLines": 3,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32566"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommitTest.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44246/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommitTest.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050539,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommitTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44246/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnCommitTest.java",
+          "source": "IDEA-community",
+          "changedLines": 492,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32567"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+      "fromRevision": "cae192c044e975e356b9093859a0f330d58c8e9d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41347/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44245/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050542,
+          "revision": "cae192c044e975e356b9093859a0f330d58c8e9d",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41347/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050541,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44245/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnExternalTests.java",
+          "source": "IDEA-community",
+          "changedLines": 27,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32568"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+      "fromRevision": "575a53b3f3a186ca8afe67a2608049f12ac04061",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44292/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44265/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050555,
+          "revision": "575a53b3f3a186ca8afe67a2608049f12ac04061",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44292/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+          "source": "IDEA-community",
+          "changedLines": 14,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050554,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44265/plugins/svn4idea/testSource/org/jetbrains/idea/svn/SvnRenameTest.java",
+          "source": "IDEA-community",
+          "changedLines": 1,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32569"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+      "fromRevision": "724dbaa559b4436c4c4b2ba4d5fbc07ae0b6c559",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/41353/plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+      "toPath": "plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+      "toRevision": "6987d65f35560be344d21771776db6e614fa1377",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44263/plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387332000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664050558,
+          "revision": "724dbaa559b4436c4c4b2ba4d5fbc07ae0b6c559",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/41353/plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+          "source": "IDEA-community",
+          "changedLines": 10,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664050557,
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "path": "plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44263/plugins/svn4idea/testSource/org/jetbrains/idea/svn16/SvnExternalCommitNoticedTest.java",
+          "source": "IDEA-community",
+          "changedLines": 1,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32570"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-ultimate",
+      "fromPath": ".idea/modules.xml",
+      "fromRevision": "ee1a75ca6ab64d00bba9f095fc15a00e4d029b60",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/44326/.idea/modules.xml",
+      "toPath": ".idea/modules.xml",
+      "toRevision": "3a69daefe2a74bbe8c3135c190f15a3973041cdb",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44325/.idea/modules.xml",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1362387350000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664070256,
+          "revision": "ee1a75ca6ab64d00bba9f095fc15a00e4d029b60",
+          "path": ".idea/modules.xml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44326/.idea/modules.xml",
+          "source": "IDEA-ultimate",
+          "changedLines": 2,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1362664070251,
+          "revision": "3a69daefe2a74bbe8c3135c190f15a3973041cdb",
+          "path": ".idea/modules.xml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44325/.idea/modules.xml",
+          "source": "IDEA-ultimate",
+          "changedLines": 1,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-32571"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-ultimate",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "bindSvn/bindSvn.iml",
+      "toRevision": "3a69daefe2a74bbe8c3135c190f15a3973041cdb",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/44324/bindSvn/bindSvn.iml",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1362387350000,
+      "expandedRevisions": [
+        {
+          "addDate": 1362664070259,
+          "revision": "3a69daefe2a74bbe8c3135c190f15a3973041cdb",
+          "path": "bindSvn/bindSvn.iml",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/44324/bindSvn/bindSvn.iml",
+          "source": "IDEA-ultimate",
+          "changedLines": 25,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34467"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "fromRevision": "50ad8882830224463600879a4182e6536c810a2b",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/45072/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47373/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648916,
+          "revision": "50ad8882830224463600879a4182e6536c810a2b",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/45072/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1364128648914,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47373/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/AuthenticationCallback.java",
+          "source": "IDEA-community",
+          "changedLines": 48,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34468"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "fromRevision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/45092/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47374/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648929,
+          "revision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/45092/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "source": "IDEA-community",
+          "changedLines": 28,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648928,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47374/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventHandler.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34469"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "fromRevision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/45083/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47375/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648933,
+          "revision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/45083/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "source": "IDEA-community",
+          "changedLines": 49,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648932,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47375/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/CommitEventType.java",
+          "source": "IDEA-community",
+          "changedLines": 10,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34470"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "",
+      "fromRevision": "",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnBindUtil.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47461/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnBindUtil.java",
+      "fileType": "File",
+      "commitType": "Added",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": false,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648936,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnBindUtil.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47461/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnBindUtil.java",
+          "source": "IDEA-community",
+          "changedLines": 104,
+          "fileType": "File",
+          "commitType": "Added"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34471"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "fromRevision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/45090/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47376/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648939,
+          "revision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/45090/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "source": "IDEA-community",
+          "changedLines": 202,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648938,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47376/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/SvnCommitRunner.java",
+          "source": "IDEA-community",
+          "changedLines": 59,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34472"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "fromRevision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/45084/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47377/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+      "fileType": "File",
+      "commitType": "Deleted",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648941,
+          "revision": "e99c5845269d03573b5f0f8cc1092bd0d78de4ac",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/45084/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "source": "IDEA-community",
+          "changedLines": 107,
+          "fileType": "File",
+          "commitType": "Added"
+        },
+        {
+          "addDate": 1364128648940,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47377/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/Util.java",
+          "source": "IDEA-community",
+          "changedLines": 107,
+          "fileType": "File",
+          "commitType": "Deleted"
+        }
+      ]
+    },
+    {
+      "permId": {
+        "id": "CFR-34473"
+      },
+      "participants": [
+        {
+          "user": {
+            "userName": "Kirill.Likhodedov@jetbrains.com",
+            "displayName": "Kirill Likhodedov",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+            "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+          },
+          "completed": true
+        },
+        {
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "completed": false
+        }
+      ],
+      "repositoryName": "IDEA-community",
+      "fromPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "fromRevision": "45b91e24c895970198098ede6e7aacfc55c75d3d",
+      "fromContentUrl": "/cru/CR-IC-307/rawcontent/46057/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "toPath": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "toRevision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+      "toContentUrl": "/cru/CR-IC-307/rawcontent/47372/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+      "fileType": "File",
+      "commitType": "Modified",
+      "authorName": "irengrig <Irina.Chernushina@jetbrains.com>",
+      "showAsDiff": true,
+      "commitDate": 1363966776000,
+      "expandedRevisions": [
+        {
+          "addDate": 1364128648950,
+          "revision": "45b91e24c895970198098ede6e7aacfc55c75d3d",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/46057/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 4,
+          "fileType": "File",
+          "commitType": "Modified"
+        },
+        {
+          "addDate": 1364128648949,
+          "revision": "0d7d39285cc27de39f8158c29c7241f3b4f6a415",
+          "path": "plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "contentUrl": "/cru/CR-IC-307/rawcontent/47372/plugins/svn4idea/bindSvn/src/org/jetbrains/idea/svn/commandLine/SvnLineCommand.java",
+          "source": "IDEA-community",
+          "changedLines": 18,
+          "fileType": "File",
+          "commitType": "Modified"
+        }
+      ]
+    }
+  ]
+}, "generalComments": {
+  "comments": [
+    {
+      "metrics": {},
+      "message": "Could you please annotate returns types and parameters of (at least) public methods as @Nullable and @NotNull?\r\nBelieve me, it will save you from a lot of NPEs. It will also save time of these methods callers who will always know the nullity part of the contract.\r\nKotlin has even introduced special behavior and special language constructs for the NPE problem. But these annotations in Java are quite handy as well. Why don't you use them?",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": "2013-03-16T14:39:35.263+0300",
+      "permaId": {
+        "id": "CMT:8449"
+      },
+      "replies": [],
+      "messageAsHtml": "<p>Could you please annotate returns types and parameters of (at least) public methods as @Nullable and @NotNull? <br>Believe me, it will save you from a lot of NPEs. It will also save time of these methods callers who will always know the nullity part of the contract. <br>Kotlin has even introduced special behavior and special language constructs for the NPE problem. But these annotations in Java are quite handy as well. Why don&#39;t you use them?</p>",
+      "permId": {
+        "id": "CMT:8449"
+      },
+      "parentCommentId": {}
+    },
+    {
+      "metrics": {},
+      "message": "Could you also please check for warnings before committing? There are *a lot* of quite trivial warnings in this code which are honestly highlighted by IDEA.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": "2013-03-16T14:43:35.300+0300",
+      "permaId": {
+        "id": "CMT:8450"
+      },
+      "replies": [],
+      "messageAsHtml": "<p>Could you also please check for warnings before committing? There are <b>a lot</b> of quite trivial warnings in this code which are honestly highlighted by IDEA.</p>",
+      "permId": {
+        "id": "CMT:8450"
+      },
+      "parentCommentId": {}
+    }
+  ]
+}, "versionedComments": {
+  "comments": [
+    {
+      "metrics": {},
+      "message": "javadocs :)\r\n\r\nAgain: I don't want to be a pain in the neck. I have just already suffered from the lack of javadocs in public interfaces, especially in VCS platform, in both old and new code.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363435815570,
+      "permaId": "CMT:8458",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:54:55.344+0300",
+          "permaId": {
+            "id": "CMT:8844"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8844"
+          },
+          "parentCommentId": {
+            "id": "CMT:8458"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>javadocs <img class=\"emoticon\" src=\"http://crucible.labs.intellij.net/static/mhd9mz/2static/images/wiki/icons/emoticons/smile.gif\" height=\"20\" width=\"20\" align=\"absmiddle\" alt=\"\" border=\"0\"/> <br> <br>Again: I don&#39;t want to be a pain in the neck. I have just already suffered from the lack of javadocs in public interfaces, especially in VCS platform, in both old and new code.</p>",
+      "reviewItemId": {
+        "id": "CFR-32529"
+      }
+    },
+    {
+      "metrics": {},
+      "message": "public interface => javadoc is appreciated.\r\nI'm not a fan of javadocs: I hate trivial javadocs and I never declare @param tags for obvious parameters (like Project). But a short note about what this class/method should do won't hurt.\r\nSomething like: \r\n{quote}Handles an event reported by the SVN native client during commit. \r\nExample of such events is file status change: \"Adding file test.txt\"{quote}",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363435375427,
+      "permaId": "CMT:8457",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:59:22.777+0300",
+          "permaId": {
+            "id": "CMT:8845"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8845"
+          },
+          "parentCommentId": {
+            "id": "CMT:8457"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>public interface =&gt; javadoc is appreciated. <br>I&#39;m not a fan of javadocs: I hate trivial javadocs and I never declare @param tags for obvious parameters (like Project). But a short note about what this class/method should do won&#39;t hurt. <br>Something like: </p>\n<blockquote><p>Handles an event reported by the SVN native client during commit.  <br>Example of such events is file status change: &quot;Adding file test.txt&quot;</p></blockquote>",
+      "reviewItemId": {
+        "id": "CFR-32530"
+      },
+      "toLineRange": "26",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "26"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Capitalize the constants please.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363434930165,
+      "permaId": "CMT:8451",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Why?",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T16:00:00.095+0300",
+          "permaId": {
+            "id": "CMT:8846"
+          },
+          "replies": [
+            {
+              "metrics": {},
+              "message": "Instances of an enum are constants and should follow the conventions for constants.",
+              "draft": false,
+              "deleted": false,
+              "defectRaised": false,
+              "defectApproved": false,
+              "readStatus": "READ",
+              "user": {
+                "userName": "Kirill.Likhodedov@jetbrains.com",
+                "displayName": "Kirill Likhodedov",
+                "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+                "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+              },
+              "createDate": "2013-03-22T16:12:54.186+0300",
+              "permaId": {
+                "id": "CMT:8852"
+              },
+              "replies": [
+                {
+                  "metrics": {},
+                  "message": "Did not read about that in any of our conventions;\r\nSubversion libabrary itself, which I took to implement interfaces, uses lowercased enum constants",
+                  "draft": false,
+                  "deleted": false,
+                  "defectRaised": false,
+                  "defectApproved": false,
+                  "readStatus": "READ",
+                  "user": {
+                    "userName": "irengrig",
+                    "displayName": "Irina Chernushina",
+                    "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+                    "url": "/user/irengrig"
+                  },
+                  "createDate": "2013-03-22T18:16:16.135+0300",
+                  "permaId": {
+                    "id": "CMT:8867"
+                  },
+                  "replies": [],
+                  "messageAsHtml": "<p>Did not read about that in any of our conventions; <br>Subversion libabrary itself, which I took to implement interfaces, uses lowercased enum constants</p>",
+                  "permId": {
+                    "id": "CMT:8867"
+                  },
+                  "parentCommentId": {
+                    "id": "CMT:8852"
+                  }
+                }
+              ],
+              "messageAsHtml": "<p>Instances of an enum are constants and should follow the conventions for constants.</p>",
+              "permId": {
+                "id": "CMT:8852"
+              },
+              "parentCommentId": {
+                "id": "CMT:8846"
+              }
+            }
+          ],
+          "messageAsHtml": "<p>Why?</p>",
+          "permId": {
+            "id": "CMT:8846"
+          },
+          "parentCommentId": {
+            "id": "CMT:8451"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Capitalize the constants please.</p>",
+      "reviewItemId": {
+        "id": "CFR-32531"
+      },
+      "toLineRange": "25",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "25"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "\"modified private is redundant for enum constructors\"",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363434964826,
+      "permaId": "CMT:8452",
+      "replies": [],
+      "messageAsHtml": "<p>&quot;modified private is redundant for enum constructors&quot;</p>",
+      "reviewItemId": {
+        "id": "CFR-32531"
+      },
+      "toLineRange": "33",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "33"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "I would call the method not \"create\" but \"find\" or \"for\" or \"valueOf\" or something like that, because it doesn't create an instance, it just finds the proper instance for the given text.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363434995382,
+      "permaId": "CMT:8453",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "valueOf is internal enum method. Give examples for other enums?",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T16:09:53.729+0300",
+          "permaId": {
+            "id": "CMT:8849"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>valueOf is internal enum method. Give examples for other enums?</p>",
+          "permId": {
+            "id": "CMT:8849"
+          },
+          "parentCommentId": {
+            "id": "CMT:8453"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>I would call the method not &quot;create&quot; but &quot;find&quot; or &quot;for&quot; or &quot;valueOf&quot; or something like that, because it doesn&#39;t create an instance, it just finds the proper instance for the given text.</p>",
+      "reviewItemId": {
+        "id": "CFR-32531"
+      },
+      "toLineRange": "41",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "41"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Use just {{values()}}, and no local variable is needed.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363435095391,
+      "permaId": "CMT:8454",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T16:10:28.800+0300",
+          "permaId": {
+            "id": "CMT:8850"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8850"
+          },
+          "parentCommentId": {
+            "id": "CMT:8454"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Use just <tt>values()</tt>, and no local variable is needed.</p>",
+      "reviewItemId": {
+        "id": "CFR-32531"
+      },
+      "toLineRange": "44",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "44"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "It would be cool to define the requirement for the {{text}} in a javadoc comment.\r\nAs I see from the usage, text is the first word of an SVN process output line. Note that with this contract, \"Transmitting file data\" will never match the text.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363435175403,
+      "permaId": "CMT:8455",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Contract is ok here. For \"transmitting.. \", special check is executed in parsing code, so this method is for exact match",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T16:09:05.925+0300",
+          "permaId": {
+            "id": "CMT:8848"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Contract is ok here. For &quot;transmitting.. &quot;, special check is executed in parsing code, so this method is for exact match</p>",
+          "permId": {
+            "id": "CMT:8848"
+          },
+          "parentCommentId": {
+            "id": "CMT:8455"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>It would be cool to define the requirement for the <tt>text</tt> in a javadoc comment. <br>As I see from the usage, text is the first word of an SVN process output line. Note that with this contract, &quot;Transmitting file data&quot; will never match the text.</p>",
+      "reviewItemId": {
+        "id": "CFR-32531"
+      },
+      "toLineRange": "41",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "41"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "I think it would be better to specify the {{ComitEventHandler}} as well as the {{AuthenticatonCallback}} in the constructor. \r\nThat way this class will be immutable, and the handler and the authenticationCallback will be @NotNull.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363710483059,
+      "permaId": "CMT:8611",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "No we shouldn't\r\nHere we have one interface for all operations according to Subversion design\r\n\r\nSo it would be called for all operations, also for those that do not need such handlers\r\nAnd there will be more handlers\r\n\r\nWe are forced by Subversion contract here\r\n\r\nMaybe further I will create adapters, and this class would be used directly for standartization only - to provide standard interface",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T16:11:55.933+0300",
+          "permaId": {
+            "id": "CMT:8851"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>No we shouldn&#39;t <br>Here we have one interface for all operations according to Subversion design <br> <br>So it would be called for all operations, also for those that do not need such handlers <br>And there will be more handlers <br> <br>We are forced by Subversion contract here <br> <br>Maybe further I will create adapters, and this class would be used directly for standartization only - to provide standard interface</p>",
+          "permId": {
+            "id": "CMT:8851"
+          },
+          "parentCommentId": {
+            "id": "CMT:8611"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>I think it would be better to specify the <tt>ComitEventHandler</tt> as well as the <tt>AuthenticatonCallback</tt> in the constructor.  <br>That way this class will be immutable, and the handler and the authenticationCallback will be @NotNull.</p>",
+      "reviewItemId": {
+        "id": "CFR-32532"
+      },
+      "toLineRange": "918",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "918"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Constants are names in the format of upper case with underscores: \"TRANSMITTING_DATA\"",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363433405189,
+      "permaId": "CMT:8447",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Actually corresponding CommitEventType value can be used",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T17:13:52.276+0300",
+          "permaId": {
+            "id": "CMT:8854"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Actually corresponding CommitEventType value can be used</p>",
+          "permId": {
+            "id": "CMT:8854"
+          },
+          "parentCommentId": {
+            "id": "CMT:8447"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Constants are names in the format of upper case with underscores: &quot;TRANSMITTING_DATA&quot;</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "41",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "41"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Why not annotating the path parameter? @NotNull, I guess.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363433491019,
+      "permaId": "CMT:8448",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T17:18:13.174+0300",
+          "permaId": {
+            "id": "CMT:8856"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8856"
+          },
+          "parentCommentId": {
+            "id": "CMT:8448"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Why not annotating the path parameter? @NotNull, I guess.</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "51",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "51"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Revision.SVN_INVALID_REVNUM",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363447561841,
+      "permaId": "CMT:8465",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T17:17:35.623+0300",
+          "permaId": {
+            "id": "CMT:8855"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8855"
+          },
+          "parentCommentId": {
+            "id": "CMT:8465"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Revision.SVN_INVALID_REVNUM</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "49",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "49"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "--Why do we need to sort paths?--\r\nI see: because we get {{paths\\[0]}} later.\r\nThen you must remember that Arrays.sort will sort your paths lexicographically. It may give unexpected results on case insensitive systems, if you want the \"most upper\" directory appear at the first place.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363447611637,
+      "permaId": "CMT:8466",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "1) I guess with any way of lexigraphic sorting, I will get parents above children? If not, please give an example\r\n2) paths[0] - we just need one file of this working copy, no matter which",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T17:19:15.992+0300",
+          "permaId": {
+            "id": "CMT:8857"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>1) I guess with any way of lexigraphic sorting, I will get parents above children? If not, please give an example <br>2) paths<span class=\"error\">&#91;0&#93;</span> - we just need one file of this working copy, no matter which</p>",
+          "permId": {
+            "id": "CMT:8857"
+          },
+          "parentCommentId": {
+            "id": "CMT:8466"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>-<del>Why do we need to sort paths?</del>- <br>I see: because we get <tt>paths[0]</tt> later. <br>Then you must remember that Arrays.sort will sort your paths lexicographically. It may give unexpected results on case insensitive systems, if you want the &quot;most upper&quot; directory appear at the first place.</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "87",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "87"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Better to encapsulate fields {{myException}} and {{myHandler}} into the CommandListener instead of SvnCommitRunner.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363447697121,
+      "permaId": "CMT:8467",
+      "replies": [],
+      "messageAsHtml": "<p>Better to encapsulate fields <tt>myException</tt> and <tt>myHandler</tt> into the CommandListener instead of SvnCommitRunner.</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "97",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "97"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Why \"Committed revision\" output is treated so differently from other output?\r\nI would rather send it to myHandler as another commit event.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363710272986,
+      "permaId": "CMT:8609",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "It should be treated differently because of parsing, but ok we can show the message in progress as well",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T17:42:46.080+0300",
+          "permaId": {
+            "id": "CMT:8858"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>It should be treated differently because of parsing, but ok we can show the message in progress as well</p>",
+          "permId": {
+            "id": "CMT:8858"
+          },
+          "parentCommentId": {
+            "id": "CMT:8609"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Why &quot;Committed revision&quot; output is treated so differently from other output? <br>I would rather send it to myHandler as another commit event.</p>",
+      "reviewItemId": {
+        "id": "CFR-32533"
+      },
+      "toLineRange": "146",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "146"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "This class has 2 unused methods and some yellow code. Please fix.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431373185,
+      "permaId": "CMT:8440",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Date formats should be kept (parseDate)",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:02:57.504+0300",
+          "permaId": {
+            "id": "CMT:8859"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Date formats should be kept (parseDate)</p>",
+          "permId": {
+            "id": "CMT:8859"
+          },
+          "parentCommentId": {
+            "id": "CMT:8440"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>This class has 2 unused methods and some yellow code. Please fix.</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      }
+    },
+    {
+      "metrics": {},
+      "message": "WTF? changeLists is array of Strings.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431448587,
+      "permaId": "CMT:8441",
+      "replies": [],
+      "messageAsHtml": "<p>WTF? changeLists is array of Strings.</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "76",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "76"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Why filling the list from parameter instead of just returning it from the method?",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431493666,
+      "permaId": "CMT:8442",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "see usages, adds parameters to common list",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:07:26.707+0300",
+          "permaId": {
+            "id": "CMT:8863"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>see usages, adds parameters to common list</p>",
+          "permId": {
+            "id": "CMT:8863"
+          },
+          "parentCommentId": {
+            "id": "CMT:8442"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Why filling the list from parameter instead of just returning it from the method?</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "73",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "73"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "I would propose to rename the class. We have about 20 classes of name \"Util\" in the project.\r\nMaybe some more specific name (SvnBindUtil?) would be better for \"go to class\" and \"completion\" functionality called from all modules.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431733249,
+      "permaId": "CMT:8443",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:06:00.280+0300",
+          "permaId": {
+            "id": "CMT:8860"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8860"
+          },
+          "parentCommentId": {
+            "id": "CMT:8443"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>I would propose to rename the class. We have about 20 classes of name &quot;Util&quot; in the project. <br>Maybe some more specific name (SvnBindUtil?) would be better for &quot;go to class&quot; and &quot;completion&quot; functionality called from all modules.</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "35",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "35"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "ourFormats are used only in parseDate(), which is not used. \r\nIt is not clear, why these formats are here and what they are should used for.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431933273,
+      "permaId": "CMT:8444",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "will be used further when all native commands available and no svnkit code will be used",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:06:46.455+0300",
+          "permaId": {
+            "id": "CMT:8862"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>will be used further when all native commands available and no svnkit code will be used</p>",
+          "permId": {
+            "id": "CMT:8862"
+          },
+          "parentCommentId": {
+            "id": "CMT:8444"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>ourFormats are used only in parseDate(), which is not used.  <br>It is not clear, why these formats are here and what they are should used for.</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "37",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "37"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Currently used only inside this class. Can it be made private?",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363432048001,
+      "permaId": "CMT:8445",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Why? Utils class",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:13:14.465+0300",
+          "permaId": {
+            "id": "CMT:8864"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Why? Utils class</p>",
+          "permId": {
+            "id": "CMT:8864"
+          },
+          "parentCommentId": {
+            "id": "CMT:8445"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Currently used only inside this class. Can it be made private?</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "104",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "104"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "I think, a comment about {{SVN_ASP_DOT_NET_HACK}} won't hurt here.\r\nSomething like \"SVN_ASP_DOT_NET_HACK environment variable changes the svn directory from .svn to _svn. This is needed on windows to be able to use subversion with ASP.NET development.\" with a link to some documentation about this.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363432133301,
+      "permaId": "CMT:8446",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:06:10.499+0300",
+          "permaId": {
+            "id": "CMT:8861"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8861"
+          },
+          "parentCommentId": {
+            "id": "CMT:8446"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>I think, a comment about <tt>SVN_ASP_DOT_NET_HACK</tt> won&#39;t hurt here. <br>Something like &quot;SVN_ASP_DOT_NET_HACK environment variable changes the svn directory from .svn to _svn. This is needed on windows to be able to use subversion with ASP.NET development.&quot; with a link to some documentation about this.</p>",
+      "reviewItemId": {
+        "id": "CFR-32534"
+      },
+      "toLineRange": "36",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "36"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "What's the difference between myErr and myStderrLine?",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363436705680,
+      "permaId": "CMT:8462",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "myStdErrLine only keeps last line of output",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:10:23.022+0300",
+          "permaId": {
+            "id": "CMT:8837"
+          },
+          "replies": [
+            {
+              "metrics": {},
+              "message": "...and myErr keeps all the output, right? can't the last line be taken from myErr then?",
+              "draft": false,
+              "deleted": false,
+              "defectRaised": false,
+              "defectApproved": false,
+              "readStatus": "READ",
+              "user": {
+                "userName": "Kirill.Likhodedov@jetbrains.com",
+                "displayName": "Kirill Likhodedov",
+                "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+                "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+              },
+              "createDate": "2013-03-22T15:44:45.737+0300",
+              "permaId": {
+                "id": "CMT:8842"
+              },
+              "replies": [
+                {
+                  "metrics": {},
+                  "message": "I do not want to change logic in that way risking bugs. Not a trivial change.",
+                  "draft": false,
+                  "deleted": false,
+                  "defectRaised": false,
+                  "defectApproved": false,
+                  "readStatus": "READ",
+                  "user": {
+                    "userName": "irengrig",
+                    "displayName": "Irina Chernushina",
+                    "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+                    "url": "/user/irengrig"
+                  },
+                  "createDate": "2013-03-22T18:17:39.416+0300",
+                  "permaId": {
+                    "id": "CMT:8868"
+                  },
+                  "replies": [
+                    {
+                      "metrics": {},
+                      "message": "And it also is used to understand when we already have read the line up to the end\r\nWe read from stream, so it's not clear when the line is over until \\n comes",
+                      "draft": false,
+                      "deleted": false,
+                      "defectRaised": false,
+                      "defectApproved": false,
+                      "readStatus": "READ",
+                      "user": {
+                        "userName": "irengrig",
+                        "displayName": "Irina Chernushina",
+                        "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+                        "url": "/user/irengrig"
+                      },
+                      "createDate": "2013-03-22T18:18:26.138+0300",
+                      "permaId": {
+                        "id": "CMT:8869"
+                      },
+                      "replies": [],
+                      "messageAsHtml": "<p>And it also is used to understand when we already have read the line up to the end <br>We read from stream, so it&#39;s not clear when the line is over until \\n comes</p>",
+                      "permId": {
+                        "id": "CMT:8869"
+                      },
+                      "parentCommentId": {
+                        "id": "CMT:8868"
+                      }
+                    }
+                  ],
+                  "messageAsHtml": "<p>I do not want to change logic in that way risking bugs. Not a trivial change.</p>",
+                  "permId": {
+                    "id": "CMT:8868"
+                  },
+                  "parentCommentId": {
+                    "id": "CMT:8842"
+                  }
+                }
+              ],
+              "messageAsHtml": "<p>...and myErr keeps all the output, right? can&#39;t the last line be taken from myErr then?</p>",
+              "permId": {
+                "id": "CMT:8842"
+              },
+              "parentCommentId": {
+                "id": "CMT:8837"
+              }
+            }
+          ],
+          "messageAsHtml": "<p>myStdErrLine only keeps last line of output</p>",
+          "permId": {
+            "id": "CMT:8837"
+          },
+          "parentCommentId": {
+            "id": "CMT:8462"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>What&#39;s the difference between myErr and myStderrLine?</p>",
+      "reviewItemId": {
+        "id": "CFR-32538"
+      },
+      "toLineRange": "56",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "56"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "I'm not sure that it is necessary to reflect the fact that svn errors are translated into exceptions in the name of the method. It is kinda obvious, and there is also the \"throws\" keyword that implies it.\r\nI would rather rename it to something like \"runSynchronously\".",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363709022796,
+      "permaId": "CMT:8607",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Not obvious, what is meant here is translating authentication errors into callback calls.\r\nRenamed to runWithAuthenticationAttempt",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:13:45.743+0300",
+          "permaId": {
+            "id": "CMT:8839"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Not obvious, what is meant here is translating authentication errors into callback calls. <br>Renamed to runWithAuthenticationAttempt</p>",
+          "permId": {
+            "id": "CMT:8839"
+          },
+          "parentCommentId": {
+            "id": "CMT:8607"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>I&#39;m not sure that it is necessary to reflect the fact that svn errors are translated into exceptions in the name of the method. It is kinda obvious, and there is also the &quot;throws&quot; keyword that implies it. <br>I would rather rename it to something like &quot;runSynchronously&quot;.</p>",
+      "reviewItemId": {
+        "id": "CFR-32538"
+      },
+      "toLineRange": "80",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "80"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Unused",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363710583081,
+      "permaId": "CMT:8612",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "It's a class that will be used in every svn call. Maybe we should keep for now",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:11:05.734+0300",
+          "permaId": {
+            "id": "CMT:8838"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>It&#39;s a class that will be used in every svn call. Maybe we should keep for now</p>",
+          "permId": {
+            "id": "CMT:8838"
+          },
+          "parentCommentId": {
+            "id": "CMT:8612"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Unused</p>",
+      "reviewItemId": {
+        "id": "CFR-32538"
+      },
+      "toLineRange": "58",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "58"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "\"Method overloads the superclass method, when overriding might have been intended\".\r\nThe method should better be renamed to {{addLineListener}} for clarity.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363710763134,
+      "permaId": "CMT:8613",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "ok",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:16:33.770+0300",
+          "permaId": {
+            "id": "CMT:8840"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>ok</p>",
+          "permId": {
+            "id": "CMT:8840"
+          },
+          "parentCommentId": {
+            "id": "CMT:8613"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>&quot;Method overloads the superclass method, when overriding might have been intended&quot;. <br>The method should better be renamed to <tt>addLineListener</tt> for clarity.</p>",
+      "reviewItemId": {
+        "id": "CFR-32538"
+      },
+      "toLineRange": "256",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "256"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Unused class. Please remove.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363435265419,
+      "permaId": "CMT:8456",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Not sure, work in progress, we might need structure like that when parsing",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T15:21:50.038+0300",
+          "permaId": {
+            "id": "CMT:8841"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Not sure, work in progress, we might need structure like that when parsing</p>",
+          "permId": {
+            "id": "CMT:8841"
+          },
+          "parentCommentId": {
+            "id": "CMT:8456"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Unused class. Please remove.</p>",
+      "reviewItemId": {
+        "id": "CFR-32541"
+      }
+    },
+    {
+      "metrics": {},
+      "message": "Is it our class? Why is it in {{org.tigris.subversion.javahl}} then?",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431073153,
+      "permaId": "CMT:8438",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Because it's the only way to create instance of it",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:13:42.386+0300",
+          "permaId": {
+            "id": "CMT:8865"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Because it&#39;s the only way to create instance of it</p>",
+          "permId": {
+            "id": "CMT:8865"
+          },
+          "parentCommentId": {
+            "id": "CMT:8438"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Is it our class? Why is it in <tt>org.tigris.subversion.javahl</tt> then?</p>",
+      "reviewItemId": {
+        "id": "CFR-32542"
+      },
+      "toLineRange": "16",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "16"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "This constructor is not used. Can we remove it? The super constructor says, it's there only \"for backward compat\"",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363431193164,
+      "permaId": "CMT:8439",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "Don't think so on current stage",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:15:08.173+0300",
+          "permaId": {
+            "id": "CMT:8866"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>Don&#39;t think so on current stage</p>",
+          "permId": {
+            "id": "CMT:8866"
+          },
+          "parentCommentId": {
+            "id": "CMT:8439"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>This constructor is not used. Can we remove it? The super constructor says, it&#39;s there only &quot;for backward compat&quot;</p>",
+      "reviewItemId": {
+        "id": "CFR-32542"
+      },
+      "toLineRange": "33",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "33"
+        }
+      ]
+    },
+    {
+      "metrics": {},
+      "message": "Multiple warnings again :(",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363436130333,
+      "permaId": "CMT:8459",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "fixed..",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:36:22.407+0300",
+          "permaId": {
+            "id": "CMT:8871"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>fixed..</p>",
+          "permId": {
+            "id": "CMT:8871"
+          },
+          "parentCommentId": {
+            "id": "CMT:8459"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Multiple warnings again <img class=\"emoticon\" src=\"http://crucible.labs.intellij.net/static/mhd9mz/2static/images/wiki/icons/emoticons/sad.gif\" height=\"20\" width=\"20\" align=\"absmiddle\" alt=\"\" border=\"0\"/></p>",
+      "reviewItemId": {
+        "id": "CFR-32549"
+      }
+    },
+    {
+      "metrics": {},
+      "message": "Is it needed? We've initialized myTempDir as {{FileUtil.createTempDirectory}}, so it should be either null, or exist.",
+      "draft": false,
+      "deleted": false,
+      "defectRaised": false,
+      "defectApproved": false,
+      "readStatus": "READ",
+      "user": {
+        "userName": "Kirill.Likhodedov@jetbrains.com",
+        "displayName": "Kirill Likhodedov",
+        "avatarUrl": "http://crucible.labs.intellij.net/avatar/Kirill.Likhodedov%40jetbrains.com?s=48",
+        "url": "/user/Kirill.Likhodedov%40jetbrains.com"
+      },
+      "createDate": 1363436175613,
+      "permaId": "CMT:8460",
+      "replies": [
+        {
+          "metrics": {},
+          "message": "let it be for sure",
+          "draft": false,
+          "deleted": false,
+          "defectRaised": false,
+          "defectApproved": false,
+          "readStatus": "READ",
+          "user": {
+            "userName": "irengrig",
+            "displayName": "Irina Chernushina",
+            "avatarUrl": "http://crucible.labs.intellij.net/avatar/irengrig?s=48",
+            "url": "/user/irengrig"
+          },
+          "createDate": "2013-03-22T18:31:28.512+0300",
+          "permaId": {
+            "id": "CMT:8870"
+          },
+          "replies": [],
+          "messageAsHtml": "<p>let it be for sure</p>",
+          "permId": {
+            "id": "CMT:8870"
+          },
+          "parentCommentId": {
+            "id": "CMT:8460"
+          }
+        }
+      ],
+      "messageAsHtml": "<p>Is it needed? We&#39;ve initialized myTempDir as <tt>FileUtil.createTempDirectory</tt>, so it should be either null, or exist.</p>",
+      "reviewItemId": {
+        "id": "CFR-32549"
+      },
+      "toLineRange": "246",
+      "lineRanges": [
+        {
+          "revision": "6987d65f35560be344d21771776db6e614fa1377",
+          "range": "246"
+        }
+      ]
+    }
+  ]
+}, "transitions": {
+  "transitionData": []
+}, "actions": {
+  "actionData": [
+    {
+      "name": "action:createReview",
+      "displayName": "Create"
+    },
+    {
+      "name": "action:viewReview",
+      "displayName": "View"
+    }
+  ]
+}, "stats": [
+  {
+    "user": "Kirill.Likhodedov@jetbrains.com",
+    "published": 34,
+    "drafts": 0,
+    "defects": 0,
+    "unread": 34,
+    "leaveUnread": 0,
+    "read": 0
+  },
+  {
+    "user": "irengrig",
+    "published": 30,
+    "drafts": 0,
+    "defects": 0,
+    "unread": 30,
+    "leaveUnread": 0,
+    "read": 0
+  }
+]}
