@@ -51,7 +51,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   private final Map<String, VirtualFile> myRepoHash = new HashMap<String, VirtualFile>();
 
 
-  CrucibleSessionImpl(@NotNull final Project project) {
+  public CrucibleSessionImpl(@NotNull final Project project) {
     myProject = project;
   }
 
@@ -63,16 +63,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
       if (username == null || password == null) {
         throw new CrucibleApiLoginException("Username or Password is empty");
       }
-      final String loginUrlPrefix = getHostUrl() + AUTH_SERVICE + LOGIN;
-
-      final String loginUrl;
-      try {
-        loginUrl = loginUrlPrefix + "?userName=" + URLEncoder.encode(username, "UTF-8") + "&password="
-                   + URLEncoder.encode(password, "UTF-8");
-      }
-      catch (UnsupportedEncodingException e) {
-        throw new RuntimeException("URLEncoding problem: " + e.getMessage());
-      }
+      final String loginUrl = getLoginUrl(username, password);
 
       final JsonObject jsonObject = buildJsonResponse(loginUrl);
       final JsonElement authToken = jsonObject.get("token");
@@ -87,6 +78,20 @@ public class CrucibleSessionImpl implements CrucibleSession {
     catch (CrucibleApiException e) {
       throw new CrucibleApiLoginException(e.getMessage(), e);
     }
+  }
+
+  private String getLoginUrl(String username, String password) {
+    final String loginUrlPrefix = getHostUrl() + AUTH_SERVICE + LOGIN;
+
+    final String loginUrl;
+    try {
+      loginUrl = loginUrlPrefix + "?userName=" + URLEncoder.encode(username, "UTF-8") + "&password="
+                 + URLEncoder.encode(password, "UTF-8");
+    }
+    catch (UnsupportedEncodingException e) {
+      throw new RuntimeException("URLEncoding problem: " + e.getMessage());
+    }
+    return loginUrl;
   }
 
   @Nullable
@@ -149,20 +154,20 @@ public class CrucibleSessionImpl implements CrucibleSession {
     method.addRequestHeader(new Header("accept", "application/json"));
   }
 
-  private String getUsername() {
+  protected String getUsername() {
     return CrucibleSettings.getInstance().USERNAME;
   }
 
-  private String getPassword() {
+  protected String getPassword() {
     return CrucibleSettings.getInstance().getPassword();
   }
 
-  private String getHostUrl() {
+  protected String getHostUrl() {
     return UrlUtil.removeUrlTrailingSlashes(CrucibleSettings.getInstance().SERVER_URL);
   }
 
   @Nullable
-  private static String getExceptionMessages(@NotNull final JsonObject jsonObject) {
+  public static String getExceptionMessages(@NotNull final JsonObject jsonObject) {
     final JsonElement error = jsonObject.get("error");
     final JsonElement statusCode = jsonObject.get("status-code");
     if (error != null) {
@@ -236,7 +241,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private VirtualFile getLocalPath(@NotNull final String name) throws IOException {
+  protected VirtualFile getLocalPath(@NotNull final String name) throws IOException {
     String url = getHostUrl() + REPOSITORIES + "/" + name;
     final JsonObject jsonObject = buildJsonResponse(url);
     String location = CrucibleJsonUtils.getChildText(jsonObject, "location");
