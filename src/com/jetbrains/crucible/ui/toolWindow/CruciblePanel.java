@@ -79,7 +79,8 @@ public class CruciblePanel extends SimpleToolWindowPanel {
               @Override
               public void run() {
                 final Review review =
-                  CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.getValueAt(viewRow, 0));
+                  CrucibleManager.getInstance(myProject).getDetailsForReview((String)myReviewTable.
+                    getValueAt(viewRow, myReviewTable.getColumnModel().getColumnIndex(CrucibleBundle.message("crucible.id"))));
                 if (review != null) {
                   openDetailsToolWindow(review);
                   myReviewTable.clearSelection();
