@@ -149,7 +149,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable = new JBTable(myCommitsModel) {
       @Override
       public TableCellRenderer getCellRenderer(int row, int column) {
-        if (column == 0)
+        if (column == myCommitsTable.getColumnModel().getColumnIndex(CrucibleBundle.message("crucible.commit")))
           return new MyCommitsCellRenderer();
         return super.getCellRenderer(row, column);
       }
