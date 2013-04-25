@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -44,6 +45,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
   private CommentsTreeTable myGeneralComments;
+  private JPanel myCommentsPane;
 
   @SuppressWarnings("UseOfObsoleteCollectionType")
   public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
@@ -74,11 +76,12 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   @NotNull
   private JPanel createMainTable() {
     final JBSplitter splitter = new JBSplitter(true, 0.65f);
-    final JScrollPane commitsPane = createCommitsPane();
+    final JPanel commitsPane = createCommitsPane();
 
-    final JPanel commentsPane = createCommentsPane();
+    myCommentsPane = createCommentsPane();
     splitter.setFirstComponent(commitsPane);
-    splitter.setSecondComponent(commentsPane);
+    splitter.setSecondComponent(myCommentsPane);
+    myCommentsPane.setVisible(false);
     return splitter;
   }
 
@@ -124,7 +127,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   }
 
   @NotNull
-  private JScrollPane createCommitsPane() {
+  private JPanel createCommitsPane() {
     @SuppressWarnings("UseOfObsoleteCollectionType")
     final Vector<String> commitColumnNames = new Vector<String>();
     commitColumnNames.add(CrucibleBundle.message("crucible.commit"));
@@ -159,7 +162,17 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable.setExpandableItemsEnabled(false);
     setUpColumnWidths(myCommitsTable);
 
-    return ScrollPaneFactory.createScrollPane(myCommitsTable);
+    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myCommitsTable).
+      setToolbarPosition(ActionToolbarPosition.LEFT);
+    decorator.addExtraAction(new AnActionButton(CrucibleBundle.message("crucible.show.general.comments"),
+                                                CrucibleBundle.message("crucible.show.general.comments"), AllIcons.Actions.ShowChangesOnly) {
+      @Override
+      public void actionPerformed(AnActionEvent e) {
+        myCommentsPane.setVisible(!myCommentsPane.isVisible());
+      }
+    });
+
+    return decorator.createPanel();
   }
 
   public static void setUpColumnWidths(@NotNull final JBTable table) {
