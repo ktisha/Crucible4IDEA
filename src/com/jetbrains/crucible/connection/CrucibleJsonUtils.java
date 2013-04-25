@@ -79,13 +79,16 @@ public final class CrucibleJsonUtils {
   public static Comment parseComment(@NotNull final JsonObject jsonObject, boolean isVersioned) {
     final String message = getChildText(jsonObject, "message");
     final User commentAuthor = parseUserNode(jsonObject.getAsJsonObject("user"));
-    final Date createDate = parseDate(jsonObject.get("createDate"));
     final Comment comment = new Comment(commentAuthor, message);
 
     final String id = isVersioned ? jsonObject.get("permaId").getAsString() :
                       getChildText(jsonObject.getAsJsonObject("permaId"), "id");
     comment.setPermId(id);
-    if (createDate != null) comment.setCreateDate(createDate);
+
+    if (!isVersioned) {
+      final Date createDate = parseDate(jsonObject.get("createDate"));
+      if (createDate != null) comment.setCreateDate(createDate);
+    }
     parseReplies(jsonObject, comment);
 
     if (isVersioned) {
