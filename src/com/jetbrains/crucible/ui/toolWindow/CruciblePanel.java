@@ -54,6 +54,10 @@ public class CruciblePanel extends SimpleToolWindowPanel {
   private final CrucibleReviewModel myReviewModel;
   private final JBTable myReviewTable;
 
+  public CrucibleReviewModel getReviewModel() {
+    return myReviewModel;
+  }
+
   public CruciblePanel(@NotNull final Project project) {
     super(false);
     myProject = project;
