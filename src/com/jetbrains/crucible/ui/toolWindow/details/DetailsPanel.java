@@ -14,6 +14,7 @@ import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
 import com.jetbrains.crucible.actions.AddCommentAction;
+import com.jetbrains.crucible.actions.CompleteReviewAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.utils.CrucibleBundle;
@@ -164,6 +165,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myCommitsTable).
       setToolbarPosition(ActionToolbarPosition.LEFT);
+    decorator.addExtraAction(new CompleteReviewAction(myReview, CrucibleBundle.message("crucible.complete.review")));
     decorator.addExtraAction(new AnActionButton(CrucibleBundle.message("crucible.show.general.comments"),
                                                 CrucibleBundle.message("crucible.show.general.comments"), AllIcons.Actions.ShowChangesOnly) {
       @Override

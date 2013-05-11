@@ -98,6 +98,19 @@ public class CrucibleManager {
     return null;
   }
 
+  public void completeReview(String reviewId) {
+    try {
+      final CrucibleSession session = getSession();
+      if (session != null) {
+        session.completeReview(reviewId);
+      }
+    }
+    catch (CrucibleApiException e) {
+      LOG.warn(e.getMessage());
+      UiUtils.showBalloon(myProject, CrucibleBundle.message("crucible.connection.error.message.$0", e.getMessage()), MessageType.ERROR);
+    }
+  }
+
   @Nullable
   public CrucibleSession getSession() throws CrucibleApiException {
     final CrucibleSettings crucibleSettings = CrucibleSettings.getInstance();

@@ -24,6 +24,7 @@ public interface CrucibleSession {
   String COMMENTS = "/comments";
   String REPLIES = "/replies";
   String REPOSITORIES = "/rest-service/repositories-v1";
+  String COMPLETE = "/complete";
   void login() throws CrucibleApiLoginException;
 
   @Nullable
@@ -34,6 +35,8 @@ public interface CrucibleSession {
 
   @Nullable
   Comment postComment(@NotNull final Comment comment, boolean isGeneral, String reviewId);
+
+  void completeReview(@NotNull final String reviewId);
 
   void fillRepoHash() throws IOException;
   Map<String,VirtualFile> getRepoHash();

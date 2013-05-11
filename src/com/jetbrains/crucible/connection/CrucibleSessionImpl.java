@@ -24,6 +24,7 @@ import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -331,5 +332,23 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   public Map<String, VirtualFile> getRepoHash() {
     return myRepoHash;
+  }
+
+  @Override
+  public void completeReview(@NotNull String reviewId) {
+    final String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId + COMPLETE;
+
+    try {
+      final RequestEntity request = new StringRequestEntity("", "application/json", "UTF-8");
+
+      final JsonObject jsonObject = buildJsonResponseForPost(url, request);
+      final String errorMessage = getExceptionMessages(jsonObject);
+      if (errorMessage != null) {
+        UiUtils.showBalloon(myProject, "Sorry, review wasn't complete:\n" + errorMessage, MessageType.ERROR);
+      }
+    }
+    catch (IOException e) {
+      LOG.warn(e.getMessage());
+    }
   }
 }
