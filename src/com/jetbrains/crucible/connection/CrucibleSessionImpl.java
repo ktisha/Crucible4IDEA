@@ -310,16 +310,21 @@ public class CrucibleSessionImpl implements CrucibleSession {
     String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
 
     final JsonObject jsonObject = buildJsonResponse(url);
-    final User author = CrucibleJsonUtils.parseUserNode(jsonObject.getAsJsonObject("author"));
 
-    final User moderator = (jsonObject.get("moderator") != null) ?
-                           CrucibleJsonUtils.parseUserNode(jsonObject.getAsJsonObject("moderator")) : null;
-
-
-    final Review review = new Review(permId, author, moderator);
+    final Review review = (Review)CrucibleJsonUtils.parseBasicReview(jsonObject);
     final JsonObject reviewItems = jsonObject.getAsJsonObject("reviewItems");
     if (reviewItems != null) {
       CrucibleJsonUtils.addReviewItems(reviewItems.getAsJsonArray("reviewItem"), review);
+    }
+
+    final JsonObject reviewers = jsonObject.getAsJsonObject("reviewers");
+    if (reviewers != null) {
+      final JsonArray reviewerArray = reviewers.getAsJsonArray("reviewer");
+      for (int i = 0; i != reviewerArray.size(); ++i) {
+        final JsonObject reviewerObject = reviewerArray.get(i).getAsJsonObject();
+        final User reviewer = CrucibleJsonUtils.parseUserNode(reviewerObject);
+        review.addReviewer(reviewer);
+      }
     }
 
     CrucibleJsonUtils.addGeneralComments(jsonObject, review);

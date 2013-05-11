@@ -35,7 +35,7 @@ public final class CrucibleJsonUtils {
     final User moderator = data.get("moderator") != null ? parseUserNode(data.getAsJsonObject("moderator")) : null;
 
     final Date date = parseDate(data.get("createDate"));
-    final BasicReview review = new BasicReview(permaId, author, moderator);
+    final BasicReview review = new Review(permaId, author, moderator);
     if (date != null)
       review.setCreateDate(date);
     review.setDescription(description);

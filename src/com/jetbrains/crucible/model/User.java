@@ -23,4 +23,16 @@ public class User {
   public String toString() {
     return "User [[" + myUserName+ "]]";
   }
+
+  @Override
+  public int hashCode() {
+    return myUserName.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof User)
+      return myUserName.equals(((User)obj).getUserName());
+    return super.equals(obj);
+  }
 }
