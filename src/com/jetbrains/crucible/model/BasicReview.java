@@ -5,13 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * User : ktisha
  */
 public class BasicReview {
-  private Set<Reviewer> myReviewers;
+  private Set<User> myReviewers = new HashSet<User>();
   private final User myAuthor;
   private String myDescription;
   private final User myModerator;
@@ -38,6 +39,10 @@ public class BasicReview {
 
   public void setState(@NotNull final String state) {
     myState = state;
+  }
+
+  public void addReviewer(@NotNull final User reviewer) {
+    myReviewers.add(reviewer);
   }
 
   @NotNull
@@ -67,5 +72,10 @@ public class BasicReview {
 
   public void setCreateDate(@NotNull final Date createDate) {
     myCreateDate = createDate;
+  }
+
+  @NotNull
+  public Set<User> getReviewers() {
+    return myReviewers;
   }
 }
