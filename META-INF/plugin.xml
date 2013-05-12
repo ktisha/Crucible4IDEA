@@ -1,14 +1,13 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.1</version>
+  <version>0.2</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
-<html>
   Plugin provides IDEA integration with Code Review Tools (such as Crucible from Atlassian)
-  <br/>
-  Main features:
+  <br/><br/>
+  <p>Main features:</p>
   <ul>
     <li> Dashboard toolwindow
     <li> View separated commits in one review item
@@ -17,11 +16,27 @@
     <li> Add reply to general comments
     <li> Add versioned comment (right-click)
     <li> Add reply to versioned comment (right-click on comments list)
-  </ul>
-</html>
+  </ul> <br/>
+   <p>Important note:</p>
+   Plugin works only with IDEA trunk builds and git repositories
     ]]></description>
   <change-notes><![CDATA[
-<html>
+
+  <p>0.2 version: </p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [enhancement] Added complete review action
+    <li> [enhancement] Moved plugin-server communication to JSON
+    <li> [enhancement] Sort reviews/commits by date by default
+    <li> [enhancement] Added a timeout to HTTP queries.
+    <li> [enhancement] Hideable general comments panel
+    <li> [enhancement] Added toolwindow icon
+    <li> [enhancement] Improved file comments tree UI
+    <li> [bugfix] DataContext NPE
+    <li> [bugfix] update review on adding file comment
+    <li> [bugfix] adding and showing comments for the diff chain
+    <li> [bugfix] exception on double click if changed column order
+  </ul>
   <p>0.1 - Initial revision: </p>
   <ul>
     <li> Dashboard toolwindow
@@ -32,7 +47,7 @@
     <li> Add versioned comment (right-click)
     <li> Add reply to versioned comment (right-click on comments list)
   </ul>
-</html>
+
 ]]></change-notes>
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="130.323"/>
