@@ -1,10 +1,9 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.ui.popup.*;
+import com.intellij.openapi.ui.popup.ComponentPopupBuilder;
+import com.intellij.openapi.ui.popup.JBPopup;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.awt.RelativePoint;
-import com.jetbrains.crucible.model.Comment;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -17,20 +16,17 @@ public class CommentBalloonBuilder {
   public CommentBalloonBuilder() {
   }
 
-  public void showBalloon(@NotNull final Comment comment, @NotNull final Editor editor,
-                          @NotNull final CommentsTree balloonContent) {
-
-    final Document document = editor.getDocument();
-    final int startOffset = document.getLineStartOffset(Integer.parseInt(comment.getLine()));
-
+  public void showBalloon(@NotNull final CommentsTree balloonContent) {
     final ComponentPopupBuilder builder = JBPopupFactory.getInstance().
       createComponentPopupBuilder(balloonContent, balloonContent);
     builder.setResizable(true);
     builder.setTitle("Comments");
     builder.setMovable(true);
     final JBPopup popup = builder.createPopup();
-    final Point targetPoint = editor.visualPositionToXY(editor.offsetToVisualPosition(startOffset));
-    popup.show(new RelativePoint(editor.getComponent(), targetPoint));
+
+    final PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+    final Point targetPoint = pointerInfo.getLocation();
+    popup.show(new RelativePoint(targetPoint));
   }
 
 
