@@ -22,11 +22,20 @@
     ]]></description>
   <change-notes><![CDATA[
 
-  <p>0.21 version: </p>
+  <p>0.2.2 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Fix after IDEA API change </li>
+    <li> [bugfix] Encoding support </li>
+    <li> [bugfix] Better comment popup layout</li>
+  </ul>
+
+  <p>0.2.1 version: </p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
     <li> Plugin built with java 1.6
   </ul>
+
   <p>0.2 version: </p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
@@ -42,6 +51,7 @@
     <li> [bugfix] adding and showing comments for the diff chain
     <li> [bugfix] exception on double click if changed column order
   </ul>
+
   <p>0.1 - Initial revision: </p>
   <ul>
     <li> Dashboard toolwindow
