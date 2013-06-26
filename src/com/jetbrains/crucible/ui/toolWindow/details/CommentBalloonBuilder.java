@@ -37,6 +37,7 @@ public class CommentBalloonBuilder {
     builder.setTitle(title);
     builder.setResizable(true);
     builder.setMovable(true);
+    builder.setCancelOnWindowDeactivation(false);
     return builder.createPopup();
   }
 
