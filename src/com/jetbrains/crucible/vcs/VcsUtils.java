@@ -11,7 +11,7 @@ import com.intellij.util.ui.VcsSynchronousProgressWrapper;
 import git4idea.GitRevisionNumber;
 import git4idea.changes.GitCommittedChangeList;
 import git4idea.history.GitHistoryUtils;
-import git4idea.history.browser.GitCommit;
+import git4idea.history.browser.GitHeavyCommit;
 import git4idea.history.browser.SymbolicRefs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,12 +33,12 @@ public class VcsUtils {
       @Override
       public void run() throws VcsException {
         final FilePathImpl filePath = new FilePathImpl(vf);
-        final List<GitCommit> gitCommits =
+        final List<GitHeavyCommit> gitCommits =
           GitHistoryUtils.commitsDetails(project, filePath, new SymbolicRefs(), Collections.singletonList(number.asString()));
         if (gitCommits.size() != 1) {
           return;
         }
-        final GitCommit gitCommit = gitCommits.get(0);
+        final GitHeavyCommit gitCommit = gitCommits.get(0);
         CommittedChangeList commit = new GitCommittedChangeList(gitCommit.getDescription() + " (" + gitCommit.getShortHash().getString() + ")",
                                                                 gitCommit.getDescription(), gitCommit.getAuthor(), (GitRevisionNumber)number,
                                                                 new Date(gitCommit.getAuthorTime()), gitCommit.getChanges(), true);
