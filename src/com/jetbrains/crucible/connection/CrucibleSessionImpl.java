@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +131,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     executeHttpMethod(method);
 
     JsonParser parser = new JsonParser();
-    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream())).getAsJsonObject();
+    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream(), Charset.forName("UTF-8"))).getAsJsonObject();
   }
 
   private void executeHttpMethod(@NotNull HttpMethodBase method) throws IOException {
@@ -149,7 +150,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     method.setRequestEntity(requestEntity);
     executeHttpMethod(method);
     JsonParser parser = new JsonParser();
-    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream())).getAsJsonObject();
+    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream(), Charset.forName("UTF-8"))).getAsJsonObject();
   }
 
   protected void adjustHttpHeader(@NotNull final HttpMethod method) {
