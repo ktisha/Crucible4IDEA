@@ -48,6 +48,7 @@ public class CommentForm extends JPanel {
   private Comment myParentComment;
 
   public CommentForm(@NotNull final Project project, final boolean isGeneral, final boolean isReply) {
+    super(new BorderLayout());
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
     editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
