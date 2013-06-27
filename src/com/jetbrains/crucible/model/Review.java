@@ -1,11 +1,13 @@
 package com.jetbrains.crucible.model;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -66,9 +68,10 @@ public class Review extends BasicReview {
     for (ReviewItem item : myItems) {
       final String repo = item.getRepo();
       final VirtualFile root = hash.containsKey(repo) ? hash.get(repo) : project.getBaseDir();
-      final VirtualFile virtualFile = root.findFileByRelativePath(item.getPath());
-      if (virtualFile != null && virtualFile.getPath().equals(path))
+      String relativePath = FileUtil.getRelativePath(new File(root.getPath()), new File(path));
+      if (FileUtil.pathsEqual(relativePath, item.getPath())) {
         return item.getId();
+      }
     }
     return null;
   }

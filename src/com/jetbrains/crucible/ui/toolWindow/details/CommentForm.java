@@ -6,7 +6,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.*;
@@ -36,9 +36,9 @@ public class CommentForm extends JPanel {
   private final EditorTextField myReviewTextField;
   private JBPopup myBalloon;
 
-  private VirtualFile myVirtualFile;
   private Editor myEditor;
   private Comment myComment;
+  @Nullable private FilePath myFilePath;
 
   public Review getReview() {
     return myReview;
@@ -47,8 +47,10 @@ public class CommentForm extends JPanel {
   private Review myReview;
   private Comment myParentComment;
 
-  public CommentForm(@NotNull final Project project, final boolean isGeneral, final boolean isReply) {
+  public CommentForm(@NotNull final Project project, final boolean isGeneral, final boolean isReply, @Nullable FilePath filePath) {
     super(new BorderLayout());
+    myFilePath = filePath;
+
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
     final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
     editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
@@ -77,8 +79,7 @@ public class CommentForm extends JPanel {
           final Document document = myEditor.getDocument();
           final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset());
           comment.setLine(String.valueOf(lineNumber));
-          final String path = myVirtualFile.getPath();
-          final String id = myReview.getIdByPath(path, project);
+          final String id = myReview.getIdByPath(myFilePath.getPath(), project);
           comment.setReviewItemId(id);
         }
 
@@ -120,10 +121,6 @@ public class CommentForm extends JPanel {
 
   public void setEditor(@NotNull final Editor editor) {
     myEditor = editor;
-  }
-
-  public void setVirtualFile(@NotNull final VirtualFile virtualFile) {
-    myVirtualFile = virtualFile;
   }
 
   public void setReview(@NotNull final Review review) {
