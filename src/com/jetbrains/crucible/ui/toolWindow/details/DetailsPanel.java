@@ -1,6 +1,7 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.impl.TypeSafeDataProviderAdapter;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -13,7 +14,6 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.ArrayUtil;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.CompleteReviewAction;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
@@ -73,15 +73,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   // Make changes available for diff action
   @Nullable
   public Object getData(@NonNls String dataId) {
-    if (VcsDataKeys.CHANGES.is(dataId)) {
-      int[] rows = myCommitsTable.getSelectedRows();
-      if (rows.length == 0) {
-        return null;
-      }
-      Object value = myCommitsTable.getValueAt(rows[0], 0);
-      return value instanceof CommittedChangeList ? ArrayUtil.toObjectArray(((CommittedChangeList)value).getChanges(), Change.class) : null;
-    }
-    return super.getData(dataId);
+    TypeSafeDataProviderAdapter adapter = new TypeSafeDataProviderAdapter(myChangesBrowser);
+    Object data = adapter.getData(dataId);
+    return data != null ? data : super.getData(dataId);
   }
 
   public void updateCommitsList(final @NotNull List<CommittedChangeList> changeLists) {
