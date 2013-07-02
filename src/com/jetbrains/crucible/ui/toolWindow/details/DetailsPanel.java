@@ -53,7 +53,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private CommentsTreeTable myGeneralComments;
   private JPanel myCommentsPane;
 
-  @SuppressWarnings("UseOfObsoleteCollectionType")
   public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
     super(false);
     myProject = project;
@@ -117,23 +116,21 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     return installActions();
   }
 
-
-
   @NotNull
   private JPanel installActions() {
     final DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.add.comment"), false);
+    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null,
+                                                                   CrucibleBundle.message("crucible.add.comment"), false);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
-    final AddCommentAction replyToCommentAction =
-      new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), true);
-
+    final AddCommentAction replyToCommentAction = new AddCommentAction(myReview, null, null,
+                                                                       CrucibleBundle.message("crucible.reply"), true);
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
 
-    final ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
-      .createActionPopupMenu(CrucibleBundle.message("crucible.main.name"), actionGroup);
+    final ActionPopupMenu actionPopupMenu = ActionManager.getInstance().createActionPopupMenu(CrucibleBundle.message("crucible.main.name"),
+                                                                                              actionGroup);
     final JPopupMenu popupMenu = actionPopupMenu.getComponent();
     myGeneralComments.setComponentPopupMenu(popupMenu);
 
@@ -142,8 +139,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     decorator.addExtraAction(addCommentAction);
     decorator.addExtraAction(replyToCommentAction);
 
-    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"),
-                                                              false);
+    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"), false);
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
     return decoratedPanel;
@@ -272,7 +268,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       }
     }
 
-
     @Override
     public void calcData(DataKey key, DataSink sink) {
       if (key == CrucibleDataKeys.REVIEW)
@@ -286,6 +281,5 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       super.calcData(key, sink);
     }
   }
-
 
 }
