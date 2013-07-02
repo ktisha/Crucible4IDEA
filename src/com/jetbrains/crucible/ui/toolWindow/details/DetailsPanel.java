@@ -13,6 +13,7 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
 import com.intellij.ui.table.JBTable;
+import com.intellij.util.ArrayUtil;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.CompleteReviewAction;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
@@ -21,7 +22,9 @@ import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 import com.jetbrains.crucible.utils.CrucibleDataKeys;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -64,6 +67,22 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     splitter.setSecondComponent(repoBrowser);
 
     setContent(splitter);
+
+    myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
+  }
+
+  // Make changes available for diff action
+  @Nullable
+  public Object getData(@NonNls String dataId) {
+    if (VcsDataKeys.CHANGES.is(dataId)) {
+      int[] rows = myCommitsTable.getSelectedRows();
+      if (rows.length == 0) {
+        return null;
+      }
+      Object value = myCommitsTable.getValueAt(rows[0], 0);
+      return value instanceof CommittedChangeList ? ArrayUtil.toObjectArray(((CommittedChangeList)value).getChanges(), Change.class) : null;
+    }
+    return super.getData(dataId);
   }
 
   public void updateCommitsList(final @NotNull List<CommittedChangeList> changeLists) {
