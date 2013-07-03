@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.2.2</version>
+  <version>0.2.3</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -21,6 +21,13 @@
    Plugin works only with IDEA trunk builds and git repositories
     ]]></description>
   <change-notes><![CDATA[
+
+  <p>0.2.3 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Small usability enhancements </li>
+    <li> [bugfix] Fix the case when file from commit doesn't exist yet/anymore </li>
+  </ul>
 
   <p>0.2.2 version:</p>
   [Important note] Plugin works only with IDEA trunk builds
