@@ -77,7 +77,7 @@ public class CommentForm extends JPanel {
         }
         if (myEditor != null) {
           final Document document = myEditor.getDocument();
-          final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset());
+          final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset()) + 1;
           comment.setLine(String.valueOf(lineNumber));
           final String id = myReview.getIdByPath(myFilePath.getPath(), project);
           comment.setReviewItemId(id);

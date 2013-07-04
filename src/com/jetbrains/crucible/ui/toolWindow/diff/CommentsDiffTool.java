@@ -93,7 +93,7 @@ public class CommentsDiffTool extends FrameDiffTool {
 
         final MarkupModel markup = editor2.getMarkupModel();
 
-        final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()), HighlighterLayer.ERROR + 1, null);
+        final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()) - 1, HighlighterLayer.ERROR + 1, null);
         final ReviewGutterIconRenderer gutterIconRenderer =
           new ReviewGutterIconRenderer(review, filePath, comment);
         highlighter.setGutterIconRenderer(gutterIconRenderer);
