@@ -174,10 +174,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
   public static String getExceptionMessages(@NotNull final JsonObject jsonObject) {
     final JsonElement error = jsonObject.get("error");
     final JsonElement statusCode = jsonObject.get("status-code");
+    final JsonElement code = jsonObject.get("code");
     if (error != null) {
       return error.getAsString();
     }
     else if (statusCode != null && "500".equals(statusCode.getAsString())) {
+      final JsonPrimitive message = jsonObject.getAsJsonPrimitive("message");
+      return message.getAsString();
+    }
+    else if (code != null && code.getAsString().equalsIgnoreCase("IllegalState")) {
       final JsonPrimitive message = jsonObject.getAsJsonPrimitive("message");
       return message.getAsString();
     }
