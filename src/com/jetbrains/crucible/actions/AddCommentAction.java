@@ -132,7 +132,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
         if (!myIsReply) {
           final MarkupModel markup = myEditor.getMarkupModel();
           if (comment != null) {
-            final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()),
+            final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()) - 1,
                                                                            HighlighterLayer.ERROR + 1, null);
 
             final ReviewGutterIconRenderer gutterIconRenderer =
