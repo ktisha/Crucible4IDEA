@@ -22,6 +22,13 @@
     ]]></description>
   <change-notes><![CDATA[
 
+  <p>0.2.4 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Fix the line number of new comments.</li>
+    <li> [bugfix] Rebuild the plugin according to the changes in git4idea API.</li>
+  </ul>
+
   <p>0.2.3 version:</p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
