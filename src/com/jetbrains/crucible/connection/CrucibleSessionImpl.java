@@ -21,10 +21,13 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +60,12 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   public CrucibleSessionImpl(@NotNull final Project project) {
     myProject = project;
+    initSSLCertPolicy();
+  }
+
+  private void initSSLCertPolicy() {
+    EasySSLProtocolSocketFactory secureProtocolSocketFactory = new EasySSLProtocolSocketFactory();
+    Protocol.registerProtocol("https", new Protocol("https", (ProtocolSocketFactory)secureProtocolSocketFactory, 443));
   }
 
   @Override
