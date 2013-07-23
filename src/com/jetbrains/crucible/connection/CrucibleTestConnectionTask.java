@@ -51,7 +51,7 @@ public class CrucibleTestConnectionTask extends Task.Modal {
       case FAILED:
         EventQueue.invokeLater(new Runnable() {
           public void run() {
-            Messages.showDialog(myProject, connector.getErrorMessage(), "Authentification Error", new String[]{"Ok"}, 0, null);
+            Messages.showDialog(myProject, "Reason:  " + connector.getErrorMessage(), "Connection Failed", new String[]{"Ok"}, 0, null);
           }
         });
         break;

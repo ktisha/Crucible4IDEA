@@ -35,7 +35,7 @@ public class CrucibleTestConnector {
   public void run() {
     try {
       testConnect();
-      if (myConnectionState != ConnectionState.INTERRUPTED) {
+      if (myConnectionState != ConnectionState.INTERRUPTED && myConnectionState != ConnectionState.FAILED) {
         myConnectionState = ConnectionState.SUCCEEDED;
       }
     }
@@ -64,6 +64,7 @@ public class CrucibleTestConnector {
     }
     catch (MalformedURLException e) {
       myConnectionState = ConnectionState.FAILED;
+      myException = e;
       return;
     }
     session.login();
