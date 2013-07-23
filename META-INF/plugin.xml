@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.21</version>
+  <version>0.2.3</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -22,11 +22,34 @@
     ]]></description>
   <change-notes><![CDATA[
 
-  <p>0.21 version: </p>
+  <p>0.2.4 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Fix the line number of new comments.</li>
+    <li> [bugfix] Rebuild the plugin according to the changes in git4idea API.</li>
+  </ul>
+
+  <p>0.2.3 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Small usability enhancements </li>
+    <li> [bugfix] Fix the case when file from commit doesn't exist yet/anymore </li>
+  </ul>
+
+  <p>0.2.2 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [bugfix] Fix after IDEA API change </li>
+    <li> [bugfix] Encoding support </li>
+    <li> [bugfix] Better comment popup layout</li>
+  </ul>
+
+  <p>0.2.1 version: </p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
     <li> Plugin built with java 1.6
   </ul>
+
   <p>0.2 version: </p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
@@ -42,6 +65,7 @@
     <li> [bugfix] adding and showing comments for the diff chain
     <li> [bugfix] exception on double click if changed column order
   </ul>
+
   <p>0.1 - Initial revision: </p>
   <ul>
     <li> Dashboard toolwindow

@@ -22,8 +22,6 @@ import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.ChangeRequestChain;
 import com.intellij.openapi.vcs.changes.ContentRevision;
 import com.intellij.openapi.vcs.changes.actions.DiffRequestPresentable;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.PopupHandler;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
@@ -34,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -70,11 +69,11 @@ public class CommentsDiffTool extends FrameDiffTool {
   }
 
   private static void addCommentAction(@Nullable final Editor editor2,
-                                       @Nullable final VirtualFile vFile,
+                                       @Nullable final FilePath filePath,
                                        @Nullable final Review review) {
     if (editor2 != null && review != null) {
       DefaultActionGroup group = new DefaultActionGroup();
-      final AddCommentAction addCommentAction = new AddCommentAction(review, editor2, vFile, CrucibleBundle.message("crucible.add.comment"), false);
+      final AddCommentAction addCommentAction = new AddCommentAction(review, editor2, filePath, CrucibleBundle.message("crucible.add.comment"), false);
       addCommentAction.setContextComponent(editor2.getComponent());
       group.add(addCommentAction);
       PopupHandler.installUnknownPopupHandler(editor2.getContentComponent(), group, ActionManager.getInstance());
@@ -83,9 +82,8 @@ public class CommentsDiffTool extends FrameDiffTool {
 
   private void addGutter(@NotNull final Review review,
                          @Nullable final ContentRevision revision,
-                         @NotNull final VirtualFile vFile, Editor editor2) {
+                         Editor editor2, FilePath filePath) {
     final List<Comment> comments = review.getComments();
-    final FilePath filePath = new FilePathImpl(vFile);
 
     for (Comment comment : comments) {
       final String id = comment.getReviewItemId();
@@ -95,9 +93,9 @@ public class CommentsDiffTool extends FrameDiffTool {
 
         final MarkupModel markup = editor2.getMarkupModel();
 
-        final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()), HighlighterLayer.ERROR + 1, null);
+        final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()) - 1, HighlighterLayer.ERROR + 1, null);
         final ReviewGutterIconRenderer gutterIconRenderer =
-          new ReviewGutterIconRenderer(review, vFile, comment);
+          new ReviewGutterIconRenderer(review, filePath, comment);
         highlighter.setGutterIconRenderer(gutterIconRenderer);
       }
     }
@@ -117,17 +115,16 @@ public class CommentsDiffTool extends FrameDiffTool {
         DiffRequestPresentable currentRequest = ((ChangeRequestChain)chain).getCurrentRequest();
         if (currentRequest != null) {
           String path = currentRequest.getPathPresentation();
-          VirtualFile file = LocalFileSystem.getInstance().findFileByPath(path);
-
+          FilePath filePath = new FilePathImpl(new File(path), false);
           Editor editor2 = getEditor2();
-          addCommentAction(editor2, file, myReview);
+          addCommentAction(editor2, filePath , myReview);
 
-          if (myChanges != null && myChanges.length == 1 && myReview != null && file != null) {
+          if (myChanges != null && myChanges.length == 1 && myReview != null) {
             ContentRevision revision = myChanges[0].getAfterRevision();
             if (revision == null) {
               revision = myChanges[0].getBeforeRevision();
             }
-            addGutter(myReview, revision, file, editor2);
+            addGutter(myReview, revision, editor2, filePath);
           }
         }
       }

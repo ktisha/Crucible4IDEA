@@ -13,7 +13,7 @@ import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupAdapter;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.util.IconLoader;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.table.JBTable;
@@ -40,19 +40,19 @@ import javax.swing.tree.TreePath;
 public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private final Editor myEditor;
-  private final VirtualFile myVirtualFile;
   private final Review myReview;
   private final boolean myIsReply;
+  @Nullable private final FilePath myFilePath;
 
   public AddCommentAction(@NotNull final Review review, @Nullable final Editor editor,
-                          @Nullable final VirtualFile vFile, @NotNull final String description,
+                          @Nullable FilePath filePath, @NotNull final String description,
                           boolean isReply) {
     super(description, description, isReply ? IconLoader.getIcon("/images/comment_reply.png") :
                                               IconLoader.getIcon("/images/comment_add.png"));
+    myFilePath = filePath;
     myIsReply = isReply;
     myReview = review;
     myEditor = editor;
-    myVirtualFile = vFile;
   }
 
   public void actionPerformed(AnActionEvent e) {
@@ -70,7 +70,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private void addGeneralComment(@NotNull final Project project, DataContext dataContext) {
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, true, myIsReply);
+    final CommentForm commentForm = new CommentForm(project, true, myIsReply, null);
     commentForm.setReview(myReview);
 
     if (myIsReply) {
@@ -104,9 +104,9 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   }
 
   private void addVersionedComment(@NotNull final Project project) {
-    if (myEditor == null || myVirtualFile == null) return;
+    if (myEditor == null || myFilePath == null) return;
     final CommentBalloonBuilder builder = new CommentBalloonBuilder();
-    final CommentForm commentForm = new CommentForm(project, false, myIsReply);
+    final CommentForm commentForm = new CommentForm(project, false, myIsReply, myFilePath);
     commentForm.setReview(myReview);
 
     final JComponent contextComponent = getContextComponent();
@@ -121,11 +121,10 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       }
     }
     commentForm.setEditor(myEditor);
-    commentForm.setVirtualFile(myVirtualFile);
     final JBPopup balloon = builder.getNewCommentBalloon(commentForm, myIsReply ?
                                                                       CrucibleBundle.message("crucible.new.reply.$0", "Comment") :
                                                                       CrucibleBundle
-                                                                        .message("crucible.new.comment.$0", myVirtualFile.getName()));
+                                                                        .message("crucible.new.comment.$0", myFilePath));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -133,11 +132,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
         if (!myIsReply) {
           final MarkupModel markup = myEditor.getMarkupModel();
           if (comment != null) {
-            final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()),
+            final RangeHighlighter highlighter = markup.addLineHighlighter(Integer.parseInt(comment.getLine()) - 1,
                                                                            HighlighterLayer.ERROR + 1, null);
 
             final ReviewGutterIconRenderer gutterIconRenderer =
-              new ReviewGutterIconRenderer(myReview, myVirtualFile, comment);
+              new ReviewGutterIconRenderer(myReview, myFilePath, comment);
             highlighter.setGutterIconRenderer(gutterIconRenderer);
           }
         }

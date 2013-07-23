@@ -1,6 +1,7 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.impl.TypeSafeDataProviderAdapter;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -21,7 +22,9 @@ import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
 import com.jetbrains.crucible.utils.CrucibleBundle;
 import com.jetbrains.crucible.utils.CrucibleDataKeys;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -50,7 +53,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private CommentsTreeTable myGeneralComments;
   private JPanel myCommentsPane;
 
-  @SuppressWarnings("UseOfObsoleteCollectionType")
   public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
     super(false);
     myProject = project;
@@ -64,12 +66,23 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     splitter.setSecondComponent(repoBrowser);
 
     setContent(splitter);
+
+    myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
+  }
+
+  // Make changes available for diff action
+  @Nullable
+  public Object getData(@NonNls String dataId) {
+    TypeSafeDataProviderAdapter adapter = new TypeSafeDataProviderAdapter(myChangesBrowser);
+    Object data = adapter.getData(dataId);
+    return data != null ? data : super.getData(dataId);
   }
 
   public void updateCommitsList(final @NotNull List<CommittedChangeList> changeLists) {
     for (CommittedChangeList committedChangeList : changeLists) {
       myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName(), committedChangeList.getCommitDate()});
     }
+    myCommitsTable.setRowSelectionInterval(0, 0);
   }
 
   public void setBusy(boolean busy) {
@@ -97,23 +110,21 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     return installActions();
   }
 
-
-
   @NotNull
   private JPanel installActions() {
     final DefaultActionGroup actionGroup = new DefaultActionGroup();
-    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.add.comment"), false);
+    final AddCommentAction addCommentAction = new AddCommentAction(myReview, null, null,
+                                                                   CrucibleBundle.message("crucible.add.comment"), false);
     addCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(addCommentAction);
 
-    final AddCommentAction replyToCommentAction =
-      new AddCommentAction(myReview, null, null, CrucibleBundle.message("crucible.reply"), true);
-
+    final AddCommentAction replyToCommentAction = new AddCommentAction(myReview, null, null,
+                                                                       CrucibleBundle.message("crucible.reply"), true);
     replyToCommentAction.setContextComponent(myGeneralComments);
     actionGroup.add(replyToCommentAction);
 
-    final ActionPopupMenu actionPopupMenu = ActionManager.getInstance()
-      .createActionPopupMenu(CrucibleBundle.message("crucible.main.name"), actionGroup);
+    final ActionPopupMenu actionPopupMenu = ActionManager.getInstance().createActionPopupMenu(CrucibleBundle.message("crucible.main.name"),
+                                                                                              actionGroup);
     final JPopupMenu popupMenu = actionPopupMenu.getComponent();
     myGeneralComments.setComponentPopupMenu(popupMenu);
 
@@ -122,8 +133,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     decorator.addExtraAction(addCommentAction);
     decorator.addExtraAction(replyToCommentAction);
 
-    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"),
-                                                              false);
+    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"), false);
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
     return decoratedPanel;
@@ -252,7 +262,6 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       }
     }
 
-
     @Override
     public void calcData(DataKey key, DataSink sink) {
       if (key == CrucibleDataKeys.REVIEW)
@@ -266,6 +275,5 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       super.calcData(key, sink);
     }
   }
-
 
 }

@@ -3,7 +3,7 @@ package com.jetbrains.crucible.ui.toolWindow.diff;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.util.IconLoader;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vcs.FilePath;
 import com.jetbrains.crucible.actions.ShowFileCommentsAction;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
@@ -17,14 +17,14 @@ import javax.swing.*;
 public class ReviewGutterIconRenderer extends GutterIconRenderer {
   private final Icon icon = IconLoader.getIcon("/images/comment.png");
   private final Review myReview;
-  private final VirtualFile myVFile;
   private final Comment myComment;
+  private final FilePath myFilePath;
 
   public ReviewGutterIconRenderer(@NotNull final Review review,
-                                  @NotNull final VirtualFile vFile,
+                                  @NotNull final FilePath filePath,
                                   @NotNull final Comment comment) {
     myReview = review;
-    myVFile = vFile;
+    myFilePath = filePath;
     myComment = comment;
   }
   @NotNull
@@ -48,7 +48,7 @@ public class ReviewGutterIconRenderer extends GutterIconRenderer {
 
   @Override
   public AnAction getClickAction() {
-    return new ShowFileCommentsAction(myComment, myVFile, myReview);
+    return new ShowFileCommentsAction(myComment, myFilePath, myReview);
   }
 
   @Override

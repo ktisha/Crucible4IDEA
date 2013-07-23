@@ -97,7 +97,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
     }});
 
     final TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(myReviewModel);
-    rowSorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(4, SortOrder.DESCENDING)));
+    rowSorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(4, SortOrder.ASCENDING)));
     rowSorter.sort();
     myReviewTable.setRowSorter(rowSorter);
 

@@ -4,7 +4,7 @@ import com.intellij.ide.util.treeView.AbstractTreeBuilder;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.ui.JBDefaultTreeCellRenderer;
 import com.intellij.ui.PopupHandler;
 import com.intellij.ui.treeStructure.SimpleTree;
@@ -32,7 +32,7 @@ public class CommentsTree extends SimpleTree {
   private static int ourBalloonHeight = 200;
 
   public CommentsTree(@NotNull final Review review, @NotNull final Comment comment,
-                      @NotNull final Editor editor, @NotNull final VirtualFile vFile) {
+                      @NotNull final Editor editor, @NotNull final FilePath filePath) {
     final CommentNode root = new CommentNode(comment);
     setExpandableItemsEnabled(false);
 
@@ -89,7 +89,7 @@ public class CommentsTree extends SimpleTree {
 
     final DefaultActionGroup group = new DefaultActionGroup();
     final AddCommentAction replyToComment =
-      new AddCommentAction(review, editor, vFile, CrucibleBundle.message("crucible.add.reply"),true);
+      new AddCommentAction(review, editor, filePath, CrucibleBundle.message("crucible.add.reply"),true);
     replyToComment.setContextComponent(this);
     group.add(replyToComment);
     PopupHandler.installUnknownPopupHandler(this, group, ActionManager.getInstance());
