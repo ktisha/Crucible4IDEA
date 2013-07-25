@@ -8,8 +8,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.VcsException;
-import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -30,7 +28,6 @@ import com.jetbrains.crucible.ui.toolWindow.details.DetailsPanel;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleRootNode;
 import com.jetbrains.crucible.ui.toolWindow.tree.CrucibleTreeModel;
 import com.jetbrains.crucible.utils.CrucibleBundle;
-import com.jetbrains.crucible.vcs.VcsUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -157,27 +154,7 @@ public class CruciblePanel extends SimpleToolWindowPanel {
         final Set<String> loadedRevisions = new HashSet<String>();
 
         for (ReviewItem reviewItem : reviewItems) {
-          final Set<String> revisions = reviewItem.getRevisions();
-          final String repoName = reviewItem.getRepo();
-          final Map<String, VirtualFile> hash = CrucibleManager.getInstance(myProject).getRepoHash();
-          final VirtualFile root = hash.containsKey(repoName) ? hash.get(repoName) : virtualFile;
-
-          for (String revision : revisions) {
-            if (!loadedRevisions.contains(revision)) {
-              try {
-                final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
-                if (revisionNumber != null && root != null) {
-                  final CommittedChangeList changeList = VcsUtils.loadRevisionsFromGit(myProject, root, revisionNumber);
-                  if (changeList != null) list.add(changeList);
-                }
-
-              }
-              catch (VcsException e) {
-                LOG.warn(e.getMessage());
-              }
-              loadedRevisions.add(revision);
-            }
-          }
+          list.addAll(reviewItem.loadChangeLists(myProject, vcsFor, virtualFile, loadedRevisions));
         }
         details.updateCommitsList(list);
         details.setBusy(false);
