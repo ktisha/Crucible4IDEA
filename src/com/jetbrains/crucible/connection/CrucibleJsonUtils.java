@@ -177,26 +177,4 @@ public final class CrucibleJsonUtils {
     }
   }
 
-  static void addReviewItems(@NotNull final JsonArray reviewItems,
-                             @NotNull final Review review) {
-    for (int i = 0; i != reviewItems.size(); ++i) {
-      final JsonObject item = reviewItems.get(i).getAsJsonObject();
-      final JsonArray expandedRevisions = item.getAsJsonArray("expandedRevisions");
-      final String id = getChildText(item.getAsJsonObject("permId"), "id");
-      final String toPath = getChildText(item, "toPath");
-      final String repoName = getChildText(item, "repositoryName");
-      final String fromRevision = getChildText(item, "fromRevision");
-
-      final ReviewItem reviewItem = new ReviewItem(id, toPath, repoName);
-      for (int j = 0; j != expandedRevisions.size(); ++j) {
-        final JsonObject expandedRevision = expandedRevisions.get(j).getAsJsonObject();
-        final String revision = getChildText(expandedRevision, "revision");
-        final String type = getChildText(item, "commitType");
-        if (!fromRevision.equals(revision) || "Added".equals(type)) {
-          reviewItem.addRevision(revision);
-        }
-      }
-      review.addReviewItem(reviewItem);
-    }
-  }
 }

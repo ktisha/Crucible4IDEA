@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -147,14 +148,21 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       public void run() {
         final List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
         final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-        final VirtualFile virtualFile = myProject.getBaseDir();
-        final AbstractVcs vcsFor = vcsManager.getVcsFor(virtualFile);
+        final VirtualFile projectDir = myProject.getBaseDir();
+        final AbstractVcs vcsFor = vcsManager.getVcsFor(projectDir);
         if (vcsFor == null) return;
         final Set<ReviewItem> reviewItems = review.getReviewItems();
         final Set<String> loadedRevisions = new HashSet<String>();
 
+        final Map<String, VirtualFile> hash = CrucibleManager.getInstance(myProject).getRepoHash();
         for (ReviewItem reviewItem : reviewItems) {
-          list.addAll(reviewItem.loadChangeLists(myProject, vcsFor, virtualFile, loadedRevisions));
+          final VirtualFile root = hash.containsKey(reviewItem.getRepo()) ? hash.get(reviewItem.getRepo()) : projectDir;
+          try {
+            list.addAll(reviewItem.loadChangeLists(myProject, vcsFor, root, loadedRevisions));
+          }
+          catch (VcsException e) {
+            LOG.error(e);
+          }
         }
         details.updateCommitsList(list);
         details.setBusy(false);
