@@ -33,10 +33,10 @@ public class PatchReviewItem extends ReviewItem {
   @NotNull private String myAuthorName;
   @NotNull private Date myDate;
 
-  public PatchReviewItem(@NotNull String id, @NotNull String path, @NotNull VirtualFile root, @Nullable String repoName,
-                         @NotNull String patchContent,
+  public PatchReviewItem(@NotNull Project project, @NotNull String id, @NotNull String path, @NotNull VirtualFile root,
+                         @Nullable String repoName, @NotNull String patchContent,
                          @NotNull String patchName, @NotNull String comment, @NotNull String author, @NotNull Date date) {
-    super(id, path, repoName);
+    super(id, adjustPath(project, path), repoName);
     myRoot = root;
     myPatch = patchContent;
     myName = patchName;
@@ -89,7 +89,15 @@ public class PatchReviewItem extends ReviewItem {
     }
   }
 
-  private String createDetectedRelativePath(@NotNull PatchBaseDirectoryDetector.Result before, @NotNull String origName) {
+  private static String adjustPath(Project project, String path) {
+    PatchBaseDirectoryDetector.Result result = PatchBaseDirectoryDetector.getInstance(project).detectBaseDirectory(path);
+    if (result == null) {
+      return null;
+    }
+    return createDetectedRelativePath(result, path);
+  }
+
+  private static String createDetectedRelativePath(@NotNull PatchBaseDirectoryDetector.Result before, @NotNull String origName) {
     String[] split = origName.split("/");
     List<String> subList = new ArrayList<String>(Arrays.asList(split).subList(before.stripDirs, split.length));
     return StringUtil.join(ArrayUtil.toObjectArray(subList, String.class), "/");

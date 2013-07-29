@@ -405,7 +405,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     if (repoEntry == null) {
       throw new IllegalStateException("Couldn't find repository name for root " + repo);
     }
-    return new PatchReviewItem(id, toPath, repo, repoEntry.getKey(), file, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
+    return new PatchReviewItem(myProject, id, toPath, repo, repoEntry.getKey(), file, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
                                item.get("authorName").getAsString(), new Date(item.get("commitDate").getAsLong()));
   }
 
