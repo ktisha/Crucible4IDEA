@@ -2,11 +2,17 @@ package com.jetbrains.crucible.connection;
 
 import com.google.gson.*;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.diff.impl.patch.PatchReader;
+import com.intellij.openapi.diff.impl.patch.PatchSyntaxException;
+import com.intellij.openapi.diff.impl.patch.TextFilePatch;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.changes.patch.PatchBaseDirectoryDetector;
+import com.intellij.openapi.vcs.FilePathImpl;
+import com.intellij.openapi.vcs.ProjectLevelVcsManager;
+import com.intellij.openapi.vcs.changes.patch.FilePatchInProgress;
+import com.intellij.openapi.vcs.changes.patch.MatchPatchPaths;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.SLRUCache;
@@ -36,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -378,50 +385,104 @@ public class CrucibleSessionImpl implements CrucibleSession {
     for (int i = 0; i != reviewItems.size(); i++) {
       final JsonObject item = reviewItems.get(i).getAsJsonObject();
       final ReviewItem reviewItem = parseReviewItem(item);
-      review.addReviewItem(reviewItem);
+      if (reviewItem != null) {
+        review.addReviewItem(reviewItem);
+      }
+      else {
+        LOG.warn("Review item was null for " + item);
+      }
     }
   }
 
+  @Nullable
   private ReviewItem parseReviewItem(JsonObject item) throws IOException {
     boolean isPatch = item.has("patchUrl");
     return isPatch ? parsePatchReviewItem(item) : parseVcsReviewItem(item);
   }
 
+  @Nullable
   private ReviewItem parsePatchReviewItem(JsonObject item) throws IOException {
     final String id = getChildText(item.getAsJsonObject("permId"), "id");
     final String toPath = getChildText(item, "toPath");
     String patchUrl = item.get("patchUrl").getAsString();
     String file = downloadFile(patchUrl);
-    final VirtualFile repo = findRepo(toPath);
-    if (repo == null) {
-      throw new IllegalStateException("Couldn't find repository name for the patch " + toPath);
+
+    List<TextFilePatch> patchTexts;
+    try {
+      patchTexts = new PatchReader(file).readAllPatches();
     }
+    catch (PatchSyntaxException e) {
+      throw new IOException(e);
+    }
+
+    List<FilePatchInProgress> patches = new MatchPatchPaths(myProject).execute(patchTexts);
+
+    if (patches.isEmpty()) {
+      LOG.error("No patches generated for the following patch texts: " + patchTexts);
+      return null;
+    }
+
+    FilePatchInProgress patchForItem = findBestMatchingPatchByPath(toPath, patches);
+
+    File base = patchForItem.getIoCurrentBase();
+    if (base == null) {
+      LOG.error("No base for the patch " + patchForItem.getPatch());
+      return null;
+    }
+
+    final VirtualFile repo = ProjectLevelVcsManager.getInstance(myProject).getVcsRootFor(new FilePathImpl(base, base.isDirectory()));
+    if (repo == null) {
+      LOG.error("Couldn't find repository for base " + base);
+      return null;
+    }
+
     Map.Entry<String, VirtualFile> repoEntry = ContainerUtil.find(myRepoHash.entrySet(), new Condition<Map.Entry<String, VirtualFile>>() {
       @Override
       public boolean value(Map.Entry<String, VirtualFile> entry) {
         return entry.getValue().equals(repo);
       }
     });
+
     if (repoEntry == null) {
-      throw new IllegalStateException("Couldn't find repository name for root " + repo);
+      LOG.error("Couldn't find repository name for root " + repo);
+      return null;
     }
-    return new PatchReviewItem(myProject, id, toPath, repo, repoEntry.getKey(), file, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
+    String key = repoEntry.getKey();
+    return new PatchReviewItem(id, patchForItem.getNewContentRevision().getFile().getPath(),
+                               key, patches, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
                                item.get("authorName").getAsString(), new Date(item.get("commitDate").getAsLong()));
   }
 
-  @Nullable
-  private VirtualFile findRepo(@NotNull String patchFilePath) {
-    PatchBaseDirectoryDetector.Result result = PatchBaseDirectoryDetector.getInstance(myProject).detectBaseDirectory(patchFilePath);
-    if (result == null) {
-      return null;
-    }
-    String dir = result.baseDir;
-    for (Map.Entry<String, VirtualFile> entry : myRepoHash.entrySet()) {
-      if (entry.getValue().getPath().equals(dir)) {
-        return entry.getValue();
+  // temporary workaround until ReviewItem is rethinked
+  @NotNull
+  private FilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath, @NotNull List<FilePatchInProgress> patches) {
+    int bestSimilarity = -1;
+    FilePatchInProgress bestCandidate = null;
+    for (FilePatchInProgress patch : patches) {
+      String path = patch.getNewContentRevision().getFile().getPath();
+      int similarity = findSimilarity(path, toPath);
+      if (similarity > bestSimilarity) {
+        bestSimilarity = similarity;
+        bestCandidate = patch;
       }
     }
-    return null;
+    assert bestCandidate != null : "best candidate should have been initialized. toPath: " + toPath + ", patches: " + patches;
+    return bestCandidate;
+  }
+
+  private int findSimilarity(@NotNull String candidate, @NotNull String toPath) {
+    String[] candidateSplit = candidate.split("/");
+    String[] toSplit = toPath.split("/");
+    int i = candidateSplit.length - 1;
+    int j = toSplit.length - 1;
+    while (i > 0 && j > 0) {
+      if (!candidateSplit[i].equals(toSplit[j])) {
+        return candidateSplit.length - 1 - i;
+      }
+      i--;
+      j--;
+    }
+    return i;
   }
 
   private ReviewItem parseVcsReviewItem(JsonObject item) {
