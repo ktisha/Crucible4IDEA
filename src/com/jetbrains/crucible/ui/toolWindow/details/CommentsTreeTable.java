@@ -6,6 +6,7 @@ import com.intellij.ui.treeStructure.treetable.TreeTableModel;
 import com.intellij.ui.treeStructure.treetable.TreeTableTree;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.tree.TreeUtil;
+import com.intellij.xml.util.XmlStringUtil;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
@@ -49,7 +50,7 @@ public class CommentsTreeTable extends TreeTable {
 
   public static CommentTreeNode updateCommentsTree(Review review) {
     final java.util.List<Comment> comments = review.getGeneralComments();
-    final CommentTreeNode root = new CommentTreeNode(new Comment(new User("Root"), "Root message"));
+    final CommentTreeNode root = new CommentTreeNode(new Comment(new User("Root", null), "Root message"));
     for (Comment comment : comments) {
       final CommentTreeNode commentNode = createNode(comment);
       root.add(commentNode);
@@ -79,7 +80,7 @@ public class CommentsTreeTable extends TreeTable {
       if (value instanceof CommentTreeNode) {
         final CommentTreeNode node = (CommentTreeNode)value;
         final Comment comment = node.getComment();
-        setText(comment.getMessage());
+        setText(XmlStringUtil.wrapInHtml(comment.getMessage()));
         setToolTipText(comment.getMessage());
         setOpaque(true);
         Color background = tree.getBackground();

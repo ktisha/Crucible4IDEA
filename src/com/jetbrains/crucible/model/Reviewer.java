@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class Reviewer extends User {
 
   public Reviewer(@NotNull final String userName) {
-    super(userName);
+    super(userName, null);
   }
 
   @Override

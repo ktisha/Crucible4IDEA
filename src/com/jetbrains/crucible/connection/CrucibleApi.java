@@ -50,14 +50,14 @@ public class CrucibleApi {
   public static BasicReview parseReview(@NotNull JsonObject item, @NotNull Project project, @NotNull CrucibleSession crucibleSession)
                                         throws IOException {
     ReviewRaw reviewRaw = gson.fromJson(item, ReviewRaw.class);
-    Review review = new Review(reviewRaw.permaId.id, new User(reviewRaw.author.userName), new User(reviewRaw.moderator.userName));
+    Review review = new Review(reviewRaw.permaId.id, reviewRaw.author.createUser(), reviewRaw.moderator.createUser());
     review.setCreateDate(reviewRaw.createDate);
     review.setDescription(reviewRaw.name);
     review.setState(reviewRaw.state);
 
     if (reviewRaw.reviewers != null) {
       for (UserRaw reviewer : reviewRaw.reviewers.reviewer) {
-        review.addReviewer(new User(reviewer.userName));
+        review.addReviewer(reviewer.createUser());
       }
     }
 
@@ -210,7 +210,7 @@ public class CrucibleApi {
   }
 
   private static Comment createComment(BaseComment raw) {
-    Comment comment = new Comment(new User(raw.user.userName), raw.message);
+    Comment comment = new Comment(raw.user.createUser(), raw.messageAsHtml);
     if (raw.reviewItemId != null) {
       comment.setReviewItemId(raw.reviewItemId.id);
     }
@@ -423,6 +423,10 @@ public class CrucibleApi {
     String displayName;
     String avatarUrl;
     String url;
+
+    User createUser() {
+      return new User(userName, avatarUrl);
+    }
   }
 
   private static class Revision {

@@ -164,13 +164,13 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   @Override
   public boolean isEnabled() {
-    if (myIsReply && myEditor == null) {
-      final JBTable contextComponent = (JBTable)getContextComponent();
-      final int selectedRow = contextComponent.getSelectedRow();
-      if (selectedRow < 0) {
-        return false;
-      }
-    }
+    //if (myIsReply && myEditor == null) {
+    //  final JBTable contextComponent = (JBTable)getContextComponent();
+    //  final int selectedRow = contextComponent.getSelectedRow();
+    //  if (selectedRow < 0) {
+    //    return false;
+    //  }
+    //}
     return true;
   }
 }

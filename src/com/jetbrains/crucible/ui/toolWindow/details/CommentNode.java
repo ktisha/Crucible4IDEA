@@ -29,7 +29,11 @@ public class CommentNode extends SimpleNode {
 
   @Override
   public SimpleNode[] getChildren() {
-    final List<Comment> replies = myComment.getReplies();
+    return getNodesFromComments(myComment.getReplies());
+  }
+
+  @NotNull
+  public static SimpleNode[] getNodesFromComments(@NotNull List<Comment> replies) {
     final List<SimpleNode> children = new ArrayList<SimpleNode>();
     for (Comment reply : replies) {
       children.add(new CommentNode(reply));

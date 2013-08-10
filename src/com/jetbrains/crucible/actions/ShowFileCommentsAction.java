@@ -38,7 +38,7 @@ public class ShowFileCommentsAction extends AnAction implements DumbAware {
     final Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
     if (editor == null) return;
 
-    final CommentsTree commentsTree = new CommentsTree(myReview, myComment, editor, myFilePath);
+    final CommentsTree commentsTree = CommentsTree.createForComment(myReview, myComment, editor, myFilePath);
     final CommentBalloonBuilder commentBalloonBuilder = new CommentBalloonBuilder();
     commentBalloonBuilder.showBalloon(commentsTree);
   }

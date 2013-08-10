@@ -17,7 +17,6 @@ import com.intellij.ui.table.JBTable;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.actions.CompleteReviewAction;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
-import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
 import com.jetbrains.crucible.utils.CrucibleBundle;
@@ -50,7 +49,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
-  private CommentsTreeTable myGeneralComments;
+  private JTree myGeneralComments;
   private JPanel myCommentsPane;
 
   public DetailsPanel(@NotNull final Project project, @NotNull final Review review) {
@@ -103,10 +102,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createCommentsPane() {
-    myGeneralComments = new CommentsTreeTable();
-    myGeneralComments.setExpandableItemsEnabled(false);
-    myGeneralComments.updateModel(myReview);
-    setUpColumnWidths(myGeneralComments);
+    myGeneralComments = CommentsTree.createForGeneralComments(myReview);
     return installActions();
   }
 
@@ -128,12 +124,12 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     final JPopupMenu popupMenu = actionPopupMenu.getComponent();
     myGeneralComments.setComponentPopupMenu(popupMenu);
 
+    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"), false);
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myGeneralComments).
       setToolbarPosition(ActionToolbarPosition.LEFT);
     decorator.addExtraAction(addCommentAction);
     decorator.addExtraAction(replyToCommentAction);
 
-    final Border border = IdeBorderFactory.createTitledBorder(CrucibleBundle.message("crucible.general.comments"), false);
     final JPanel decoratedPanel = decorator.createPanel();
     decoratedPanel.setBorder(border);
     return decoratedPanel;
@@ -177,7 +173,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myCommitsTable).
       setToolbarPosition(ActionToolbarPosition.LEFT);
-    if (myReview.getReviewers().contains(new User(CrucibleSettings.getInstance().USERNAME)) &&
+    if (myReview.getReviewers().contains(new User(CrucibleSettings.getInstance().USERNAME, null)) &&
       "Review".equals(myReview.getState())) {
       decorator.addExtraAction(new CompleteReviewAction(myReview, CrucibleBundle.message("crucible.complete.review")));
     }
@@ -266,8 +262,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     public void calcData(DataKey key, DataSink sink) {
       if (key == CrucibleDataKeys.REVIEW)
         sink.put(CrucibleDataKeys.REVIEW, myReview);
-      if (key == CrucibleDataKeys.SELECTED_COMMENT)
-        sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0));
+      //if (key == CrucibleDataKeys.SELECTED_COMMENT)
+      //  sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0));
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
         sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));
