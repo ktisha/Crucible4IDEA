@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import com.jetbrains.crucible.connection.CrucibleSessionImpl;
+import com.jetbrains.crucible.model.Repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,12 +46,12 @@ public class MockCrucibleSession extends CrucibleSessionImpl {
 
   @Nullable
   @Override
-  protected VirtualFile getLocalPath(@NotNull final String name) throws IOException {
+  protected VirtualFile getLocalPath(@NotNull final Repository repo) {
     return new VirtualFile() {
       @NotNull
       @Override
       public String getName() {
-        return name;
+        return repo.getName();
       }
 
       @NotNull

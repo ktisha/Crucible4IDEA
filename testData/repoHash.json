@@ -2,18 +2,22 @@
   "repoData" : [ {
     "name" : "IDEA-android",
     "type" : "git",
-    "enabled" : true
+    "enabled" : true,
+    "location" : "git://git.labs.intellij.net/idea/android.git"
   }, {
     "name" : "IDEA-community",
     "type" : "git",
-    "enabled" : true
+    "enabled" : true,
+    "location" : "git://git.labs.intellij.net/idea/community.git"
   }, {
     "name" : "IDEA-ultimate",
     "type" : "git",
-    "enabled" : true
+    "enabled" : true,
+    "location" : "git://git.labs.intellij.net/idea/ultimate.git"
   }, {
     "name" : "Kotlin-contrib",
     "type" : "git",
-    "enabled" : true
+    "enabled" : true,
+    "location" : "git://git.labs.intellij.net/idea/jet-contrib.git"
   } ]
 }

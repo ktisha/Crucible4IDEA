@@ -2,19 +2,10 @@ package com.jetbrains.crucible.connection;
 
 import com.google.gson.*;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.diff.impl.patch.PatchReader;
-import com.intellij.openapi.diff.impl.patch.PatchSyntaxException;
-import com.intellij.openapi.diff.impl.patch.TextFilePatch;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FilePathImpl;
-import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.patch.FilePatchInProgress;
-import com.intellij.openapi.vcs.changes.patch.MatchPatchPaths;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.containers.SLRUCache;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
@@ -42,7 +33,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -51,8 +41,6 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.jetbrains.crucible.connection.CrucibleJsonUtils.getChildText;
 
 /**
  * User : ktisha
@@ -142,7 +130,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final String requestUrl = getHostUrl() + REVIEW_SERVICE + VERSION;
     try {
       final JsonObject jsonObject = buildJsonResponse(requestUrl);
-      return CrucibleJsonUtils.parseVersionNode(jsonObject);
+      return CrucibleApi.parseVersion(jsonObject);
     }
     catch (IOException e) {
       LOG.warn(e);
@@ -233,19 +221,22 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
     String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId;
     final String parentCommentId = comment.getParentCommentId();
-    final boolean isVersioned = !isGeneral && parentCommentId == null;
-    if (isVersioned)
+
+    final boolean isVersioned = !isGeneral;
+    boolean reply = comment.getParentCommentId() != null;
+
+    if (isVersioned && !reply) {
       url += REVIEW_ITEMS + "/" + comment.getReviewItemId();
+    }
 
     url += COMMENTS;
 
-
-    if (parentCommentId != null) {
+    if (reply) {
       url += "/" + parentCommentId + REPLIES;
     }
 
     try {
-      final RequestEntity request = CrucibleJsonUtils.createCommentRequest(comment, !isVersioned);
+      final RequestEntity request = CrucibleApi.createCommentRequest(comment, !isVersioned);
 
       final JsonObject jsonObject = buildJsonResponseForPost(url, request);
       final String errorMessage = getExceptionMessages(jsonObject);
@@ -254,7 +245,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
         return null;
       }
 
-      return CrucibleJsonUtils.parseComment(jsonObject, isVersioned);
+      return CrucibleApi.parseComment(jsonObject, isVersioned, reply);
     }
     catch (IOException e) {
       LOG.warn(e.getMessage());
@@ -265,42 +256,27 @@ public class CrucibleSessionImpl implements CrucibleSession {
   @Override
   public void fillRepoHash() throws IOException {
     String url = getHostUrl() + REPOSITORIES;
-
     final JsonObject jsonObject = buildJsonResponse(url);
-    final JsonArray elements = jsonObject.getAsJsonArray("repoData");
+    Collection<Repository> repos = CrucibleApi.parseGitRepositories(jsonObject);
 
-    if (elements != null && elements.size() > 0) {
-      for (int i = 0; i != elements.size(); ++i) {
-        final JsonObject element = elements.get(i).getAsJsonObject();
-
-        final String enabled = CrucibleJsonUtils.getChildText(element, "enabled");
-        if (Boolean.parseBoolean(enabled)) {
-          final String name = CrucibleJsonUtils.getChildText(element, "name");
-          final String type = CrucibleJsonUtils.getChildText(element, "type");
-          if ("git".equals(type)) {
-            final VirtualFile localPath = getLocalPath(name);
-            if (localPath != null)
-              myRepoHash.put(name, localPath);
-          }
-        }
-      }
+    for (Repository repo : repos) {
+      VirtualFile localPath = getLocalPath(repo);
+      if (localPath != null)
+        myRepoHash.put(repo.getName(), localPath);
     }
   }
 
   @Nullable
-  protected VirtualFile getLocalPath(@NotNull final String name) throws IOException {
-    String url = getHostUrl() + REPOSITORIES + "/" + name;
-    final JsonObject jsonObject = buildJsonResponse(url);
-    String location = getChildText(jsonObject, "location");
-    final GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
-    final List<GitRepository> repositories = manager.getRepositories();
-    location = unifyLocation(location);
+  protected VirtualFile getLocalPath(@NotNull Repository repository) {
+    GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
+    List<GitRepository> repositories = manager.getRepositories();
+    String location = unifyLocation(repository.getUrl());
     for (GitRepository repo : repositories) {
-      final GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN_NAME);
+      GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN_NAME);
       if (origin != null && location != null) {
-        final String originFirstUrl = origin.getFirstUrl();
+        String originFirstUrl = origin.getFirstUrl();
         if (originFirstUrl == null) continue;
-        final String originLocation  = unifyLocation(originFirstUrl);
+        String originLocation  = unifyLocation(originFirstUrl);
         if (location.equals(originLocation)) {
           return repo.getRoot();
         }
@@ -310,7 +286,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Nullable
-  private static String unifyLocation(@NotNull final String location) {
+  private static String unifyLocation(@NotNull String location) {
     final GitRemoteProtocol protocol = GitRemoteProtocol.fromUrl(location);
     if (protocol == null) return null;
     switch (protocol) {
@@ -331,7 +307,6 @@ public class CrucibleSessionImpl implements CrucibleSession {
     return null;
   }
 
-
   public List<BasicReview> getReviewsForFilter(@NotNull final CrucibleFilter filter) throws IOException {
     String url = getHostUrl() + REVIEW_SERVICE + FILTERED_REVIEWS;
     final String urlFilter = filter.getFilterUrl();
@@ -344,165 +319,22 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final JsonArray reviewData = jsonElement.getAsJsonArray("reviewData");
     if (reviewData != null) {
       for (int i = 0; i != reviewData.size(); ++i) {
-        reviews.add(CrucibleJsonUtils.parseBasicReview(reviewData.get(i)));
+        reviews.add(CrucibleApi.parseReview(reviewData.get(i).getAsJsonObject(), myProject, this));
       }
     }
     return reviews;
   }
 
+  @Override
   public String downloadFile(@NotNull String relativeUrl) throws IOException {
     return myDownloadedFilesCache.get(relativeUrl);
   }
 
+  @NotNull
   public Review getDetailsForReview(@NotNull final String permId) throws IOException {
     String url = getHostUrl() + REVIEW_SERVICE + "/" + permId + DETAIL_REVIEW_INFO;
-
     final JsonObject jsonObject = buildJsonResponse(url);
-
-    final Review review = (Review)CrucibleJsonUtils.parseBasicReview(jsonObject);
-    final JsonObject reviewItems = jsonObject.getAsJsonObject("reviewItems");
-    if (reviewItems != null) {
-      addReviewItems(reviewItems.getAsJsonArray("reviewItem"), review);
-    }
-
-    final JsonObject reviewers = jsonObject.getAsJsonObject("reviewers");
-    if (reviewers != null) {
-      final JsonArray reviewerArray = reviewers.getAsJsonArray("reviewer");
-      for (int i = 0; i != reviewerArray.size(); ++i) {
-        final JsonObject reviewerObject = reviewerArray.get(i).getAsJsonObject();
-        final User reviewer = CrucibleJsonUtils.parseUserNode(reviewerObject);
-        review.addReviewer(reviewer);
-      }
-    }
-
-    CrucibleJsonUtils.addGeneralComments(jsonObject, review);
-    CrucibleJsonUtils.addVersionedComments(jsonObject, review);
-
-    return review;
-  }
-
-  void addReviewItems(@NotNull final JsonArray reviewItems, @NotNull final Review review) throws IOException {
-    for (int i = 0; i != reviewItems.size(); i++) {
-      final JsonObject item = reviewItems.get(i).getAsJsonObject();
-      final ReviewItem reviewItem = parseReviewItem(item);
-      if (reviewItem != null) {
-        review.addReviewItem(reviewItem);
-      }
-      else {
-        LOG.warn("Review item was null for " + item);
-      }
-    }
-  }
-
-  @Nullable
-  private ReviewItem parseReviewItem(JsonObject item) throws IOException {
-    boolean isPatch = item.has("patchUrl");
-    return isPatch ? parsePatchReviewItem(item) : parseVcsReviewItem(item);
-  }
-
-  @Nullable
-  private ReviewItem parsePatchReviewItem(JsonObject item) throws IOException {
-    final String id = getChildText(item.getAsJsonObject("permId"), "id");
-    final String toPath = getChildText(item, "toPath");
-    String patchUrl = item.get("patchUrl").getAsString();
-    String file = downloadFile(patchUrl);
-
-    List<TextFilePatch> patchTexts;
-    try {
-      patchTexts = new PatchReader(file).readAllPatches();
-    }
-    catch (PatchSyntaxException e) {
-      throw new IOException(e);
-    }
-
-    List<FilePatchInProgress> patches = new MatchPatchPaths(myProject).execute(patchTexts);
-
-    if (patches.isEmpty()) {
-      LOG.error("No patches generated for the following patch texts: " + patchTexts);
-      return null;
-    }
-
-    FilePatchInProgress patchForItem = findBestMatchingPatchByPath(toPath, patches);
-
-    File base = patchForItem.getIoCurrentBase();
-    if (base == null) {
-      LOG.error("No base for the patch " + patchForItem.getPatch());
-      return null;
-    }
-
-    final VirtualFile repo = ProjectLevelVcsManager.getInstance(myProject).getVcsRootFor(new FilePathImpl(base, base.isDirectory()));
-    if (repo == null) {
-      LOG.error("Couldn't find repository for base " + base);
-      return null;
-    }
-
-    Map.Entry<String, VirtualFile> repoEntry = ContainerUtil.find(myRepoHash.entrySet(), new Condition<Map.Entry<String, VirtualFile>>() {
-      @Override
-      public boolean value(Map.Entry<String, VirtualFile> entry) {
-        return entry.getValue().equals(repo);
-      }
-    });
-
-    if (repoEntry == null) {
-      LOG.error("Couldn't find repository name for root " + repo);
-      return null;
-    }
-    String key = repoEntry.getKey();
-    return new PatchReviewItem(id, patchForItem.getNewContentRevision().getFile().getPath(),
-                               key, patches, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
-                               item.get("authorName").getAsString(), new Date(item.get("commitDate").getAsLong()));
-  }
-
-  // temporary workaround until ReviewItem is rethinked
-  @NotNull
-  private FilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath, @NotNull List<FilePatchInProgress> patches) {
-    int bestSimilarity = -1;
-    FilePatchInProgress bestCandidate = null;
-    for (FilePatchInProgress patch : patches) {
-      String path = patch.getNewContentRevision().getFile().getPath();
-      int similarity = findSimilarity(path, toPath);
-      if (similarity > bestSimilarity) {
-        bestSimilarity = similarity;
-        bestCandidate = patch;
-      }
-    }
-    assert bestCandidate != null : "best candidate should have been initialized. toPath: " + toPath + ", patches: " + patches;
-    return bestCandidate;
-  }
-
-  private int findSimilarity(@NotNull String candidate, @NotNull String toPath) {
-    String[] candidateSplit = candidate.split("/");
-    String[] toSplit = toPath.split("/");
-    int i = candidateSplit.length - 1;
-    int j = toSplit.length - 1;
-    while (i > 0 && j > 0) {
-      if (!candidateSplit[i].equals(toSplit[j])) {
-        return candidateSplit.length - 1 - i;
-      }
-      i--;
-      j--;
-    }
-    return i;
-  }
-
-  private ReviewItem parseVcsReviewItem(JsonObject item) {
-    final String id = getChildText(item.getAsJsonObject("permId"), "id");
-    final String toPath = getChildText(item, "toPath");
-    final String repoName = getChildText(item, "repositoryName");
-    final String fromRevision = getChildText(item, "fromRevision");
-
-    final ReviewItem reviewItem = new ReviewItem(id, toPath, repoName);
-
-    final JsonArray expandedRevisions = item.getAsJsonArray("expandedRevisions");
-    for (int j = 0; j != expandedRevisions.size(); ++j) {
-      final JsonObject expandedRevision = expandedRevisions.get(j).getAsJsonObject();
-      final String revision = getChildText(expandedRevision, "revision");
-      final String type = getChildText(item, "commitType");
-      if (!fromRevision.equals(revision) || "Added".equals(type)) {
-        reviewItem.addRevision(revision);
-      }
-    }
-    return reviewItem;
+    return (Review)CrucibleApi.parseReview(jsonObject, myProject, this);
   }
 
   public Map<String, VirtualFile> getRepoHash() {
