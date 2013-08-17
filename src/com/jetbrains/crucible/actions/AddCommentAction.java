@@ -69,7 +69,6 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
   }
 
   private void addGeneralComment(@NotNull final Project project, DataContext dataContext) {
-    final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, true, myIsReply, null);
     commentForm.setReview(myReview);
 
@@ -85,10 +84,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       else return;
     }
 
-    final JBPopup balloon = builder.getNewCommentBalloon(commentForm, myIsReply ? CrucibleBundle
+    final JBPopup balloon = CommentBalloonBuilder.getNewCommentBalloon(commentForm, myIsReply ? CrucibleBundle
       .message("crucible.new.reply.$0", commentForm.getParentComment().getPermId()) :
-                                                                      CrucibleBundle
-                                                                        .message("crucible.new.comment.$0", myReview.getPermaId()));
+                                                                                    CrucibleBundle
+                                                                                      .message("crucible.new.comment.$0",
+                                                                                               myReview.getPermaId()));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
@@ -105,7 +105,6 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
   private void addVersionedComment(@NotNull final Project project) {
     if (myEditor == null || myFilePath == null) return;
-    final CommentBalloonBuilder builder = new CommentBalloonBuilder();
     final CommentForm commentForm = new CommentForm(project, false, myIsReply, myFilePath);
     commentForm.setReview(myReview);
 
@@ -121,10 +120,11 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
       }
     }
     commentForm.setEditor(myEditor);
-    final JBPopup balloon = builder.getNewCommentBalloon(commentForm, myIsReply ?
-                                                                      CrucibleBundle.message("crucible.new.reply.$0", "Comment") :
-                                                                      CrucibleBundle
-                                                                        .message("crucible.new.comment.$0", myFilePath));
+    final JBPopup balloon = CommentBalloonBuilder.getNewCommentBalloon(commentForm, myIsReply ?
+                                                                                    CrucibleBundle
+                                                                                      .message("crucible.new.reply.$0", "Comment") :
+                                                                                    CrucibleBundle
+                                                                                      .message("crucible.new.comment.$0", myFilePath));
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {

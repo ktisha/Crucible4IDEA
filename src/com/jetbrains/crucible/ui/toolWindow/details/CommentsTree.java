@@ -39,7 +39,7 @@ public class CommentsTree extends SimpleTree {
 
     new AbstractTreeBuilder(this, getBuilderModel(), structure, null);
     invalidate();
-    setPreferredSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
+    setMinimumSize(new Dimension(ourBalloonWidth, ourBalloonHeight));
 
     final DefaultActionGroup group = new DefaultActionGroup();
     final AddCommentAction replyToComment = new AddCommentAction(review, editor, filePath,
