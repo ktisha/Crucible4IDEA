@@ -45,7 +45,9 @@ import java.util.List;
  */
 public class DetailsPanel extends SimpleToolWindowPanel {
 
-  public static final String GENERAL_COMMENTS_VISIBILITY_PROPERTY = "CodeReview.GeneralComments.Visible";
+  private static final String GENERAL_COMMENTS_VISIBILITY_PROPERTY = "CodeReview.GeneralComments.Visible";
+  private static final String COMMITS_COMMENTS_SPLITTER_PROPERTY = "CodeReview.CommitsCommentsSplitter.Proportion";
+
   private final Project myProject;
   private final Review myReview;
   private ChangesBrowser myChangesBrowser;
@@ -94,10 +96,12 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createMainTable() {
-    final JBSplitter splitter = new JBSplitter(true, 0.65f);
     final JPanel commitsPane = createCommitsPane();
 
     myCommentsPane = createCommentsPane();
+
+    final JBSplitter splitter = new JBSplitter(true, 0.5f);
+    splitter.setSplitterProportionKey(COMMITS_COMMENTS_SPLITTER_PROPERTY);
     splitter.setFirstComponent(commitsPane);
     splitter.setSecondComponent(myCommentsPane);
     myCommentsPane.setVisible(false);
