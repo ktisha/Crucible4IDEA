@@ -2,6 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.impl.TypeSafeDataProviderAdapter;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -44,6 +45,7 @@ import java.util.List;
  */
 public class DetailsPanel extends SimpleToolWindowPanel {
 
+  public static final String GENERAL_COMMENTS_VISIBILITY_PROPERTY = "CodeReview.GeneralComments.Visible";
   private final Project myProject;
   private final Review myReview;
   private ChangesBrowser myChangesBrowser;
@@ -67,6 +69,8 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     setContent(splitter);
 
     myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
+
+    myCommentsPane.setVisible(PropertiesComponent.getInstance().getBoolean(GENERAL_COMMENTS_VISIBILITY_PROPERTY, false));
   }
 
   // Make changes available for diff action
@@ -181,7 +185,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
                                                 CrucibleBundle.message("crucible.show.general.comments"), AllIcons.Actions.ShowChangesOnly) {
       @Override
       public void actionPerformed(AnActionEvent e) {
-        myCommentsPane.setVisible(!myCommentsPane.isVisible());
+        boolean visibility = !myCommentsPane.isVisible();
+        myCommentsPane.setVisible(visibility);
+        PropertiesComponent.getInstance().setValue(GENERAL_COMMENTS_VISIBILITY_PROPERTY, Boolean.toString(visibility));
       }
     });
 
