@@ -40,10 +40,6 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
         myPanel.setComment((Comment)userObject);
         return myPanel;
       }
-      else if (userObject instanceof CommentNode) {
-        myPanel.setComment(((CommentNode)userObject).getComment());
-        return myPanel;
-      }
     }
     return myDefaultRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
   }

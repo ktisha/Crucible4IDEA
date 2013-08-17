@@ -110,14 +110,9 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
 
     final JComponent contextComponent = getContextComponent();
     if (myIsReply && contextComponent instanceof CommentsTree) {
-      final Object selected = ((CommentsTree)contextComponent).getLastSelectedPathComponent();
-      if (selected instanceof DefaultMutableTreeNode) {
-        Object userObject = ((DefaultMutableTreeNode)selected).getUserObject();
-        if (userObject instanceof CommentNode) {
-          final Comment comment = ((CommentNode)userObject).getComment();
-          commentForm.setParentComment(comment);
-        }
-      }
+      Comment comment = ((CommentsTree)contextComponent).getSelectedComment();
+      assert comment != null;
+      commentForm.setParentComment(comment);
     }
     commentForm.setEditor(myEditor);
     final JBPopup balloon = CommentBalloonBuilder.getNewCommentBalloon(commentForm, myIsReply ?
@@ -146,7 +141,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
             if (selectionPath == null) return;
             final Object component = selectionPath.getLastPathComponent();
             if (component instanceof DefaultMutableTreeNode && comment != null) {
-              ((DefaultMutableTreeNode)component).add(new DefaultMutableTreeNode(new CommentNode(comment)));
+              ((DefaultMutableTreeNode)component).add(new DefaultMutableTreeNode(comment));
               final TreeModel model = ((JTree)contextComponent).getModel();
               if (model instanceof DefaultTreeModel) {
                 ((DefaultTreeModel)model).reload();
