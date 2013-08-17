@@ -26,6 +26,9 @@
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
     <li> [feature] HTML in comments; better comments ui.
+    <li> [enhancement] Remember if general comments should be shown; remember splitter proportion.
+    <li> [enhancement] Remember new comment popup dimensions.
+    <li> [bugfix] Better calculate the size of existing comments popup.
   </ul>
 
   <p>0.3.1 version:</p>
