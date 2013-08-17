@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -21,6 +21,12 @@
    Plugin works only with IDEA trunk builds and git repositories
     ]]></description>
   <change-notes><![CDATA[
+
+  <p>0.3.2 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [feature] HTML in comments; better comments ui.
+  </ul>
 
   <p>0.3.1 version:</p>
   [Important note] Plugin works only with IDEA trunk builds
