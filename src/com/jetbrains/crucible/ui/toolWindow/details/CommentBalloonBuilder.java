@@ -22,7 +22,7 @@ public class CommentBalloonBuilder {
       .setResizable(true)
       .setTitle("Comments")
       .setMovable(true)
-      .setDimensionServiceKey(null, DIMENSION_SERVICE_KEY, false).createPopup();
+      .createPopup();
 
     final PointerInfo pointerInfo = MouseInfo.getPointerInfo();
     final Point targetPoint = pointerInfo.getLocation();
