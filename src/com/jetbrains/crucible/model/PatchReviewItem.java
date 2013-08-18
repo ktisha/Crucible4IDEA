@@ -48,7 +48,13 @@ public class PatchReviewItem extends ReviewItem {
       return Collections.emptyList();
     }
     loadedRevisions.add(myName);
-    return Collections.<CommittedChangeList>singletonList(new CommittedChangeListImpl(myName, myComment, myAuthorName, -1, myDate, getChanges(myPatches)));
+    return Collections.<CommittedChangeList>singletonList(
+      new CommittedChangeListImpl(myName, myComment, myAuthorName, -1, myDate, getChanges(myPatches)));
+  }
+
+  @Override
+  public boolean isPatch() {
+    return true;
   }
 
   @NotNull

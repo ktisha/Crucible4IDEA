@@ -73,4 +73,8 @@ public class ReviewItem {
   public Set<String> getRevisions() {
     return myRevisions;
   }
+
+  public boolean isPatch() {
+    return false;
+  }
 }

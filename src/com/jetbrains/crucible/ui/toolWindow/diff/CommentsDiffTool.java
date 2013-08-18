@@ -89,7 +89,7 @@ public class CommentsDiffTool extends FrameDiffTool {
       final String id = comment.getReviewItemId();
       final String path = review.getPathById(id);
       if (revision != null && path != null && filePath.getPath().endsWith(path) &&
-          revision.getRevisionNumber().asString().equals(comment.getRevision())) {
+          (review.isInPatch(comment) || revision.getRevisionNumber().asString().equals(comment.getRevision()))) {
 
         final MarkupModel markup = editor2.getMarkupModel();
 

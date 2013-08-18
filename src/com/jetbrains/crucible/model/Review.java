@@ -1,8 +1,10 @@
 package com.jetbrains.crucible.model;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,5 +76,15 @@ public class Review extends BasicReview {
       }
     }
     return null;
+  }
+
+  public boolean isInPatch(@NotNull Comment comment) {
+    final String reviewItemId = comment.getReviewItemId();
+    return null != ContainerUtil.find(myItems, new Condition<ReviewItem>() {
+      @Override
+      public boolean value(ReviewItem item) {
+        return item.getId().equalsIgnoreCase(reviewItemId) && item.isPatch();
+      }
+    });
   }
 }
