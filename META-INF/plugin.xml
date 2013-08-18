@@ -22,6 +22,14 @@
     ]]></description>
   <change-notes><![CDATA[
 
+  <p>0.4 version:</p>
+  [Important note] Plugin works only with IDEA trunk builds
+  <ul>
+    <li> [feature] Better comments ui.
+    <li> [feature] Support comment drafts: show them differently; let publish drafts;
+         automatically post a draft when the popup is closed via Esc.
+  </ul>
+
   <p>0.3.2 version:</p>
   [Important note] Plugin works only with IDEA trunk builds
   <ul>
