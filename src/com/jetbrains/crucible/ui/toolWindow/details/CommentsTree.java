@@ -23,7 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 public abstract class CommentsTree extends Tree {
 
   protected CommentsTree(@NotNull final Review review, @NotNull DefaultTreeModel model,
-                       @Nullable final Editor editor, @Nullable final FilePath filePath) {
+                         @Nullable final Editor editor, @Nullable final FilePath filePath) {
     super(model);
     setExpandableItemsEnabled(false);
     setRowHeight(0);
