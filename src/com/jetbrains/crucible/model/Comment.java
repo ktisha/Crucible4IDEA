@@ -11,35 +11,32 @@ import java.util.List;
  */
 public class Comment {
 
-  private String myMessage;
+  @NotNull private final User myAuthor;
+  @NotNull private final String myMessage;
+  private final boolean myDraft;
+
   private String myLine;
   private String myReviewItemId;
   private String myPermId;
   private String myRevision;
-  private User myAuthor;
   private Date myCreateDate = new Date();
   private final List<Comment> myReplies = new ArrayList<Comment>();
   private String myParentCommentId;
 
-  public Comment(@NotNull final User commentAuthor, @NotNull final String message) {
+  public Comment(@NotNull final User commentAuthor, @NotNull final String message, boolean draft) {
     myAuthor = commentAuthor;
     myMessage = message;
+    myDraft = draft;
   }
 
+  @NotNull
   public String getMessage() {
     return myMessage;
   }
 
-  public void setMessage(String message) {
-    myMessage = message;
-  }
-
+  @NotNull
   public User getAuthor() {
     return myAuthor;
-  }
-
-  public void setAuthor(User author) {
-    myAuthor = author;
   }
 
   public Date getCreateDate() {
@@ -103,5 +100,9 @@ public class Comment {
 
   public void setPermId(String id) {
     myPermId = id;
+  }
+
+  public boolean isDraft() {
+    return myDraft;
   }
 }

@@ -15,14 +15,15 @@ import javax.swing.*;
  * User: ktisha
  */
 public class ReviewGutterIconRenderer extends GutterIconRenderer {
-  private final Icon icon = IconLoader.getIcon("/images/comment.png");
+
+  private static final Icon COMMENT_ICON = IconLoader.getIcon("/images/comment.png");
+  private static final Icon DRAFT_COMMENT_ICON = IconLoader.getIcon("/images/comment_draft.png");
+
   private final Review myReview;
   private final Comment myComment;
   private final FilePath myFilePath;
 
-  public ReviewGutterIconRenderer(@NotNull final Review review,
-                                  @NotNull final FilePath filePath,
-                                  @NotNull final Comment comment) {
+  public ReviewGutterIconRenderer(@NotNull final Review review, @NotNull final FilePath filePath, @NotNull final Comment comment) {
     myReview = review;
     myFilePath = filePath;
     myComment = comment;
@@ -30,7 +31,7 @@ public class ReviewGutterIconRenderer extends GutterIconRenderer {
   @NotNull
   @Override
   public Icon getIcon() {
-    return icon;
+    return myComment.isDraft() ? DRAFT_COMMENT_ICON : COMMENT_ICON;
   }
 
   @Override
@@ -43,7 +44,7 @@ public class ReviewGutterIconRenderer extends GutterIconRenderer {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ReviewGutterIconRenderer that = (ReviewGutterIconRenderer) o;
-    return icon.equals(that.getIcon());
+    return getIcon().equals(that.getIcon());
   }
 
   @Override

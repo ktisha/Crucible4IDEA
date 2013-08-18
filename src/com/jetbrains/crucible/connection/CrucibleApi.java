@@ -210,7 +210,7 @@ public class CrucibleApi {
   }
 
   private static Comment createComment(BaseComment raw) {
-    Comment comment = new Comment(raw.user.createUser(), raw.messageAsHtml);
+    Comment comment = new Comment(raw.user.createUser(), raw.messageAsHtml, raw.draft);
     if (raw.reviewItemId != null) {
       comment.setReviewItemId(raw.reviewItemId.id);
     }
