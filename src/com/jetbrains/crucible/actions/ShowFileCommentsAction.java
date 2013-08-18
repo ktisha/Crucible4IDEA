@@ -11,6 +11,7 @@ import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.ui.toolWindow.details.CommentBalloonBuilder;
 import com.jetbrains.crucible.ui.toolWindow.details.CommentsTree;
+import com.jetbrains.crucible.ui.toolWindow.details.VersionedCommentsTree;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -38,7 +39,7 @@ public class ShowFileCommentsAction extends AnAction implements DumbAware {
     final Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
     if (editor == null) return;
 
-    final CommentsTree commentsTree = CommentsTree.createForComment(myReview, myComment, editor, myFilePath);
+    final CommentsTree commentsTree = VersionedCommentsTree.create(myReview, myComment, editor, myFilePath);
     CommentBalloonBuilder.showBalloon(commentsTree);
   }
 }

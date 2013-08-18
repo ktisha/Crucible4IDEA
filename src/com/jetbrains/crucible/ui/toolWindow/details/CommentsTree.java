@@ -20,9 +20,9 @@ import javax.swing.tree.DefaultTreeModel;
 /**
  * User: ktisha
  */
-public class CommentsTree extends Tree {
+public abstract class CommentsTree extends Tree {
 
-  private CommentsTree(@NotNull final Review review, @NotNull DefaultTreeModel model,
+  protected CommentsTree(@NotNull final Review review, @NotNull DefaultTreeModel model,
                        @Nullable final Editor editor, @Nullable final FilePath filePath) {
     super(model);
     setExpandableItemsEnabled(false);
@@ -38,32 +38,7 @@ public class CommentsTree extends Tree {
     TreeUtil.expandAll(this);
   }
 
-  @NotNull
-  public static CommentsTree createForGeneralComments(@NotNull final Review review) {
-    DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-    DefaultTreeModel model = new DefaultTreeModel(rootNode);
-    for (Comment comment : review.getGeneralComments()) {
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(comment);
-      rootNode.add(node);
-      addReplies(comment, node);
-    }
-
-    CommentsTree tree = new CommentsTree(review, model, null, null);
-    tree.setRootVisible(false);
-    return tree;
-  }
-
-  @NotNull
-  public static CommentsTree createForComment(@NotNull Review review, @NotNull Comment comment,
-                                              @NotNull Editor editor, @NotNull FilePath filePath) {
-    DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(comment);
-    DefaultTreeModel model = new DefaultTreeModel(rootNode);
-    addReplies(comment, rootNode);
-
-    return new CommentsTree(review, model, editor, filePath);
-  }
-
-  private static void addReplies(@NotNull Comment comment, @NotNull DefaultMutableTreeNode parentNode) {
+  protected static void addReplies(@NotNull Comment comment, @NotNull DefaultMutableTreeNode parentNode) {
     for (Comment reply : comment.getReplies()) {
       DefaultMutableTreeNode node = new DefaultMutableTreeNode(reply);
       parentNode.add(node);

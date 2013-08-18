@@ -89,6 +89,17 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
                                                                                     CrucibleBundle
                                                                                       .message("crucible.new.comment.$0",
                                                                                                myReview.getPermaId()));
+    balloon.addListener(new JBPopupAdapter() {
+      @Override
+      public void onClosed(LightweightWindowEvent event) {
+        commentForm.postComment();
+        final JComponent component = getContextComponent();
+        if (component instanceof GeneralCommentsTree) {
+          ((GeneralCommentsTree)component).updateModel(myReview);
+        }
+      }
+    });
+
     commentForm.setBalloon(balloon);
     balloon.showInBestPositionFor(dataContext);
     commentForm.requestFocus();
