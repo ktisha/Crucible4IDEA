@@ -270,10 +270,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public void calcData(DataKey key, DataSink sink) {
-      if (key == CrucibleDataKeys.REVIEW)
+      if (key == CrucibleDataKeys.REVIEW) {
         sink.put(CrucibleDataKeys.REVIEW, myReview);
-      //if (key == CrucibleDataKeys.SELECTED_COMMENT)
-      //  sink.put(CrucibleDataKeys.SELECTED_COMMENT, (Comment)myGeneralComments.getValueAt(myGeneralComments.getSelectedRow(), 0));
+      }
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
         sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));
