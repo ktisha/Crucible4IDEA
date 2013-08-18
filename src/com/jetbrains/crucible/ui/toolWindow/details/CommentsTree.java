@@ -2,8 +2,11 @@ package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.FilePath;
+import com.intellij.openapi.vcs.changes.issueLinks.LinkMouseListenerBase;
 import com.intellij.ui.PopupHandler;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.tree.TreeUtil;
@@ -14,20 +17,28 @@ import com.jetbrains.crucible.utils.CrucibleBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.*;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /**
  * User: ktisha
  */
 public abstract class CommentsTree extends Tree {
 
-  protected CommentsTree(@NotNull final Review review, @NotNull DefaultTreeModel model,
+  private static final Logger LOG = Logger.getInstance(CommentsTree.class);
+  @NotNull protected final Review myReview;
+
+  protected CommentsTree(@NotNull final Project project, @NotNull final Review review, @NotNull DefaultTreeModel model,
                          @Nullable final Editor editor, @Nullable final FilePath filePath) {
     super(model);
+    myReview = review;
     setExpandableItemsEnabled(false);
     setRowHeight(0);
-    setCellRenderer(new CommentNodeRenderer(this));
+    final CommentNodeRenderer renderer = new CommentNodeRenderer(this, review, project);
+    setCellRenderer(renderer);
+    getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
     final DefaultActionGroup group = new DefaultActionGroup();
     final AddCommentAction replyToComment = new AddCommentAction(review, editor, filePath,
@@ -36,6 +47,8 @@ public abstract class CommentsTree extends Tree {
     group.add(replyToComment);
     PopupHandler.installUnknownPopupHandler(this, group, ActionManager.getInstance());
     TreeUtil.expandAll(this);
+
+    new MyLinkMouseListener(renderer, project, review).installOn(this);
   }
 
   protected static void addReplies(@NotNull Comment comment, @NotNull DefaultMutableTreeNode parentNode) {
@@ -58,4 +71,56 @@ public abstract class CommentsTree extends Tree {
     return (Comment)userObject;
   }
 
+  public abstract void refresh();
+
+  private class MyLinkMouseListener extends LinkMouseListenerBase {
+    private final CommentNodeRenderer myRenderer;
+    private final Project myProject;
+    private final Review myReview;
+
+    public MyLinkMouseListener(CommentNodeRenderer renderer, Project project, Review review) {
+      myRenderer = renderer;
+      myProject = project;
+      myReview = review;
+    }
+
+    @Override
+    protected void handleTagClick(Object tag, MouseEvent event) {
+      if (tag == null) {
+        return;
+      }
+      CommentAction action = (CommentAction)tag;
+      action.execute(new Runnable() {
+        @Override
+        public void run() {
+          refresh();
+        }
+      });
+    }
+
+    @Nullable
+    @Override
+    protected Object getTagAt(MouseEvent e) {
+      JTree tree = (JTree) e.getSource();
+      final TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+      if (path == null) {
+        return null;
+      }
+      Rectangle bounds = tree.getPathBounds(path);
+      if (bounds == null) {
+        return null;
+      }
+      int dx = e.getX() - bounds.x;
+      int dy = e.getY() - bounds.y;
+
+      CommentAction.Type linkType = myRenderer.getActionLink(dx, dy);
+      if (linkType == null) {
+        return null;
+      }
+      DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode)path.getLastPathComponent();
+      Comment comment = (Comment)treeNode.getUserObject();
+
+      return linkType.createAction(myProject, myReview, comment);
+    }
+  }
 }

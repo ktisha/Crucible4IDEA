@@ -156,4 +156,10 @@ public class CrucibleManager {
     return Collections.emptyMap();
   }
 
+  public void publishComment(@NotNull Review review, @NotNull Comment comment) throws IOException, CrucibleApiException {
+    CrucibleSession session = getSession();
+    if (session != null) {
+      session.publishComment(review, comment);
+    }
+  }
 }

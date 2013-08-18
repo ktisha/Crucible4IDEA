@@ -342,6 +342,13 @@ public class CrucibleSessionImpl implements CrucibleSession {
   }
 
   @Override
+  public void publishComment(@NotNull Review review, @NotNull Comment comment) throws IOException {
+    String url = getHostUrl() + REVIEW_SERVICE + "/" + review.getPermaId() + PUBLISH + "/" + comment.getPermId();
+    PostMethod method = new PostMethod(url);
+    executeHttpMethod(method);
+  }
+
+  @Override
   public void completeReview(@NotNull String reviewId) {
     final String url = getHostUrl() + REVIEW_SERVICE + "/" + reviewId + COMPLETE;
     try {

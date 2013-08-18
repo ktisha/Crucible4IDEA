@@ -110,7 +110,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   @NotNull
   private JPanel createCommentsPane() {
-    myGeneralComments = GeneralCommentsTree.create(myReview);
+    myGeneralComments = GeneralCommentsTree.create(myProject, myReview);
     return installActions();
   }
 

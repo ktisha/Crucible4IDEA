@@ -95,7 +95,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
         commentForm.postComment();
         final JComponent component = getContextComponent();
         if (component instanceof GeneralCommentsTree) {
-          ((GeneralCommentsTree)component).updateModel(myReview);
+          ((GeneralCommentsTree)component).refresh();
         }
       }
     });

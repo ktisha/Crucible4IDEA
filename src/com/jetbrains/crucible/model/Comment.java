@@ -13,7 +13,7 @@ public class Comment {
 
   @NotNull private final User myAuthor;
   @NotNull private final String myMessage;
-  private final boolean myDraft;
+  private boolean myDraft;
 
   private String myLine;
   private String myReviewItemId;
@@ -104,5 +104,9 @@ public class Comment {
 
   public boolean isDraft() {
     return myDraft;
+  }
+
+  public void setDraft(boolean draft) {
+    myDraft = draft;
   }
 }
