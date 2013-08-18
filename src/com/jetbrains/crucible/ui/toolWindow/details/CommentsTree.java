@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
+import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
@@ -36,7 +37,7 @@ public abstract class CommentsTree extends Tree {
     myReview = review;
     setExpandableItemsEnabled(false);
     setRowHeight(0);
-    final CommentNodeRenderer renderer = new CommentNodeRenderer(this, review, project);
+    final CommentNodeRenderer renderer = new CommentNodeRenderer(this);
     setCellRenderer(renderer);
     getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -90,7 +91,7 @@ public abstract class CommentsTree extends Tree {
         return;
       }
       CommentAction action = (CommentAction)tag;
-      action.execute(new Runnable() {
+      action.execute(DataManager.getInstance().getDataContext(CommentsTree.this), new Runnable() {
         @Override
         public void run() {
           refresh();

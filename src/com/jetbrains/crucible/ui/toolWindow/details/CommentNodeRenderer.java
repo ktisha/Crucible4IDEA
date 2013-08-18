@@ -2,7 +2,6 @@ package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.Gray;
 import com.intellij.ui.JBColor;
@@ -14,7 +13,6 @@ import com.intellij.util.ui.GridBag;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.xml.util.XmlStringUtil;
 import com.jetbrains.crucible.model.Comment;
-import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,15 +31,11 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
 
   private static final Logger LOG = Logger.getInstance(CommentNodeRenderer.class);
 
-  @NotNull private final Review myReview;
-  @NotNull private final Project myProject;
   @NotNull private final DefaultTreeCellRenderer myDefaultRenderer = new DefaultTreeCellRenderer();
   @NotNull private final CommentRendererPanel myPanel;
 
-  public CommentNodeRenderer(@NotNull JTree tree, @NotNull Review review, @NotNull Project project) {
+  public CommentNodeRenderer(@NotNull JTree tree) {
     super(tree);
-    myReview = review;
-    myProject = project;
     myPanel = new CommentRendererPanel();
   }
 
@@ -77,7 +71,9 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
     @NotNull private final JBLabel myIconLabel;
     @NotNull private final JBLabel myMessageLabel;
     @NotNull private final JPanel myMainPanel;
-    @NotNull private final LinkLabel myPostLink;
+    @NotNull private final JLabel myPostLink;
+    @NotNull private final JLabel myReplyLink;
+    private final JPanel myActionsPanel;
 
     CommentRendererPanel() {
       super(new BorderLayout());
@@ -87,9 +83,12 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
       myMessageLabel = new JBLabel();
       myMessageLabel.setOpaque(false);
 
-      JPanel actionsPanel = new JPanel();
+      myActionsPanel = new JPanel();
+      myActionsPanel.setOpaque(false);
+      myReplyLink = new LinkLabel("Reply", null);
       myPostLink = new LinkLabel("Publish", null);
-      actionsPanel.add(myPostLink);
+      myActionsPanel.add(myReplyLink);
+      myActionsPanel.add(myPostLink);
 
       myMainPanel = new JPanel(new GridBagLayout());
       GridBag bag = new GridBag()
@@ -97,7 +96,7 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
         .setDefaultPaddingY(UIUtil.DEFAULT_VGAP);
       myMainPanel.add(myIconLabel, bag.next().coverColumn().anchor(GridBagConstraints.NORTHWEST).weightx(0.1));
       myMainPanel.add(myMessageLabel, bag.next().fillCell().anchor(GridBagConstraints.NORTH).weightx(1.0));
-      myMainPanel.add(myPostLink, bag.nextLine().anchor(GridBagConstraints.SOUTHEAST));
+      myMainPanel.add(myActionsPanel, bag.nextLine().anchor(GridBagConstraints.SOUTHEAST));
 
       add(myMainPanel);
     }
@@ -127,14 +126,23 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
     }
 
     @Nullable
-    public CommentAction.Type getActionLink(int dx, int dy) {
-      int postX = myPostLink.getX();
-      int postY = myPostLink.getY();
-      if (dx >= postX && dx <= postX + myPostLink.getWidth() &&
-          dy >= postY && dy <= postY + myPostLink.getHeight()) {
+    public CommentAction.Type getActionLink(int x, int y) {
+      int dx = x - myActionsPanel.getX();
+      int dy = y - myActionsPanel.getY();
+
+      if (checkLink(dx, dy, myReplyLink)) {
+        return CommentAction.Type.REPLY;
+      }
+      if (checkLink(dx, dy, myPostLink)) {
         return CommentAction.Type.PUBLISH;
       }
       return null;
+    }
+
+    private boolean checkLink(int dx, int dy, JLabel link) {
+      int postX = link.getX();
+      int postY = link.getY();
+      return dx >= postX && dx <= postX + link.getWidth() && dy >= postY && dy <= postY + link.getHeight();
     }
   }
 }

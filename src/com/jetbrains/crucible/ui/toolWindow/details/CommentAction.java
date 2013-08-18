@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
@@ -21,6 +22,12 @@ public abstract class CommentAction {
       <T extends CommentAction> T createAction(@NotNull Project project, @NotNull Review review, @NotNull Comment comment) {
         return (T)new PublishCommentAction(project, review, comment);
       }
+    },
+    REPLY {
+      @Override
+      <T extends CommentAction> T createAction(@NotNull Project project, @NotNull Review review, @NotNull Comment comment) {
+        return (T)new ReplyCommentAction(project, review, comment);
+      }
     };
 
     abstract <T extends CommentAction> T createAction(@NotNull Project project, @NotNull Review review, @NotNull Comment comment);
@@ -33,6 +40,6 @@ public abstract class CommentAction {
     myType = actionType;
   }
 
-  public abstract void execute(Runnable runnable);
+  public abstract void execute(DataContext context, Runnable runnable);
 
 }

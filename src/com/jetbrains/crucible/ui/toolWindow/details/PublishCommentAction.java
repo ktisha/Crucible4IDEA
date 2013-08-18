@@ -1,5 +1,6 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -20,7 +21,7 @@ public class PublishCommentAction extends CommentAction {
   }
 
   @Override
-  public void execute(@NotNull Runnable onSuccess) {
+  public void execute(DataContext context, @NotNull Runnable onSuccess) {
     try {
       CrucibleManager.getInstance(myProject).publishComment(myReview, myComment);
       myComment.setDraft(false);
