@@ -114,7 +114,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
-        final Comment comment = commentForm.getComment();
+        final Comment comment = commentForm.postComment();
         if (!myIsReply) {
           final MarkupModel markup = myEditor.getMarkupModel();
           if (comment != null) {

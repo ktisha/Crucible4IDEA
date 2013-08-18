@@ -272,7 +272,7 @@ public class CrucibleApi {
     }
 
     raw.message = comment.getMessage();
-    raw.draft = false;
+    raw.draft = comment.isDraft();
     raw.deleted = false;
     raw.defectRaised = false;
 

@@ -37,8 +37,12 @@ public class CommentForm extends JPanel {
   private JBPopup myBalloon;
 
   private Editor myEditor;
-  private Comment myComment;
+  @NotNull private final Project myProject;
+  private final boolean myGeneral;
+  private final boolean myReply;
   @Nullable private FilePath myFilePath;
+
+  private boolean myOK;
 
   public Review getReview() {
     return myReview;
@@ -47,8 +51,11 @@ public class CommentForm extends JPanel {
   private Review myReview;
   private Comment myParentComment;
 
-  public CommentForm(@NotNull final Project project, final boolean isGeneral, final boolean isReply, @Nullable FilePath filePath) {
+  public CommentForm(@NotNull Project project, boolean isGeneral, boolean isReply, @Nullable FilePath filePath) {
     super(new BorderLayout());
+    myProject = project;
+    myGeneral = isGeneral;
+    myReply = isReply;
     myFilePath = filePath;
 
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
@@ -68,42 +75,49 @@ public class CommentForm extends JPanel {
     myReviewTextField.getActionMap().put("postComment", new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME, null), getText(), false);
-        assert myReview != null;
-
-        final Comment parentComment = getParentComment();
-        if (parentComment != null) {
-          comment.setParentCommentId(parentComment.getPermId());
-        }
-        if (myEditor != null) {
-          final Document document = myEditor.getDocument();
-          final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset()) + 1;
-          comment.setLine(String.valueOf(lineNumber));
-          final String id = myReview.getIdByPath(myFilePath.getPath(), project);
-          comment.setReviewItemId(id);
-        }
-
-        final Comment addedComment = CrucibleManager.getInstance(project).postComment(comment, isGeneral, myReview.getPermaId());
-
-        if (addedComment != null && myBalloon != null) {
-          addedComment.setLine(comment.getLine());
-          addedComment.setReviewItemId(comment.getReviewItemId());
-          myComment = addedComment;
-          if (isReply) {
-            myParentComment.addReply(addedComment);
-          }
-          else {
-            if (isGeneral) {
-              myReview.addGeneralComment(addedComment);
-            }
-            else {
-              myReview.addComment(addedComment);
-            }
-          }
+        myOK = true;
+        if (myBalloon != null) {
           myBalloon.dispose();
         }
       }
     });
+  }
+
+  @Nullable
+  public Comment postComment() {
+    final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME, null), getText(), !myOK);
+    assert myReview != null;
+
+    final Comment parentComment = getParentComment();
+    if (parentComment != null) {
+      comment.setParentCommentId(parentComment.getPermId());
+    }
+    if (myEditor != null) {
+      final Document document = myEditor.getDocument();
+      final int lineNumber = document.getLineNumber(myEditor.getCaretModel().getOffset()) + 1;
+      comment.setLine(String.valueOf(lineNumber));
+      final String id = myReview.getIdByPath(myFilePath.getPath(), myProject);
+      comment.setReviewItemId(id);
+    }
+
+    final Comment addedComment = CrucibleManager.getInstance(myProject).postComment(comment, myGeneral, myReview.getPermaId());
+
+    if (addedComment != null) {
+      addedComment.setLine(comment.getLine());
+      addedComment.setReviewItemId(comment.getReviewItemId());
+      if (myReply) {
+        myParentComment.addReply(addedComment);
+      }
+      else {
+        if (myGeneral) {
+          myReview.addGeneralComment(addedComment);
+        }
+        else {
+          myReview.addComment(addedComment);
+        }
+      }
+    }
+    return addedComment;
   }
 
   public void requestFocus() {
@@ -136,7 +150,4 @@ public class CommentForm extends JPanel {
     myParentComment = parentComment;
   }
 
-  public Comment getComment() {
-    return myComment;
-  }
 }
