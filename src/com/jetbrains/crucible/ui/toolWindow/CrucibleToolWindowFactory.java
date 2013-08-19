@@ -23,7 +23,7 @@ public class CrucibleToolWindowFactory implements ToolWindowFactory, DumbAware {
     final CruciblePanel cruciblePanel = new CruciblePanel(project);
     final Content content = ContentFactory.SERVICE.getInstance().
       createContent(cruciblePanel, CrucibleBundle.message("crucible.main.name"), false);
-
+    content.setCloseable(false);
     contentManager.addContent(content);
   }
 }
