@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
 
 /**
  * User: ktisha
@@ -32,9 +33,9 @@ public abstract class CommentsTree extends Tree {
   private static final Logger LOG = Logger.getInstance(CommentsTree.class);
   @NotNull protected final Review myReview;
 
-  protected CommentsTree(@NotNull final Project project, @NotNull final Review review, @NotNull DefaultTreeModel model,
+  protected CommentsTree(@NotNull final Project project, @NotNull final Review review,
                          @Nullable final Editor editor, @Nullable final FilePath filePath) {
-    super(model);
+    super();
     myReview = review;
     setExpandableItemsEnabled(false);
     setRowHeight(0);
@@ -74,6 +75,27 @@ public abstract class CommentsTree extends Tree {
   }
 
   public abstract void refresh(@NotNull Comment comment);
+
+  protected void reloadModel(Comment comment) {
+    setModel(createModel());
+    TreePath path = findPath(comment);
+    if (path != null) {
+      scrollPathToVisible(path);
+    }
+  }
+
+  protected abstract TreeModel createModel();
+
+  @Nullable
+  private TreePath findPath(@NotNull Comment comment) {
+    for (Enumeration e = ((DefaultMutableTreeNode)getModel().getRoot()).depthFirstEnumeration(); e.hasMoreElements(); ) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+      if (node.getUserObject().equals(comment)) {
+        return new TreePath(node.getPath());
+      }
+    }
+    return null;
+  }
 
   private class MyLinkMouseListener extends LinkMouseListenerBase {
     private final CommentNodeRenderer myRenderer;
