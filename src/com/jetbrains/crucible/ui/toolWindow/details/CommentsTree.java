@@ -10,6 +10,7 @@ import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.changes.issueLinks.LinkMouseListenerBase;
 import com.intellij.ui.PopupHandler;
 import com.intellij.ui.treeStructure.Tree;
+import com.intellij.util.Consumer;
 import com.intellij.util.ui.tree.TreeUtil;
 import com.jetbrains.crucible.actions.AddCommentAction;
 import com.jetbrains.crucible.model.Comment;
@@ -72,7 +73,7 @@ public abstract class CommentsTree extends Tree {
     return (Comment)userObject;
   }
 
-  public abstract void refresh();
+  public abstract void refresh(@NotNull Comment comment);
 
   private class MyLinkMouseListener extends LinkMouseListenerBase {
     private final CommentNodeRenderer myRenderer;
@@ -91,10 +92,10 @@ public abstract class CommentsTree extends Tree {
         return;
       }
       CommentAction action = (CommentAction)tag;
-      action.execute(DataManager.getInstance().getDataContext(CommentsTree.this), new Runnable() {
+      action.execute(DataManager.getInstance().getDataContext(CommentsTree.this), new Consumer<Comment>() {
         @Override
-        public void run() {
-          refresh();
+        public void consume(Comment comment) {
+          refresh(comment);
         }
       });
     }

@@ -109,4 +109,40 @@ public class Comment {
   public void setDraft(boolean draft) {
     myDraft = draft;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Comment comment = (Comment)o;
+
+    if (myDraft != comment.myDraft) return false;
+    if (!myAuthor.equals(comment.myAuthor)) return false;
+    if (myCreateDate != null ? !myCreateDate.equals(comment.myCreateDate) : comment.myCreateDate != null) return false;
+    if (myLine != null ? !myLine.equals(comment.myLine) : comment.myLine != null) return false;
+    if (!myMessage.equals(comment.myMessage)) return false;
+    if (myParentCommentId != null ? !myParentCommentId.equals(comment.myParentCommentId) : comment.myParentCommentId != null) return false;
+    if (myPermId != null ? !myPermId.equals(comment.myPermId) : comment.myPermId != null) return false;
+    if (myReplies != null ? !myReplies.equals(comment.myReplies) : comment.myReplies != null) return false;
+    if (myReviewItemId != null ? !myReviewItemId.equals(comment.myReviewItemId) : comment.myReviewItemId != null) return false;
+    if (myRevision != null ? !myRevision.equals(comment.myRevision) : comment.myRevision != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = myAuthor.hashCode();
+    result = 31 * result + myMessage.hashCode();
+    result = 31 * result + (myDraft ? 1 : 0);
+    result = 31 * result + (myLine != null ? myLine.hashCode() : 0);
+    result = 31 * result + (myReviewItemId != null ? myReviewItemId.hashCode() : 0);
+    result = 31 * result + (myPermId != null ? myPermId.hashCode() : 0);
+    result = 31 * result + (myRevision != null ? myRevision.hashCode() : 0);
+    result = 31 * result + (myCreateDate != null ? myCreateDate.hashCode() : 0);
+    result = 31 * result + (myReplies != null ? myReplies.hashCode() : 0);
+    result = 31 * result + (myParentCommentId != null ? myParentCommentId.hashCode() : 0);
+    return result;
+  }
 }

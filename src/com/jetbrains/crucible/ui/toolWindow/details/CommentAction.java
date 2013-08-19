@@ -2,6 +2,7 @@ package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
+import com.intellij.util.Consumer;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +41,6 @@ public abstract class CommentAction {
     myType = actionType;
   }
 
-  public abstract void execute(DataContext context, Runnable runnable);
+  public abstract void execute(@NotNull DataContext context, @NotNull Consumer<Comment> onSuccess);
 
 }

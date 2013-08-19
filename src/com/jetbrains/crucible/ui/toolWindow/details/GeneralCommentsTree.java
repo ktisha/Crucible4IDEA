@@ -4,9 +4,12 @@ import com.intellij.openapi.project.Project;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import java.util.Enumeration;
 
 /**
  * @author Kirill Likhodedov
@@ -37,7 +40,22 @@ public class GeneralCommentsTree extends CommentsTree {
   }
 
   @Override
-  public void refresh() {
+  public void refresh(@NotNull Comment comment) {
     setModel(createModel(myReview));
+    TreePath path = findPath(comment);
+    if (path != null) {
+      scrollPathToVisible(path);
+    }
+  }
+
+  @Nullable
+  private TreePath findPath(@NotNull Comment comment) {
+    for (Enumeration e = ((DefaultMutableTreeNode)getModel().getRoot()).depthFirstEnumeration(); e.hasMoreElements(); ) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.nextElement();
+      if (node.getUserObject().equals(comment)) {
+        return new TreePath(node.getPath());
+      }
+    }
+    return null;
   }
 }

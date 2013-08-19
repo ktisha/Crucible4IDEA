@@ -39,7 +39,7 @@ public class VersionedCommentsTree extends CommentsTree {
   }
 
   @Override
-  public void refresh() {
+  public void refresh(@NotNull Comment comment) {
     myUpdater.run();
   }
 }

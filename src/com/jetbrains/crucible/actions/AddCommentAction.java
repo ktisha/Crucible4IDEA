@@ -92,10 +92,12 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
-        commentForm.postComment();
-        final JComponent component = getContextComponent();
-        if (component instanceof GeneralCommentsTree) {
-          ((GeneralCommentsTree)component).refresh();
+        Comment comment = commentForm.postComment();
+        if (comment != null) {
+          final JComponent component = getContextComponent();
+          if (component instanceof GeneralCommentsTree) {
+            ((GeneralCommentsTree)component).refresh(comment);
+          }
         }
       }
     });

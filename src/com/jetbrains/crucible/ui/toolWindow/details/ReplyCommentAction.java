@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupAdapter;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
+import com.intellij.util.Consumer;
 import com.jetbrains.crucible.model.Comment;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.utils.CrucibleBundle;
@@ -20,7 +21,7 @@ public class ReplyCommentAction extends PublishCommentAction {
   }
 
   @Override
-  public void execute(@NotNull DataContext dataContext, @NotNull final Runnable onSuccess) {
+  public void execute(@NotNull DataContext dataContext, @NotNull final Consumer<Comment> onSuccess) {
     final CommentForm commentForm = new CommentForm(myProject, true, true, null); // TODO general, filepath
     commentForm.setReview(myReview);
     commentForm.setParentComment(myComment);
@@ -30,8 +31,8 @@ public class ReplyCommentAction extends PublishCommentAction {
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
-        commentForm.postComment();
-        onSuccess.run();
+        Comment comment = commentForm.postComment();
+        onSuccess.consume(comment);
       }
     });
 
