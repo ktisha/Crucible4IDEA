@@ -85,7 +85,7 @@ public class CommentForm extends JPanel {
 
   @Nullable
   public Comment postComment() {
-    final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME, null), getText(), !myOK);
+    final Comment comment = new Comment(new User(CrucibleSettings.getInstance().USERNAME), getText(), !myOK);
     assert myReview != null;
 
     final Comment parentComment = getParentComment();

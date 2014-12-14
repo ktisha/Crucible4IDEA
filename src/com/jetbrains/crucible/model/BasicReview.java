@@ -78,4 +78,8 @@ public class BasicReview {
   public Set<User> getReviewers() {
     return myReviewers;
   }
+
+  public boolean isReviewer(User user) {
+    return getReviewers().contains(user);
+  }
 }

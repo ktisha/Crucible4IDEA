@@ -12,6 +12,10 @@ public class User {
   @NotNull protected final String myUserName;
   @Nullable private final String myAvatar;
 
+  public User(@NotNull String userName) {
+    this(userName, null);
+  }
+
   public User(@NotNull final String userName, @Nullable String avatar) {
     myUserName = userName;
     myAvatar = avatar;
@@ -29,13 +33,13 @@ public class User {
 
   @Override
   public int hashCode() {
-    return myUserName.hashCode();
+    return myUserName.toLowerCase().hashCode();
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof User)
-      return myUserName.equals(((User)obj).getUserName());
+      return myUserName.equalsIgnoreCase(((User)obj).getUserName());
     return super.equals(obj);
   }
 
