@@ -50,7 +50,10 @@ public class CrucibleApi {
   public static BasicReview parseReview(@NotNull JsonObject item, @NotNull Project project, @NotNull CrucibleSession crucibleSession)
                                         throws IOException {
     ReviewRaw reviewRaw = gson.fromJson(item, ReviewRaw.class);
-    Review review = new Review(reviewRaw.permaId.id, reviewRaw.author.createUser(), reviewRaw.moderator.createUser());
+
+    User moderator = (reviewRaw.moderator != null) ? reviewRaw.moderator.createUser() : null;
+
+    Review review = new Review(reviewRaw.permaId.id, reviewRaw.author.createUser(), moderator);
     review.setCreateDate(reviewRaw.createDate);
     review.setDescription(reviewRaw.name);
     review.setState(reviewRaw.state);
