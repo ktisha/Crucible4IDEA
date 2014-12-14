@@ -2,6 +2,7 @@
 package com.jetbrains.crucible.ui.toolWindow.tree;
 
 import com.intellij.ui.treeStructure.SimpleNode;
+import com.jetbrains.crucible.model.CrucibleFilter;
 import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,10 +19,7 @@ public class CrucibleRootNode extends SimpleNode {
 
   public CrucibleRootNode(@NotNull final CrucibleReviewModel reviewModel) {
     myReviewModel = reviewModel;
-    myChildren.add(new CrucibleToReviewNode(myReviewModel));
-    myChildren.add(new CrucibleRequireApprovalNode(myReviewModel));
-    myChildren.add(new CrucibleOutForReviewNode(myReviewModel));
-    myChildren.add(new CrucibleClosedNode(myReviewModel));
+    addChildren();
   }
 
   @NotNull
@@ -32,11 +30,14 @@ public class CrucibleRootNode extends SimpleNode {
   @Override
   public SimpleNode[] getChildren() {
     if (myChildren.isEmpty()) {
-      myChildren.add(new CrucibleToReviewNode(myReviewModel));
-      myChildren.add(new CrucibleRequireApprovalNode(myReviewModel));
-      myChildren.add(new CrucibleOutForReviewNode(myReviewModel));
-      myChildren.add(new CrucibleClosedNode(myReviewModel));
+      addChildren();
     }
     return myChildren.toArray(new SimpleNode[myChildren.size()]);
+  }
+
+  private void addChildren() {
+    for (CrucibleFilter filter : CrucibleFilter.values()) {
+      myChildren.add(new CrucibleFilterNode(myReviewModel, filter));
+    }
   }
 }
