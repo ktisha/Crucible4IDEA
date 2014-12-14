@@ -87,7 +87,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     for (CommittedChangeList committedChangeList : changeLists) {
       myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName(), committedChangeList.getCommitDate()});
     }
-    myCommitsTable.setRowSelectionInterval(0, 0);
+
+    if(myCommitsTable.getRowCount() > 0) {
+      myCommitsTable.setRowSelectionInterval(0, 0);
+    }
   }
 
   public void setBusy(boolean busy) {
