@@ -92,7 +92,9 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
     balloon.addListener(new JBPopupAdapter() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
-        commentForm.postComment();
+        if(!commentForm.getText().isEmpty()) { // do not try to save draft if text is empty
+          commentForm.postComment();
+        }
         final JComponent component = getContextComponent();
         if (component instanceof GeneralCommentsTree) {
           ((GeneralCommentsTree)component).refresh();

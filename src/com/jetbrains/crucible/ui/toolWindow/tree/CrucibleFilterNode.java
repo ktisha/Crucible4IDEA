@@ -7,19 +7,21 @@ import com.jetbrains.crucible.ui.toolWindow.CrucibleReviewModel;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * User : ktisha
+ * Created by Dmitry on 14.12.2014.
  */
-public class CrucibleToReviewNode extends SimpleNode {
-  private static final String NAME = "To Review";
-  private final CrucibleReviewModel myReviewModel;
+public class CrucibleFilterNode extends SimpleNode {
 
-  public CrucibleToReviewNode(@NotNull final CrucibleReviewModel reviewModel) {
+  private final CrucibleReviewModel myReviewModel;
+  private final CrucibleFilter myFilter;
+
+  public CrucibleFilterNode(@NotNull final CrucibleReviewModel reviewModel, CrucibleFilter filter) {
     myReviewModel = reviewModel;
+    myFilter = filter;
   }
 
   @NotNull
   public String toString() {
-    return NAME;
+    return myFilter.getFilterName();
   }
 
   @Override
@@ -35,6 +37,6 @@ public class CrucibleToReviewNode extends SimpleNode {
   @Override
   public void handleSelection(SimpleTree tree) {
     super.handleSelection(tree);
-    myReviewModel.updateModel(CrucibleFilter.ToReview);
+    myReviewModel.updateModel(myFilter);
   }
 }

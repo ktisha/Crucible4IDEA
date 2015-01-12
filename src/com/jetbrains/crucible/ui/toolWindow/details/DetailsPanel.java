@@ -1,6 +1,7 @@
 package com.jetbrains.crucible.ui.toolWindow.details;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.impl.TypeSafeDataProviderAdapter;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.*;
@@ -50,6 +51,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
   private final Project myProject;
   private final Review myReview;
+  private final CrucibleSettings myCrucibleSettings = CrucibleSettings.getInstance();
   private ChangesBrowser myChangesBrowser;
   private JBTable myCommitsTable;
   private DefaultTableModel myCommitsModel;
@@ -87,7 +89,10 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     for (CommittedChangeList committedChangeList : changeLists) {
       myCommitsModel.addRow(new Object[]{committedChangeList, committedChangeList.getCommitterName(), committedChangeList.getCommitDate()});
     }
-    myCommitsTable.setRowSelectionInterval(0, 0);
+
+    if (myCommitsTable.getRowCount() > 0) {
+      myCommitsTable.setRowSelectionInterval(0, 0);
+    }
   }
 
   public void setBusy(boolean busy) {
@@ -169,8 +174,9 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable = new JBTable(myCommitsModel) {
       @Override
       public TableCellRenderer getCellRenderer(int row, int column) {
-        if (column == myCommitsTable.getColumnModel().getColumnIndex(CrucibleBundle.message("crucible.commit")))
+        if (column == myCommitsTable.getColumnModel().getColumnIndex(CrucibleBundle.message("crucible.commit"))) {
           return new MyCommitsCellRenderer();
+        }
         return super.getCellRenderer(row, column);
       }
     };
@@ -179,21 +185,13 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myCommitsTable.setExpandableItemsEnabled(false);
     setUpColumnWidths(myCommitsTable);
 
-    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myCommitsTable).
-      setToolbarPosition(ActionToolbarPosition.LEFT);
-    if (myReview.getReviewers().contains(new User(CrucibleSettings.getInstance().USERNAME, null)) &&
-      "Review".equals(myReview.getState())) {
+    final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(myCommitsTable).setToolbarPosition(ActionToolbarPosition.LEFT);
+
+    if (myReview.isReviewer(new User(myCrucibleSettings.USERNAME)) && "Review".equals(myReview.getState())) {
       decorator.addExtraAction(new CompleteReviewAction(myReview, CrucibleBundle.message("crucible.complete.review")));
     }
-    decorator.addExtraAction(new AnActionButton(CrucibleBundle.message("crucible.show.general.comments"),
-                                                CrucibleBundle.message("crucible.show.general.comments"), AllIcons.Actions.ShowChangesOnly) {
-      @Override
-      public void actionPerformed(AnActionEvent e) {
-        boolean visibility = !myCommentsPane.isVisible();
-        myCommentsPane.setVisible(visibility);
-        PropertiesComponent.getInstance().setValue(GENERAL_COMMENTS_VISIBILITY_PROPERTY, Boolean.toString(visibility));
-      }
-    });
+    decorator.addExtraAction(new ShowGeneralCommentsAction());
+    decorator.addExtraAction(new OpenInBrowserAction());
 
     return decorator.createPanel();
   }
@@ -261,7 +259,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       final OpenRepositoryVersionAction action = new OpenRepositoryVersionAction();
       toolBarGroup.add(action);
 
-      final ActionGroup group = (ActionGroup) ActionManager.getInstance().getAction("RepositoryChangesBrowserToolbar");
+      final ActionGroup group = (ActionGroup)ActionManager.getInstance().getAction("RepositoryChangesBrowserToolbar");
       final AnAction[] actions = group.getChildren(null);
       for (AnAction anAction : actions) {
         toolBarGroup.add(anAction);
@@ -275,10 +273,36 @@ public class DetailsPanel extends SimpleToolWindowPanel {
       }
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
-        sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change [list.size()]));
+        sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change[list.size()]));
       }
       super.calcData(key, sink);
     }
   }
 
+  private class ShowGeneralCommentsAction extends AnActionButton {
+    public ShowGeneralCommentsAction() {
+      super(CrucibleBundle.message("crucible.show.general.comments"), CrucibleBundle.message("crucible.show.general.comments"),
+            AllIcons.Actions.ShowChangesOnly);
+    }
+
+    @Override
+    public void actionPerformed(AnActionEvent e) {
+      boolean visibility = !myCommentsPane.isVisible();
+      myCommentsPane.setVisible(visibility);
+      PropertiesComponent.getInstance().setValue(GENERAL_COMMENTS_VISIBILITY_PROPERTY, Boolean.toString(visibility));
+    }
+  }
+
+  private class OpenInBrowserAction extends AnActionButton {
+    public OpenInBrowserAction() {
+      super(CrucibleBundle.message("crucible.open.in.browser"), CrucibleBundle.message("crucible.open.in.browser"),
+            AllIcons.Nodes.PpWeb);
+    }
+
+    @Override
+    public void actionPerformed(@NotNull AnActionEvent event) {
+      String serverUrl = myCrucibleSettings.SERVER_URL;
+      BrowserUtil.open(serverUrl + "/cru/" + myReview.getPermaId());
+    }
+  }
 }
