@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.3.2</version>
+  <version>0.5</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -21,6 +21,15 @@
    Plugin works only with IDEA trunk builds and git repositories
     ]]></description>
   <change-notes><![CDATA[
+
+  <p>0.5 version:</p>
+  Thanks to <a href="https://github.com/dmitry-cherkas">dmitry-cherkas</a>
+  <ul>
+    <li> [feature] Added "Open in browser" action for reviews/comments. #63
+    <li> [feature] Added more filters (ReadyToClose, InDraft, etc).
+    <li> [feature] Agile style review support. #57
+    <li> [bugfix] Fixed some exceptions. #58, 60, 62
+  </ul>
 
   <p>0.4 version:</p>
   [Important note] Plugin works only with IDEA trunk builds
