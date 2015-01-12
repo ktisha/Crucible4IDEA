@@ -1,8 +1,7 @@
 Installation guide:
-1. Download Crucible4IDEA.zip
-2. Unpack the archive file to the ".IntelliJIDEAx0\config\plugins" folder, 
-and then restart Intellij IDEA for changes to take effect.
-3. Open Idea-> Settings and set your Crucible server/username
+1. Open Settings->Plugins->Browse Repositories->"Code Review for IntelliJ IDEA" and install plugin
+2. Restart Intellij IDEA for changes to take effect.
+3. Open Settings->Other Settings->Code Review and set your Crucible server/username
 4. Open Code Review toolwindow
 5. Review with pleasure )
 
