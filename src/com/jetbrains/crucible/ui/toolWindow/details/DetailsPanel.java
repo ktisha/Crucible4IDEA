@@ -12,6 +12,7 @@ import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.actions.OpenRepositoryVersionAction;
 import com.intellij.openapi.vcs.changes.actions.ShowDiffWithLocalAction;
+import com.intellij.openapi.vcs.changes.actions.diff.ShowDiffContext;
 import com.intellij.openapi.vcs.changes.ui.ChangesBrowser;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.ui.*;
@@ -22,7 +23,7 @@ import com.jetbrains.crucible.configuration.CrucibleSettings;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.User;
 import com.jetbrains.crucible.utils.CrucibleBundle;
-import com.jetbrains.crucible.utils.CrucibleDataKeys;
+import com.jetbrains.crucible.utils.CrucibleUserDataKeys;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -268,14 +269,16 @@ public class DetailsPanel extends SimpleToolWindowPanel {
 
     @Override
     public void calcData(DataKey key, DataSink sink) {
-      if (key == CrucibleDataKeys.REVIEW) {
-        sink.put(CrucibleDataKeys.REVIEW, myReview);
-      }
       if (key == VcsDataKeys.SELECTED_CHANGES) {
         final List<Change> list = myViewer.getSelectedChanges();
         sink.put(VcsDataKeys.SELECTED_CHANGES, list.toArray(new Change[list.size()]));
       }
       super.calcData(key, sink);
+    }
+
+    @Override
+    protected void updateDiffContext(@NotNull ShowDiffContext context) {
+      context.putChainContext(CrucibleUserDataKeys.REVIEW, myReview);
     }
   }
 

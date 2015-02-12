@@ -18,7 +18,6 @@ public class CrucibleToolWindowFactory implements ToolWindowFactory, DumbAware {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    DiffManager.getInstance().registerDiffTool(new CommentsDiffTool());
     final ContentManager contentManager = toolWindow.getContentManager();
     final CruciblePanel cruciblePanel = new CruciblePanel(project);
     final Content content = ContentFactory.SERVICE.getInstance().
