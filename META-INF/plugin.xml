@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.5</version>
+  <version>0.5.1</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -21,6 +21,9 @@
    Plugin works only with IDEA trunk builds and git repositories
     ]]></description>
   <change-notes><![CDATA[
+
+  <p>0.5.1 version:</p>
+  Fixed compatibility issues with Idea 14
 
   <p>0.5 version:</p>
   Thanks to <a href="https://github.com/dmitry-cherkas">dmitry-cherkas</a>
@@ -124,7 +127,7 @@
 
 ]]></change-notes>
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="130.323"/>
+  <idea-version since-build="141.177"/>
 
   <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
