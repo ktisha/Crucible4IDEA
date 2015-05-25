@@ -34,10 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -157,7 +155,16 @@ public class CrucibleSessionImpl implements CrucibleSession {
     executeHttpMethod(method);
 
     JsonParser parser = new JsonParser();
-    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream(), Charset.forName("UTF-8"))).getAsJsonObject();
+    final String response = method.getResponseBodyAsString();
+
+    try {
+      return parser.parse(response).getAsJsonObject();
+    }
+    catch (JsonSyntaxException ex) {
+      LOG.error("Malformed Json");
+      LOG.error(response);
+    }
+    return new JsonObject();
   }
 
   private void executeHttpMethod(@NotNull HttpMethodBase method) throws IOException {
@@ -176,7 +183,15 @@ public class CrucibleSessionImpl implements CrucibleSession {
     method.setRequestEntity(requestEntity);
     executeHttpMethod(method);
     JsonParser parser = new JsonParser();
-    return parser.parse(new InputStreamReader(method.getResponseBodyAsStream(), Charset.forName("UTF-8"))).getAsJsonObject();
+    final String response = method.getResponseBodyAsString();
+    try {
+      return parser.parse(response).getAsJsonObject();
+    }
+    catch (JsonSyntaxException ex) {
+      LOG.error("Malformed Json");
+      LOG.error(response);
+    }
+    return new JsonObject();
   }
 
   protected void adjustHttpHeader(@NotNull final HttpMethod method) {
