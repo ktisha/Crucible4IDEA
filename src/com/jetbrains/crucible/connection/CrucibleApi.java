@@ -11,8 +11,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.vcs.FilePathImpl;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
-import com.intellij.openapi.vcs.changes.patch.FilePatchInProgress;
+import com.intellij.openapi.vcs.changes.patch.AbstractFilePatchInProgress;
 import com.intellij.openapi.vcs.changes.patch.MatchPatchPaths;
+import com.intellij.openapi.vcs.changes.patch.TextFilePatchInProgress;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
@@ -109,14 +110,18 @@ public class CrucibleApi {
       throw new IOException(e);
     }
 
-    List<FilePatchInProgress> patches = new MatchPatchPaths(project).execute(patchTexts);
+    List<AbstractFilePatchInProgress> patches = new MatchPatchPaths(project).execute(patchTexts);
 
     if (patches.isEmpty()) {
       LOG.error("No patches generated for the following patch texts: " + patchTexts);
       return null;
     }
 
-    FilePatchInProgress patchForItem = findBestMatchingPatchByPath(toPath, patches);
+    AbstractFilePatchInProgress patchForItem = findBestMatchingPatchByPath(toPath, patches);
+    if (!(patchForItem instanceof TextFilePatchInProgress)) {
+      LOG.error("Patches is not instance of TextFilePatchInProgress");
+      return null;
+    }
 
     File base = patchForItem.getIoCurrentBase();
     if (base == null) {
@@ -124,7 +129,7 @@ public class CrucibleApi {
       return null;
     }
 
-    final VirtualFile repo = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new FilePathImpl(base, base.isDirectory()));
+    final VirtualFile repo = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new FilePathImpl(base.getAbsolutePath(), base.isDirectory()));
     if (repo == null) {
       LOG.error("Couldn't find repository for base " + base);
       return null;
@@ -143,22 +148,24 @@ public class CrucibleApi {
       return null;
     }
     String key = repoEntry.getKey();
-    return new PatchReviewItem(id, patchForItem.getNewContentRevision().getFile().getPath(),
+    return new PatchReviewItem(id, ((TextFilePatchInProgress)patchForItem).getNewContentRevision().getFile().getPath(),
                                key, patches, patchUrl.substring(patchUrl.lastIndexOf("/") + 1), "",
                                raw.authorName, new Date(raw.commitDate));
   }
 
   // temporary workaround until ReviewItem is rethinked
   @NotNull
-  private static FilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath, @NotNull List<FilePatchInProgress> patches) {
+  private static AbstractFilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath, @NotNull List<AbstractFilePatchInProgress> patches) {
     int bestSimilarity = -1;
-    FilePatchInProgress bestCandidate = null;
-    for (FilePatchInProgress patch : patches) {
-      String path = patch.getNewContentRevision().getFile().getPath();
-      int similarity = findSimilarity(path, toPath);
-      if (similarity > bestSimilarity) {
-        bestSimilarity = similarity;
-        bestCandidate = patch;
+    AbstractFilePatchInProgress bestCandidate = null;
+    for (AbstractFilePatchInProgress patch : patches) {
+      if (patch instanceof TextFilePatchInProgress) {
+        String path = ((TextFilePatchInProgress)patch).getNewContentRevision().getFile().getPath();
+        int similarity = findSimilarity(path, toPath);
+        if (similarity > bestSimilarity) {
+          bestSimilarity = similarity;
+          bestCandidate = patch;
+        }
       }
     }
     assert bestCandidate != null : "best candidate should have been initialized. toPath: " + toPath + ", patches: " + patches;

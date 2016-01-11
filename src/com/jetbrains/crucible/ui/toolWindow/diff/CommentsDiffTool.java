@@ -65,7 +65,6 @@ public class CommentsDiffTool implements FrameDiffTool, SuppressiveDiffTool {
     @Override
     protected void onInit() {
       super.onInit();
-      if (myEditor2 == null) return;
 
       final Review review = myContext.getUserData(CrucibleUserDataKeys.REVIEW);
       final Change change = myRequest.getUserData(ChangeDiffRequestProducer.CHANGE_KEY);
@@ -77,8 +76,8 @@ public class CommentsDiffTool implements FrameDiffTool, SuppressiveDiffTool {
         revision = change.getBeforeRevision();
       }
 
-      addCommentAction(myEditor2, review, path);
-      addGutter(myEditor2, review, path, revision);
+      addCommentAction(getEditor2(), review, path);
+      addGutter(getEditor2(), review, path, revision);
     }
 
     private static void addCommentAction(@NotNull final Editor editor2,

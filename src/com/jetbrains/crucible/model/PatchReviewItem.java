@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
-import com.intellij.openapi.vcs.changes.patch.FilePatchInProgress;
+import com.intellij.openapi.vcs.changes.patch.AbstractFilePatchInProgress;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeListImpl;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -23,14 +23,14 @@ import java.util.Set;
  */
 public class PatchReviewItem extends ReviewItem {
 
-  @NotNull private final List<FilePatchInProgress> myPatches;
+  @NotNull private final List<AbstractFilePatchInProgress> myPatches;
   @NotNull private String myName;
   @NotNull private String myComment;
   @NotNull private String myAuthorName;
   @NotNull private Date myDate;
 
   public PatchReviewItem(@NotNull String id, @NotNull String path,
-                         @Nullable String repoName, @NotNull List<FilePatchInProgress> patches,
+                         @Nullable String repoName, @NotNull List<AbstractFilePatchInProgress> patches,
                          @NotNull String patchName, @NotNull String comment, @NotNull String author, @NotNull Date date) {
     super(id, path, repoName);
     myPatches = patches;
@@ -58,10 +58,10 @@ public class PatchReviewItem extends ReviewItem {
   }
 
   @NotNull
-  private List<Change> getChanges(@NotNull List<FilePatchInProgress> patches) {
-    return ContainerUtil.map(patches, new Function<FilePatchInProgress, Change>() {
+  private List<Change> getChanges(@NotNull List<AbstractFilePatchInProgress> patches) {
+    return ContainerUtil.map(patches, new Function<AbstractFilePatchInProgress, Change>() {
       @Override
-      public Change fun(FilePatchInProgress patch) {
+      public Change fun(AbstractFilePatchInProgress patch) {
         return patch.getChange();
       }
     });

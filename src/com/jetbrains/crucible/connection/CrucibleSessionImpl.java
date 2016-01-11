@@ -4,7 +4,6 @@ import com.google.gson.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.SLRUCache;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
@@ -13,7 +12,6 @@ import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
 import com.jetbrains.crucible.ui.UiUtils;
 import git4idea.GitUtil;
-import git4idea.commands.GitRemoteProtocol;
 import git4idea.repo.GitRemote;
 import git4idea.repo.GitRepository;
 import git4idea.repo.GitRepositoryManager;
@@ -37,8 +35,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User : ktisha
@@ -285,39 +281,16 @@ public class CrucibleSessionImpl implements CrucibleSession {
   protected VirtualFile getLocalPath(@NotNull Repository repository) {
     GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
     List<GitRepository> repositories = manager.getRepositories();
-    String location = unifyLocation(repository.getUrl());
+    String location = repository.getUrl();
     for (GitRepository repo : repositories) {
       GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN_NAME);
-      if (origin != null && location != null) {
+      if (origin != null) {
         String originFirstUrl = origin.getFirstUrl();
         if (originFirstUrl == null) continue;
-        String originLocation  = unifyLocation(originFirstUrl);
-        if (location.equals(originLocation)) {
+        if (location.equals(originFirstUrl)) {
           return repo.getRoot();
         }
       }
-    }
-    return null;
-  }
-
-  @Nullable
-  private static String unifyLocation(@NotNull String location) {
-    final GitRemoteProtocol protocol = GitRemoteProtocol.fromUrl(location);
-    if (protocol == null) return null;
-    switch (protocol) {
-      case GIT:
-        return StringUtil.trimEnd(StringUtil.trimStart(location, "git://"), ".git");
-      case HTTP:
-        Pattern pattern = Pattern.compile("https?://(.*)\\.git");
-        Matcher matcher = pattern.matcher(location);
-        boolean found = matcher.find();
-        return found ? matcher.group(1) : null;
-      case SSH:
-        pattern = Pattern.compile("git@(.*)?:(.*)(\\.git)?");
-        matcher = pattern.matcher(location);
-        found = matcher.find();
-        return found ? matcher.group(1) + "/" + matcher.group(2) : null;
-      default:
     }
     return null;
   }
