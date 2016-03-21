@@ -146,15 +146,6 @@
   <project-components>
   </project-components>
 
-  <actions>
-    <action id="CrucibleView.Diff" class="com.intellij.openapi.vcs.changes.actions.ShowDiffAction"
-            icon="AllIcons.Actions.Diff"/>
-
-    <group id="CrucibleViewPopupMenu">
-    <reference ref="CrucibleView.Diff"/>
-    </group>
-  </actions>
-
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable instance="com.jetbrains.crucible.configuration.CrucibleConfigurable"
                              id="com.jetbrains.crucible.configuration.CrucibleConfigurable" displayName="Code Review"/>
