@@ -283,7 +283,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
     List<GitRepository> repositories = manager.getRepositories();
     String location = repository.getUrl();
     for (GitRepository repo : repositories) {
-      GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN_NAME);
+      GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN);
       if (origin != null) {
         String originFirstUrl = origin.getFirstUrl();
         if (originFirstUrl == null) continue;
