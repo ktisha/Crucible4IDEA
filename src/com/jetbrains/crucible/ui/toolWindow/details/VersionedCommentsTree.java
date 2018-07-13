@@ -16,19 +16,16 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class VersionedCommentsTree extends CommentsTree {
 
-  private final Runnable myUpdater;
-
   private VersionedCommentsTree(@NotNull Project project, @NotNull Review review, @NotNull DefaultTreeModel model,
-                                @Nullable Editor editor, @Nullable FilePath filePath, Runnable runnable) {
+                                @Nullable Editor editor, @Nullable FilePath filePath) {
     super(project, review, model, editor, filePath);
-    myUpdater = runnable;
   }
 
   @NotNull
   public static CommentsTree create(@NotNull Project project, @NotNull Review review, @NotNull Comment comment,
-                                    @NotNull Editor editor, @NotNull FilePath filePath, Runnable runnable) {
+                                    @NotNull Editor editor, @NotNull FilePath filePath) {
     DefaultTreeModel model = createModel(comment);
-    return new VersionedCommentsTree(project, review, model, editor, filePath, runnable);
+    return new VersionedCommentsTree(project, review, model, editor, filePath);
   }
 
   private static DefaultTreeModel createModel(Comment comment) {
@@ -40,6 +37,5 @@ public class VersionedCommentsTree extends CommentsTree {
 
   @Override
   public void refresh() {
-    myUpdater.run();
   }
 }

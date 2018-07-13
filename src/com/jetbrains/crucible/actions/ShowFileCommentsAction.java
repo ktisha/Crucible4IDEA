@@ -3,7 +3,6 @@ package com.jetbrains.crucible.actions;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.diff.DiffViewer;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -40,16 +39,7 @@ public class ShowFileCommentsAction extends AnAction implements DumbAware {
     final Editor editor = PlatformDataKeys.EDITOR.getData(e.getDataContext());
     if (editor == null) return;
 
-    final CommentsTree commentsTree = VersionedCommentsTree.create(project, myReview, myComment, editor, myFilePath, new Runnable() {
-      @Override
-      public void run() {
-        DiffViewer diffViewer = e.getData(PlatformDataKeys.DIFF_VIEWER);
-        if (diffViewer == null) {
-          return;
-        }
-        diffViewer.getComponent().repaint();
-      }
-    });
+    final CommentsTree commentsTree = VersionedCommentsTree.create(project, myReview, myComment, editor, myFilePath);
     CommentBalloonBuilder.showBalloon(commentsTree);
   }
 }
