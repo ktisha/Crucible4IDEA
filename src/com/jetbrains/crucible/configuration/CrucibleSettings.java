@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @State(name = "CrucibleSettings",
        storages = {
-         @Storage(file = StoragePathMacros.APP_CONFIG + "/crucibleConnector.xml")
+         @Storage(file = "$APP_CONFIG$" + "/crucibleConnector.xml")
        }
 )
 public class CrucibleSettings implements PersistentStateComponent<CrucibleSettings> {
