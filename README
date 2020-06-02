@@ -1,11 +1,15 @@
-Installation guide:
-1. Open Settings->Plugins->Browse Repositories->"Code Review for IntelliJ IDEA" and install plugin
+#Installation guide
+1. Open Settings -> Plugins -> Browse Repositories -> "Code Review for IntelliJ IDEA" and install plugin
 2. Restart Intellij IDEA for changes to take effect.
-3. Open Settings->Other Settings->Code Review and set your Crucible server/username
+3. Open Settings -> Other Settings -> Code Review and set your Crucible server/username
 4. Open Code Review toolwindow
 5. Review with pleasure )
 
+#For developers
+Setup IntelliJ plugin SDK (see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/using_dev_kit.html)
 
-For developers:
-Setup IntelliJ plugin SDK (see http://confluence.jetbrains.com/display/IDEADEV/PluginDevelopment)
-Add git4idea classpath to sdk
+Add git4idea classpath to SDK:
+1. Open File -> Project structure...
+2. Platform Settings -> SDKs
+3. *Your version of IntelliJ IDEA IU* -> Classpath
+4. Add <idea installation dir>/plugins/git4idea/lib/git4idea.jar

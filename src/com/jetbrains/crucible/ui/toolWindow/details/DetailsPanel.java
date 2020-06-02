@@ -285,7 +285,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private class ShowGeneralCommentsAction extends AnActionButton {
     public ShowGeneralCommentsAction() {
       super(CrucibleBundle.message("crucible.show.general.comments"), CrucibleBundle.message("crucible.show.general.comments"),
-            AllIcons.Actions.ShowChangesOnly);
+            AllIcons.Actions.Preview);
     }
 
     @Override
