@@ -1,15 +1,14 @@
 import com.intellij.mock.MockProject;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.UsefulTestCase;
 import com.jetbrains.crucible.connection.CrucibleSession;
-import com.jetbrains.crucible.model.CrucibleVersionInfo;
-import com.jetbrains.crucible.model.Review;
-import connection.MockCrucibleSession;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.BasicReview;
 import com.jetbrains.crucible.model.CrucibleFilter;
+import com.jetbrains.crucible.model.CrucibleVersionInfo;
+import com.jetbrains.crucible.model.Review;
+import connection.MockCrucibleSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +24,6 @@ public class ParsingTest extends UsefulTestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    Extensions.registerAreaClass("IDEA_PROJECT", null);
 
     myProject = new MockProject(null, new Disposable() {
       @Override

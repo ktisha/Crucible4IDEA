@@ -7,7 +7,6 @@ import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ThrowableRunnable;
-import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.ui.VcsSynchronousProgressWrapper;
 import com.intellij.vcs.log.VcsFullCommitDetails;
 import com.intellij.vcs.log.util.VcsUserUtil;
@@ -21,11 +20,7 @@ import git4idea.repo.GitRepositoryManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static com.intellij.util.ObjectUtils.assertNotNull;
+import java.util.*;
 
 /**
  * User: ktisha
@@ -36,20 +31,18 @@ public class VcsUtils {
 
   @Nullable
   public static CommittedChangeList loadRevisionsFromGit(@NotNull final Project project,
-                                                         final VirtualFile virtualFile,
-                                                         final VcsRevisionNumber number) {
+                                                         final VcsRevisionNumber number, FilePath filePath) {
     final CommittedChangeList[] list = new CommittedChangeList[1];
     final ThrowableRunnable<VcsException> runnable = () -> {
-      FilePath filePath = VcsUtil.getFilePath(virtualFile);
 
-      FilePath lastCommitName = GitHistoryUtils.getLastCommitName(project, filePath);
+      FilePath lastCommitName = VcsUtil.getLastCommitPath(project, filePath);
       GitRepository repository = GitRepositoryManager.getInstance(project).getRepositoryForFile(lastCommitName);
       if (repository == null) {
         return;
       }
       VirtualFile root = repository.getRoot();
 
-      List<VcsFullCommitDetails> gitCommits = ContainerUtil.newArrayList();
+      List<VcsFullCommitDetails> gitCommits = new ArrayList<>();
       GitHistoryUtils.loadDetails(project, root, gitCommits::add,
                                   GitHistoryUtils.formHashParameters(repository.getVcs(), Collections.singleton(number.asString())));
       if (gitCommits.size() != 1) {
@@ -60,7 +53,7 @@ public class VcsUtils {
                                                               gitCommit.getFullMessage(), VcsUserUtil.toExactString(gitCommit.getAuthor()),
                                                               (GitRevisionNumber)number,
                                                               new Date(gitCommit.getAuthorTime()), gitCommit.getChanges(),
-                                                              assertNotNull(GitVcs.getInstance(project)), true);
+                                                              Objects.requireNonNull(GitVcs.getInstance(project)), true);
 
       list[0] = commit;
     };

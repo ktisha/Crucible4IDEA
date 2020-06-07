@@ -150,11 +150,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final GetMethod method = new GetMethod(urlString);
     executeHttpMethod(method);
 
-    JsonParser parser = new JsonParser();
     final String response = method.getResponseBodyAsString();
 
     try {
-      return parser.parse(response).getAsJsonObject();
+      return JsonParser.parseString(response).getAsJsonObject();
     }
     catch (JsonSyntaxException ex) {
       LOG.error("Malformed Json");
@@ -178,10 +177,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
     final PostMethod method = new PostMethod(urlString);
     method.setRequestEntity(requestEntity);
     executeHttpMethod(method);
-    JsonParser parser = new JsonParser();
+
     final String response = method.getResponseBodyAsString();
     try {
-      return parser.parse(response).getAsJsonObject();
+      return JsonParser.parseString(response).getAsJsonObject();
     }
     catch (JsonSyntaxException ex) {
       LOG.error("Malformed Json");

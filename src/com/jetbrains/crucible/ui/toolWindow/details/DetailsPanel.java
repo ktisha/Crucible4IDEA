@@ -212,7 +212,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myChangesBrowser = new MyChangesBrowser(myProject);
 
     myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
-    myChangesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
+    myChangesBrowser.getViewer().setBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
 
     myCommitsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override

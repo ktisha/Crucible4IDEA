@@ -9,7 +9,7 @@ import com.intellij.openapi.diff.impl.patch.PatchSyntaxException;
 import com.intellij.openapi.diff.impl.patch.TextFilePatch;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vcs.FilePathImpl;
+import com.intellij.openapi.vcs.LocalFilePath;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.changes.patch.AbstractFilePatchInProgress;
 import com.intellij.openapi.vcs.changes.patch.MatchPatchPaths;
@@ -104,7 +104,7 @@ public class CrucibleApi {
 
     List<TextFilePatch> patchTexts;
     try {
-      patchTexts = new PatchReader(file).readAllPatches();
+      patchTexts = new PatchReader(file).readTextPatches();
     }
     catch (PatchSyntaxException e) {
       throw new IOException(e);
@@ -129,7 +129,7 @@ public class CrucibleApi {
       return null;
     }
 
-    final VirtualFile repo = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new FilePathImpl(base.getAbsolutePath(), base.isDirectory()));
+    final VirtualFile repo = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new LocalFilePath(base.getAbsolutePath(), base.isDirectory()));
     if (repo == null) {
       LOG.error("Couldn't find repository for base " + base);
       return null;

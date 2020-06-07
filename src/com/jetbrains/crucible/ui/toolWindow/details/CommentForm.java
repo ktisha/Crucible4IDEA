@@ -3,12 +3,12 @@ package com.jetbrains.crucible.ui.toolWindow.details;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SpellCheckingEditorCustomizationProvider;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.wm.IdeFocusManager;
-import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.*;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.crucible.configuration.CrucibleSettings;
@@ -59,9 +59,9 @@ public class CommentForm extends JPanel {
     myFilePath = filePath;
 
     final EditorTextFieldProvider service = ServiceManager.getService(project, EditorTextFieldProvider.class);
-    final Set<EditorCustomization> editorFeatures = ContainerUtil.newHashSet();
-    editorFeatures.add(SoftWrapsEditorCustomization.ENABLED);
-    editorFeatures.add(SpellCheckingEditorCustomization.ENABLED);
+    final Set<EditorCustomization> editorFeatures =
+      ContainerUtil.newHashSet(SoftWrapsEditorCustomization.ENABLED,
+                               SpellCheckingEditorCustomizationProvider.getInstance().getEnabledCustomization());
     myReviewTextField = service.getEditorField(PlainTextLanguage.INSTANCE, project, editorFeatures);
 
     final JScrollPane pane = ScrollPaneFactory.createScrollPane(myReviewTextField);

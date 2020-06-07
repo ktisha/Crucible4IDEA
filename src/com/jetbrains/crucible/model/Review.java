@@ -69,8 +69,8 @@ public class Review extends BasicReview {
 
     for (ReviewItem item : myItems) {
       final String repo = item.getRepo();
-      final VirtualFile root = hash.containsKey(repo) ? hash.get(repo) : project.getBaseDir();
-      String relativePath = FileUtil.getRelativePath(new File(root.getPath()), new File(path));
+      final String root = hash.containsKey(repo) ? hash.get(repo).getPath() : project.getBasePath();
+      String relativePath = FileUtil.getRelativePath(new File(Objects.requireNonNull(root)), new File(path));
       if (FileUtil.pathsEqual(relativePath, item.getPath())) {
         return item.getId();
       }

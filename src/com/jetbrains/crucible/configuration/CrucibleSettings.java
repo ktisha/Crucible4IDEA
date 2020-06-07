@@ -1,8 +1,12 @@
 package com.jetbrains.crucible.configuration;
 
+import com.intellij.credentialStore.CredentialAttributes;
+import com.intellij.credentialStore.Credentials;
 import com.intellij.ide.passwordSafe.PasswordSafe;
-import com.intellij.ide.passwordSafe.PasswordSafeException;
-import com.intellij.openapi.components.*;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.Nullable;
@@ -37,22 +41,13 @@ public class CrucibleSettings implements PersistentStateComponent<CrucibleSettin
   private static final Logger LOG = Logger.getInstance(CrucibleConfigurable.class.getName());
 
   public void savePassword(String pass) {
-    try {
-      PasswordSafe.getInstance().storePassword(null, this.getClass(), CRUCIBLE_SETTINGS_PASSWORD_KEY, pass);
-    }
-    catch (PasswordSafeException e) {
-      LOG.info("Couldn't get password for key [" + CRUCIBLE_SETTINGS_PASSWORD_KEY + "]", e);
-    }
+    PasswordSafe.getInstance().set(new CredentialAttributes(CRUCIBLE_SETTINGS_PASSWORD_KEY), new Credentials(USERNAME, pass));
   }
 
   @Nullable
   public String getPassword() {
-    try {
-      return PasswordSafe.getInstance().getPassword(null, this.getClass(), CRUCIBLE_SETTINGS_PASSWORD_KEY);
-    }
-    catch (PasswordSafeException e) {
-      LOG.info("Couldn't get the password for key [" + CRUCIBLE_SETTINGS_PASSWORD_KEY + "]", e);
-      return null;
-    }
+    final Credentials credentials = PasswordSafe.getInstance().get(new CredentialAttributes(CRUCIBLE_SETTINGS_PASSWORD_KEY));
+
+    return credentials != null ? credentials.getPasswordAsString() : null;
   }
 }

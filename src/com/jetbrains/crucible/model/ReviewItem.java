@@ -2,10 +2,10 @@ package com.jetbrains.crucible.model;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.jetbrains.crucible.vcs.VcsUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,15 +33,15 @@ public class ReviewItem {
   }
 
   @NotNull
-  public List<CommittedChangeList> loadChangeLists(@NotNull Project project, @NotNull AbstractVcs vcsFor, @NotNull VirtualFile root,
-                                                   @NotNull Set<String> loadedRevisions) throws VcsException {
+  public List<CommittedChangeList> loadChangeLists(@NotNull Project project, @NotNull AbstractVcs vcsFor,
+                                                   @NotNull Set<String> loadedRevisions, FilePath path) throws VcsException {
     final Set<String> revisions = getRevisions();
     List<CommittedChangeList> changeLists = new ArrayList<CommittedChangeList>();
     for (String revision : revisions) {
       if (!loadedRevisions.contains(revision)) {
         final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
         if (revisionNumber != null) {
-          final CommittedChangeList changeList = VcsUtils.loadRevisionsFromGit(project, root, revisionNumber);
+          final CommittedChangeList changeList = VcsUtils.loadRevisionsFromGit(project, revisionNumber, path);
           if (changeList != null) changeLists.add(changeList);
         }
         loadedRevisions.add(revision);
