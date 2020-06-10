@@ -1,6 +1,7 @@
 package com.jetbrains.crucible.connection;
 
 import com.google.gson.*;
+import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
@@ -11,10 +12,6 @@ import com.jetbrains.crucible.connection.exceptions.CrucibleApiException;
 import com.jetbrains.crucible.connection.exceptions.CrucibleApiLoginException;
 import com.jetbrains.crucible.model.*;
 import com.jetbrains.crucible.ui.UiUtils;
-import git4idea.GitUtil;
-import git4idea.repo.GitRemote;
-import git4idea.repo.GitRepository;
-import git4idea.repo.GitRepositoryManager;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -267,7 +264,7 @@ public class CrucibleSessionImpl implements CrucibleSession {
   public void fillRepoHash() throws IOException {
     String url = getHostUrl() + REPOSITORIES;
     final JsonObject jsonObject = buildJsonResponse(url);
-    Collection<Repository> repos = CrucibleApi.parseGitRepositories(jsonObject);
+    Collection<Repository> repos = CrucibleApi.parseRepositories(jsonObject);
 
     for (Repository repo : repos) {
       VirtualFile localPath = getLocalPath(repo);
@@ -278,18 +275,10 @@ public class CrucibleSessionImpl implements CrucibleSession {
 
   @Nullable
   protected VirtualFile getLocalPath(@NotNull Repository repository) {
-    GitRepositoryManager manager = GitUtil.getRepositoryManager(myProject);
-    List<GitRepository> repositories = manager.getRepositories();
-    String location = repository.getUrl();
-    for (GitRepository repo : repositories) {
-      GitRemote origin = GitUtil.findRemoteByName(repo, GitRemote.ORIGIN);
-      if (origin != null) {
-        String originFirstUrl = origin.getFirstUrl();
-        if (originFirstUrl == null) continue;
-        if (location.equals(originFirstUrl)) {
-          return repo.getRoot();
-        }
-      }
+    final VcsRepositoryManager manager = VcsRepositoryManager.getInstance(myProject);
+    final Collection<com.intellij.dvcs.repo.Repository> repositories = manager.getRepositories();
+    for (com.intellij.dvcs.repo.Repository repo : repositories) {
+      return repo.getRoot();
     }
     return null;
   }

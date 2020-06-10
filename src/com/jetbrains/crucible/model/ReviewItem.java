@@ -41,7 +41,7 @@ public class ReviewItem {
       if (!loadedRevisions.contains(revision)) {
         final VcsRevisionNumber revisionNumber = vcsFor.parseRevisionNumber(revision);
         if (revisionNumber != null) {
-          final CommittedChangeList changeList = VcsUtils.loadRevisionsFromGit(project, revisionNumber, path);
+          final CommittedChangeList changeList = VcsUtils.loadRevisions(project, revisionNumber, path);
           if (changeList != null) changeLists.add(changeList);
         }
         loadedRevisions.add(revision);

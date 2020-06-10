@@ -15,7 +15,6 @@ import com.intellij.openapi.vcs.changes.patch.AbstractFilePatchInProgress;
 import com.intellij.openapi.vcs.changes.patch.MatchPatchPaths;
 import com.intellij.openapi.vcs.changes.patch.TextFilePatchInProgress;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import com.jetbrains.crucible.model.*;
 import org.apache.commons.httpclient.methods.RequestEntity;
@@ -49,7 +48,7 @@ public class CrucibleApi {
 
   @NotNull
   public static BasicReview parseReview(@NotNull JsonObject item, @NotNull Project project, @NotNull CrucibleSession crucibleSession)
-                                        throws IOException {
+    throws IOException {
     ReviewRaw reviewRaw = gson.fromJson(item, ReviewRaw.class);
 
     User moderator = (reviewRaw.moderator != null) ? reviewRaw.moderator.createUser() : null;
@@ -129,7 +128,8 @@ public class CrucibleApi {
       return null;
     }
 
-    final VirtualFile repo = ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new LocalFilePath(base.getAbsolutePath(), base.isDirectory()));
+    final VirtualFile repo =
+      ProjectLevelVcsManager.getInstance(project).getVcsRootFor(new LocalFilePath(base.getAbsolutePath(), base.isDirectory()));
     if (repo == null) {
       LOG.error("Couldn't find repository for base " + base);
       return null;
@@ -137,11 +137,11 @@ public class CrucibleApi {
 
     Map.Entry<String, VirtualFile> repoEntry = ContainerUtil.find(crucibleSession.getRepoHash().entrySet(),
                                                                   new Condition<Map.Entry<String, VirtualFile>>() {
-      @Override
-      public boolean value(Map.Entry<String, VirtualFile> entry) {
-        return entry.getValue().equals(repo);
-      }
-    });
+                                                                    @Override
+                                                                    public boolean value(Map.Entry<String, VirtualFile> entry) {
+                                                                      return entry.getValue().equals(repo);
+                                                                    }
+                                                                  });
 
     if (repoEntry == null) {
       LOG.error("Couldn't find repository name for root " + repo);
@@ -155,7 +155,8 @@ public class CrucibleApi {
 
   // temporary workaround until ReviewItem is rethinked
   @NotNull
-  private static AbstractFilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath, @NotNull List<AbstractFilePatchInProgress> patches) {
+  private static AbstractFilePatchInProgress findBestMatchingPatchByPath(@NotNull String toPath,
+                                                                         @NotNull List<AbstractFilePatchInProgress> patches) {
     int bestSimilarity = -1;
     AbstractFilePatchInProgress bestCandidate = null;
     for (AbstractFilePatchInProgress patch : patches) {
@@ -253,14 +254,13 @@ public class CrucibleApi {
   }
 
   @NotNull
-  public static Collection<Repository> parseGitRepositories(@NotNull JsonObject object) {
-    Repositories repositories = gson.fromJson(object, Repositories.class);
-    return ContainerUtil.mapNotNull(repositories.repoData, new Function<RepoRaw, Repository>() {
-      @Override
-      public Repository fun(RepoRaw repository) {
-        return "git".equalsIgnoreCase(repository.type) ? new Repository(repository.name, repository.location) : null;
-      }
-    });
+  public static Collection<Repository> parseRepositories(@NotNull JsonObject object) {
+    final Repositories repositories = gson.fromJson(object, Repositories.class);
+    
+    return ContainerUtil.mapNotNull(repositories.repoData,
+                                    repository -> repository.name != null && repository.location != null
+                                                  ? new Repository(repository.name, repository.location)
+                                                  : null);
   }
 
   @NotNull
@@ -477,5 +477,4 @@ public class CrucibleApi {
     int leaveUnread;
     int read;
   }
-
 }

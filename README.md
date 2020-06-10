@@ -7,9 +7,3 @@
 
 # For developers
 Setup IntelliJ plugin SDK (see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/using_dev_kit.html)
-
-Add git4idea classpath to SDK:
-1. Open File -> Project structure...
-2. Platform Settings -> SDKs
-3. *Your version of IntelliJ IDEA IU* -> Classpath
-4. Add <idea installation dir>/plugins/git4idea/lib/git4idea.jar

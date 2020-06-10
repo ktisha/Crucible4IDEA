@@ -1,63 +1,40 @@
 package com.jetbrains.crucible.vcs;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vcs.AbstractVcs;
 import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.history.VcsRevisionNumber;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ThrowableRunnable;
 import com.intellij.util.ui.VcsSynchronousProgressWrapper;
-import com.intellij.vcs.log.VcsFullCommitDetails;
-import com.intellij.vcs.log.util.VcsUserUtil;
 import com.intellij.vcsUtil.VcsUtil;
-import git4idea.GitRevisionNumber;
-import git4idea.GitVcs;
-import git4idea.changes.GitCommittedChangeList;
-import git4idea.history.GitHistoryUtils;
-import git4idea.repo.GitRepository;
-import git4idea.repo.GitRepositoryManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 /**
  * User: ktisha
  */
 public class VcsUtils {
+
   private VcsUtils() {
   }
 
   @Nullable
-  public static CommittedChangeList loadRevisionsFromGit(@NotNull final Project project,
-                                                         final VcsRevisionNumber number, FilePath filePath) {
+  public static CommittedChangeList loadRevisions(@NotNull final Project project, final VcsRevisionNumber number, final FilePath filePath) {
     final CommittedChangeList[] list = new CommittedChangeList[1];
     final ThrowableRunnable<VcsException> runnable = () -> {
+      final AbstractVcs vcs = VcsUtil.getVcsFor(project, filePath);
 
-      FilePath lastCommitName = VcsUtil.getLastCommitPath(project, filePath);
-      GitRepository repository = GitRepositoryManager.getInstance(project).getRepositoryForFile(lastCommitName);
-      if (repository == null) {
+      if (vcs == null) {
         return;
       }
-      VirtualFile root = repository.getRoot();
 
-      List<VcsFullCommitDetails> gitCommits = new ArrayList<>();
-      GitHistoryUtils.loadDetails(project, root, gitCommits::add,
-                                  GitHistoryUtils.formHashParameters(repository.getVcs(), Collections.singleton(number.asString())));
-      if (gitCommits.size() != 1) {
-        return;
-      }
-      VcsFullCommitDetails gitCommit = gitCommits.get(0);
-      CommittedChangeList commit = new GitCommittedChangeList(gitCommit.getFullMessage() + " (" + gitCommit.getId().toShortString() + ")",
-                                                              gitCommit.getFullMessage(), VcsUserUtil.toExactString(gitCommit.getAuthor()),
-                                                              (GitRevisionNumber)number,
-                                                              new Date(gitCommit.getAuthorTime()), gitCommit.getChanges(),
-                                                              Objects.requireNonNull(GitVcs.getInstance(project)), true);
-
-      list[0] = commit;
+      list[0] = vcs.loadRevisions(filePath.getVirtualFile(), number);
     };
-    final boolean success = VcsSynchronousProgressWrapper.wrap(runnable, project, "Load revision contents");
+
+    final boolean success = VcsSynchronousProgressWrapper.wrap(runnable, project, "Load Revision Contents");
+
     return success ? list[0] : null;
   }
 }
