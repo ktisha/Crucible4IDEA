@@ -104,7 +104,7 @@ class CommentNodeRenderer extends JBDefaultTreeCellRenderer {
 
     void setComment(final Comment comment) {
       String avatar = comment.getAuthor().getAvatar();
-      Icon icon = AllIcons.Ide.Warning_notifications;
+      Icon icon = AllIcons.Ide.Notification.WarningEvents;
       if (avatar != null) {
         try {
           icon = IconLoader.findIcon(new URL(avatar));

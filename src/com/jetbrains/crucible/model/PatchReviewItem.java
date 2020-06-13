@@ -2,12 +2,12 @@ package com.jetbrains.crucible.model;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.FilePath;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.changes.Change;
 import com.intellij.openapi.vcs.changes.patch.AbstractFilePatchInProgress;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeListImpl;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.Function;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
@@ -42,8 +42,8 @@ public class PatchReviewItem extends ReviewItem {
 
   @NotNull
   @Override
-  public List<CommittedChangeList> loadChangeLists(@NotNull Project project, @NotNull AbstractVcs vcsFor, @NotNull VirtualFile root,
-                                                   @NotNull Set<String> loadedRevisions) throws VcsException {
+  public List<CommittedChangeList> loadChangeLists(@NotNull Project project, @NotNull AbstractVcs vcsFor,
+                                                   @NotNull Set<String> loadedRevisions, FilePath path) throws VcsException {
     if (loadedRevisions.contains(myName)) {
       return Collections.emptyList();
     }

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Repository {
 
-  @NotNull private String myName;
-  @NotNull private String myUrl;
+  @NotNull private final String myName;
+  @NotNull private final String myUrl;
 
   public Repository(@NotNull String name, @NotNull String url) {
     myName = name;

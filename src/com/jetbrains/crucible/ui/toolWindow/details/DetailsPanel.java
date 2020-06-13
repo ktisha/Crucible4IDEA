@@ -212,7 +212,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
     myChangesBrowser = new MyChangesBrowser(myProject);
 
     myChangesBrowser.getDiffAction().registerCustomShortcutSet(CommonShortcuts.getDiff(), myCommitsTable);
-    myChangesBrowser.getViewer().setScrollPaneBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
+    myChangesBrowser.getViewer().setBorder(IdeBorderFactory.createBorder(SideBorder.LEFT | SideBorder.TOP));
 
     myCommitsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
@@ -285,7 +285,7 @@ public class DetailsPanel extends SimpleToolWindowPanel {
   private class ShowGeneralCommentsAction extends AnActionButton {
     public ShowGeneralCommentsAction() {
       super(CrucibleBundle.message("crucible.show.general.comments"), CrucibleBundle.message("crucible.show.general.comments"),
-            AllIcons.Actions.ShowChangesOnly);
+            AllIcons.Actions.Preview);
     }
 
     @Override

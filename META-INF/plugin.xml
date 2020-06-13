@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>codeReview4idea</id>
   <name>Code Review for IntelliJ IDEA</name>
-  <version>0.5.7</version>
+  <version>0.5.8</version>
   <vendor email="kt@jetbrains.com" url="https://github.com/ktisha/Crucible4IDEA">Ekaterina Tuzova </vendor>
   <category>Tools Integration</category>
   <description><![CDATA[
@@ -18,9 +18,16 @@
     <li> Add reply to versioned comment (right-click on comments list)
   </ul> <br/>
    <p>Important note:</p>
-   Plugin works only with IDEA trunk builds and git repositories
+   Plugin works only with IDEA trunk builds
     ]]></description>
   <change-notes><![CDATA[
+
+  <p>0.5.8 version:</p>
+  <ul>
+    <li>[bugfix] Fixed compatibility issues with Idea 2020.1</li>
+    <li>[enhancement] Support of other VCS has been added (manually tested only with Git and SVN)</li>
+    <li>[enhancement] Most of the deprecated code has been replaced</li>
+  </ul>
 
   <p>0.5.7 version:</p>
   Fixed compatibility issues with Idea 2018.3

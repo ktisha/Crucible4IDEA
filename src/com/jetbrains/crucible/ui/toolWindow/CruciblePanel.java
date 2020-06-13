@@ -7,6 +7,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.vcs.AbstractVcs;
+import com.intellij.openapi.vcs.LocalFilePath;
 import com.intellij.openapi.vcs.ProjectLevelVcsManager;
 import com.intellij.openapi.vcs.VcsException;
 import com.intellij.openapi.vcs.versionBrowser.CommittedChangeList;
@@ -21,6 +22,7 @@ import com.intellij.ui.content.ContentManager;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.SimpleTreeStructure;
+import com.intellij.vcsUtil.VcsUtil;
 import com.jetbrains.crucible.connection.CrucibleManager;
 import com.jetbrains.crucible.model.Review;
 import com.jetbrains.crucible.model.ReviewItem;
@@ -148,17 +150,17 @@ public class CruciblePanel extends SimpleToolWindowPanel {
       public void run() {
         final List<CommittedChangeList> list = new ArrayList<CommittedChangeList>();
         final ProjectLevelVcsManager vcsManager = ProjectLevelVcsManager.getInstance(myProject);
-        final VirtualFile projectDir = myProject.getBaseDir();
-        final AbstractVcs vcsFor = vcsManager.getVcsFor(projectDir);
+        final String projectDir = myProject.getBasePath();
+        final AbstractVcs vcsFor = vcsManager.getVcsFor(new LocalFilePath(Objects.requireNonNull(projectDir), true));
         if (vcsFor == null) return;
         final Set<ReviewItem> reviewItems = review.getReviewItems();
         final Set<String> loadedRevisions = new HashSet<String>();
 
         final Map<String, VirtualFile> hash = CrucibleManager.getInstance(myProject).getRepoHash();
         for (ReviewItem reviewItem : reviewItems) {
-          final VirtualFile root = hash.containsKey(reviewItem.getRepo()) ? hash.get(reviewItem.getRepo()) : projectDir;
+          final String root = hash.containsKey(reviewItem.getRepo()) ? hash.get(reviewItem.getRepo()).getPath() : projectDir;
           try {
-            list.addAll(reviewItem.loadChangeLists(myProject, vcsFor, root, loadedRevisions));
+            list.addAll(reviewItem.loadChangeLists(myProject, vcsFor, loadedRevisions, VcsUtil.getFilePath(root)));
           }
           catch (VcsException e) {
             LOG.error(e);

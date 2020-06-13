@@ -26,8 +26,7 @@ public class MockCrucibleSession extends CrucibleSessionImpl {
 
   protected JsonObject buildJsonResponse(@NotNull final String urlString) throws IOException {
     String name = getTestDataPath() + "/" + myName + ".json";
-    JsonParser parser = new JsonParser();
-    return parser.parse(new BufferedReader(new FileReader(name))).getAsJsonObject();
+    return JsonParser.parseReader(new BufferedReader(new FileReader(name))).getAsJsonObject();
   }
 
   protected String getHostUrl() {

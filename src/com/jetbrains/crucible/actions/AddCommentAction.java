@@ -10,7 +10,7 @@ import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupAdapter;
+import com.intellij.openapi.ui.popup.JBPopupListener;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vcs.FilePath;
@@ -89,7 +89,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
                                                                                     CrucibleBundle
                                                                                       .message("crucible.new.comment.$0",
                                                                                                myReview.getPermaId()));
-    balloon.addListener(new JBPopupAdapter() {
+    balloon.addListener(new JBPopupListener() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
         if(!commentForm.getText().isEmpty()) { // do not try to save draft if text is empty
@@ -124,7 +124,7 @@ public class AddCommentAction extends AnActionButton implements DumbAware {
                                                                                       .message("crucible.new.reply.$0", "Comment") :
                                                                                     CrucibleBundle
                                                                                       .message("crucible.new.comment.$0", myFilePath));
-    balloon.addListener(new JBPopupAdapter() {
+    balloon.addListener(new JBPopupListener() {
       @Override
       public void onClosed(LightweightWindowEvent event) {
         final Comment comment = commentForm.postComment();
